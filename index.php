@@ -15,7 +15,7 @@
         /* Estilo do cabeçalho principal */
         .main-header {
             background-color: #ffe600;
-            padding: 0 100px; /* Adiciona espaçamento apenas nas laterais */
+            padding: 0 500px; /* Adiciona espaçamento apenas nas laterais */
             box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
             height: 60px; /* Define uma altura fixa para o header */
 
