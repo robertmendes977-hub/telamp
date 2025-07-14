@@ -45,7 +45,7 @@
 
         /* Título principal (coluna da esquerda) */
         .main-title {
-            font-size: 27px;
+            font-size: 26px;
             /* ALTERAÇÃO: Aplicando o negrito */
             font-weight: 600; /* Ou 'bold' */
             color: #333;
