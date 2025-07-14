@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-T">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mercado Pago</title>
     <style>
@@ -31,16 +31,14 @@
             vertical-align: middle;
         }
         
-        /* --- ESTILOS ATUALIZADOS --- */
+        /* --- ESTILOS DO CONTEÚDO PRINCIPAL --- */
 
         .main-content {
             flex-grow: 1;
             display: flex;
             flex-direction: row; 
             justify-content: center; 
-            /* ALTERAÇÃO: Alinha os itens no topo do container */
             align-items: flex-start; 
-            /* ALTERAÇÃO: Adiciona um espaço do topo */
             padding-top: 80px; 
             gap: 64px;
         }
@@ -48,12 +46,13 @@
         /* Título principal (coluna da esquerda) */
         .main-title {
             font-size: 28px;
-            font-weight: 400;
+            /* ALTERAÇÃO: Aplicando o negrito */
+            font-weight: 700; /* Ou 'bold' */
             color: #333;
-            line-height: 1.25;
+            line-height: 1.35; /* Leve ajuste na altura da linha para a quebra */
             text-align: left;
-            margin-bottom: 0; 
-            flex-basis: 300px;
+            margin: 0; 
+            flex-basis: 320px; /* Aumentando um pouco a base para o texto */
             flex-shrink: 0;
         }
         
@@ -133,7 +132,7 @@
 
     <main class="main-content">
         
-        <h1 class="main-title">Digite seu CPF, e-mail ou telefone para iniciar sessão</h1>
+        <h1 class="main-title">Digite seu CPF, e-mail ou<br>telefone para iniciar sessão</h1>
 
         <div class="form-card">
             <form id="login-form">
