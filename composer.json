@@ -1,0 +1,15 @@
+{
+    "name": "seu-usuario/projeto-faculdade-mp",
+    "description": "Clone da página de login do Mercado Pago para um projeto de faculdade.",
+    "type": "project",
+    "require": {
+        "php": ">=8.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Seu Nome",
+            "email": "seu-email@exemplo.com"
+        }
+    ]
+}
