@@ -48,7 +48,7 @@
 
         /* --- AJUSTES FINOS NO TÍTULO --- */
         .main-title {
-            font-size: 27px;   /* Um pouco maior */
+            font-size: 26px;   /* Um pouco maior */
             font-weight: 600;  /* Mais leve, sem ser negrito */
             color: #333;
             line-height: 1.25; /* Mais compacto */
