@@ -95,7 +95,7 @@
         }
 
         .btn-continue {
-            background-color: #2968c8; /* Cor azul que você pediu */
+            background-color: #3483fa; /* Cor azul que você pediu */
             color: white;
             border: none;
             padding: 16px 24px;
