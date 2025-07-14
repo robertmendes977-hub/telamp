@@ -107,7 +107,7 @@
         }
 
         .btn-continue:hover {
-            background-color: #2154a1; /* Um tom um pouco mais escuro para o hover */
+            background-color: #3483fa; /* Um tom um pouco mais escuro para o hover */
         }
         
         .link-create {
