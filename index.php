@@ -74,7 +74,7 @@
             justify-content: space-between;
             background-color: #fff;
             border: 1px solid #e0e0e0;
-            border-radius: 6px;
+            border-radius: 10px;
             padding: 14px 16px;
             text-decoration: none;
             color: #333;
@@ -82,7 +82,7 @@
             font-weight: 500;
             transition: box-shadow 0.2s;
             box-sizing: border-box;
-            margin-top: 100px; 
+            margin-top: 150px; 
         }
 
         .security-link:hover {
