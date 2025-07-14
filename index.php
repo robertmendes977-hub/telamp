@@ -8,8 +8,7 @@
         /* Reset básico */
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
-            background-color: #f5f5f5; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;  
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -49,8 +48,8 @@
 
         /* --- AJUSTES FINOS NO TÍTULO --- */
         .main-title {
-            font-size: 28px;   /* Um pouco maior */
-            font-weight: 400;  /* Mais leve, sem ser negrito */
+            font-size: 27px;   /* Um pouco maior */
+            font-weight: 600;  /* Mais leve, sem ser negrito */
             color: #333;
             line-height: 1.25; /* Mais compacto */
             text-align: left;
