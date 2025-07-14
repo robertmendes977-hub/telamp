@@ -37,11 +37,10 @@
             justify-content: center; 
             align-items: flex-start; 
             padding-top: 80px; 
-            gap: 80px; /* Aumentando o espaço entre as colunas */
+            gap: 80px; 
             flex-grow: 1;
         }
         
-        /* Coluna da Esquerda */
         .left-column {
             display: flex;
             flex-direction: column;
@@ -63,30 +62,38 @@
             line-height: 1.25;
             margin: 0; 
         }
-
+        
+        /* --- ESTILOS ATUALIZADOS PARA O CARD DE USUÁRIO --- */
         .user-identifier-box {
             display: flex;
             align-items: center;
-            gap: 12px;
-            background-color: #ededed;
-            border-radius: 6px;
-            padding: 12px;
+            gap: 16px; /* Aumenta o espaço entre o ícone e o texto */
+            background-color: #f5f5f5; /* Cor de fundo mais clara como na imagem */
+            border-radius: 8px; /* Bordas mais arredondadas */
+            padding: 16px;
             margin-top: 32px;
         }
 
-        .user-identifier-box span {
-            font-size: 14px;
-            font-weight: 500;
+        /* Novo container para o texto empilhado */
+        .identifier-text-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .identifier-text-block .cpf-text {
+            font-size: 16px;
+            font-weight: 400; /* Peso normal */
             color: #333;
         }
 
-        .user-identifier-box a {
+        .identifier-text-block .change-account-link {
             font-size: 14px;
             color: #3483fa;
             text-decoration: none;
-            margin-left: auto; /* Empurra o link para a direita */
+            margin-top: 4px; /* Pequeno espaço entre os textos */
         }
-        .user-identifier-box a:hover { text-decoration: underline; }
+        .identifier-text-block .change-account-link:hover { text-decoration: underline; }
+
 
         .help-link {
             display: block;
@@ -98,67 +105,25 @@
         }
         .help-link:hover { text-decoration: underline; }
         
-        /* Coluna da Direita (Card de Verificação) */
+        /* Direita (Card de Verificação) */
         .verification-card {
             width: 100%;
             max-width: 500px;
             background-color: #fff;
             box-shadow: 0 1px 4px 0 rgba(0,0,0,.1);
             border-radius: 6px;
-            padding: 16px 0; /* Padding vertical, sem padding horizontal */
+            padding: 16px 0;
             box-sizing: border-box;
         }
-
-        .verification-option {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px 24px;
-            text-decoration: none;
-            color: inherit;
-            border-bottom: 1px solid #ededed;
-        }
-        .verification-option:last-of-type {
-            border-bottom: none;
-        }
-
-        .verification-option .icon-container {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #e3edff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .verification-option .text-content h3 {
-            margin: 0 0 4px 0;
-            font-size: 16px;
-            font-weight: 500;
-        }
-        .verification-option .text-content p {
-            margin: 0;
-            font-size: 14px;
-            color: #555;
-        }
-
-        .verification-option .chevron-icon {
-            margin-left: auto; /* Empurra a seta para a direita */
-        }
-
-        .cant-login-link {
-            display: block;
-            text-align: center;
-            color: #3483fa;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
-            padding: 24px;
-            border-top: 1px solid #ededed;
-        }
+        /* ... outros estilos ... */
+        .verification-option { display: flex; align-items: center; gap: 16px; padding: 16px 24px; text-decoration: none; color: inherit; border-bottom: 1px solid #ededed; }
+        .verification-option:last-of-type { border-bottom: none; }
+        .verification-option .icon-container { width: 40px; height: 40px; border-radius: 50%; background-color: #e3edff; display: flex; align-items: center; justify-content: center; }
+        .verification-option .text-content h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 500; }
+        .verification-option .text-content p { margin: 0; font-size: 14px; color: #555; }
+        .verification-option .chevron-icon { margin-left: auto; }
+        .cant-login-link { display: block; text-align: center; color: #3483fa; text-decoration: none; font-size: 15px; font-weight: 500; padding: 24px; border-top: 1px solid #ededed; }
         .cant-login-link:hover { text-decoration: underline; }
-
     </style>
 </head>
 <body>
@@ -174,22 +139,18 @@
             <h1 class="main-title">Escolha um método de verificação para iniciar sessão</h1>
             
             <div class="user-identifier-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="#333"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.999 15.75C15.7275 15.75 18.75 12.7275 18.75 8.999C18.75 5.27053 15.7275 2.248 11.999 2.248C8.27053 2.248 5.248 5.27053 5.248 8.999C5.248 12.7275 8.27053 15.75 11.999 15.75ZM11.999 14.25C9.09895 14.25 6.748 11.899 6.748 8.999C6.748 6.09895 9.09895 3.748 11.999 3.748C14.899 3.748 17.25 6.09895 17.25 8.999C17.25 11.899 14.899 14.25 11.999 14.25Z" fill="currentColor"></path><path d="M5.98045 18.75C4.74861 18.75 3.75 19.7486 3.75 20.9804V21.7304H2.25V20.9804C2.25 18.9202 3.92018 17.25 5.98045 17.25H18C20.0711 17.25 21.75 18.9289 21.75 21V21.75H20.25V21C20.25 19.7574 19.2426 18.75 18 18.75H5.98045Z" fill="currentColor"></path></svg>
                 
-                <?php
-                    // Em uma aplicação real, o CPF viria da sessão ou do banco de dados
-                    $cpf_identificador = "CPF 288.114.198-67"; 
-                ?>
-                <span><?php echo htmlspecialchars($cpf_identificador); ?></span>
-                
-                <a href="/index.php">Trocar conta</a>
+                <div class="identifier-text-block">
+                    <span class="cpf-text">CPF: 288.114.198-67</span>
+                    <a href="/index.php" class="change-account-link">Trocar conta</a>
+                </div>
             </div>
 
             <a href="#" class="help-link">Preciso de ajuda</a>
         </div>
 
         <div class="verification-card">
-            
             <a href="#" class="verification-option">
                 <div class="icon-container">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 11H11V3H3V11ZM5 5H9V9H5V5Z" fill="#3483fa"/><path d="M3 21H11V13H3V21ZM5 15H9V19H5V15Z" fill="#3483fa"/><path d="M13 3V11H21V3H13ZM19 9H15V5H19V9Z" fill="#3483fa"/><path d="M13 13H15V15H13V13Z" fill="#3483fa"/><path d="M15 15H17V17H15V15Z" fill="#3483fa"/><path d="M13 17H15V19H13V17Z" fill="#3483fa"/><path d="M15 17H17V19H15V17Z" fill="#3483fa"/><path d="M17 17H19V19H17V17Z" fill="#3483fa"/><path d="M19 17H21V19H19V17Z" fill="#3483fa"/><path d="M17 15H19V17H17V15Z" fill="#3483fa"/><path d="M19 15H21V17H19V15Z" fill="#3483fa"/><path d="M17 13H19V15H17V13Z" fill="#3483fa"/><path d="M19 13H21V15H19V13Z" fill="#3483fa"/></svg>
@@ -218,7 +179,6 @@
             
             <a href="#" class="cant-login-link">Não consigo iniciar sessão</a>
         </div>
-
     </main>
 
 </body>
