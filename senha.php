@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escolha um método de verificação</title>
     <style>
+        /* --- NOVO: Variáveis de Cor Globais --- */
+        :root {
+            --andes-color-yellow-500: #ffe600;
+            --andes-color-blue-100: rgba(52, 131, 250, 0.1);
+            --andes-color-blue-200: rgba(52, 131, 250, 0.2);
+            --andes-color-blue-500: #3483fa;
+            --andes-color-blue-600: #2968c8;
+            --andes-text-color-primary: #333;
+            --andes-text-color-secondary: #555;
+            --andes-text-color-link: var(--andes-color-blue-500);
+            --andes-background-color-primary: #fff;
+            --andes-background-color-secondary: #f5f5f5;
+            --andes-border-color-primary: rgba(0, 0, 0, .1);
+        }
+
         /* Reset básico e estilos do Body */
         body {
             margin: 0;
@@ -12,13 +27,14 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            background-color: var(--andes-background-color-secondary); 
         }
 
         /* Estilo do cabeçalho principal */
         .main-header {
-            background-color: #ffe600;
+            background-color: var(--andes-color-yellow-500); /* <- Cor atualizada */
             padding: 0 48px;
-            box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
+            box-shadow: 0 1px 2px 0 var(--andes-border-color-primary);
             height: 60px;
             display: flex;
             align-items: center;
@@ -50,7 +66,7 @@
         .session-start-label {
             font-size: 12px;
             font-weight: 600;
-            color: #555;
+            color: var(--andes-text-color-secondary); /* <- Cor atualizada */
             text-transform: uppercase;
             margin-bottom: 8px;
         }
@@ -58,32 +74,36 @@
         .main-title {
             font-size: 28px;
             font-weight: 400;
-            color: #333;
+            color: var(--andes-text-color-primary); /* <- Cor atualizada */
             line-height: 1.25;
             margin: 0; 
         }
         
-        /* --- ESTILOS ATUALIZADOS PARA O CARD DE USUÁRIO --- */
+        /* Card de identificação do usuário ("pílula") */
         .user-identifier-box {
             display: flex;
             align-items: center;
-            gap: 12px; /* Espaço entre o círculo do ícone e o texto */
-            border: 1px solid rgba(0, 0, 0, .1);
+            gap: 16px;
+            border: 1px solid var(--andes-border-color-primary); /* <- Cor atualizada */
             border-radius: 1.5625rem;
             padding: 8px 12px;
             margin-top: 32px;
             width: fit-content;
         }
         
-        /* NOVO: Wrapper para criar o fundo circular do ícone */
         .icon-wrapper {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background-color: #009ee3; /* Fundo azul claro */
+            background-color: var(--andes-color-blue-100); /* <- Cor atualizada */
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        
+        /* ATUALIZADO: Cor do ícone agora é controlada pelo CSS */
+        .user-identifier-box .icon-wrapper svg {
+             color: var(--andes-color-blue-500);
         }
 
         .identifier-text-block {
@@ -91,30 +111,27 @@
             flex-direction: column;
         }
         
-        /* AJUSTE: Tamanho da fonte do CPF */
         .identifier-text-block .cpf-text {
-            font-size: 10x; 
+            font-size: 14px; 
             font-weight: 400;
-            color: #333;
+            color: var(--andes-text-color-primary); /* <- Cor atualizada */
         }
         
-        /* AJUSTE: Tamanho da fonte do link */
         .identifier-text-block .change-account-link {
-            font-size: 12px;
-            color: #3483fa;
+            font-size: 13px;
+            color: var(--andes-text-color-link); /* <- Cor atualizada */
             text-decoration: none;
             margin-top: 2px;
         }
         .identifier-text-block .change-account-link:hover { text-decoration: underline; }
 
-
         .help-link {
             display: block;
             margin-top: 24px;
-            color: #3483fa;
+            color: var(--andes-text-color-link); /* <- Cor atualizada */
             text-decoration: none;
             font-size: 14px;
-            font-weight: 400;
+            font-weight: 500;
         }
         .help-link:hover { text-decoration: underline; }
 
@@ -136,7 +153,7 @@
             
             <div class="user-identifier-box">
                 <div class="icon-wrapper">
-                    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="#3483fa"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.999 15.75C15.7275 15.75 18.75 12.7275 18.75 8.999C18.75 5.27053 15.7275 2.248 11.999 2.248C8.27053 2.248 5.248 5.27053 5.248 8.999C5.248 12.7275 8.27053 15.75 11.999 15.75ZM11.999 14.25C9.09895 14.25 6.748 11.899 6.748 8.999C6.748 6.09895 9.09895 3.748 11.999 3.748C14.899 3.748 17.25 6.09895 17.25 8.999C17.25 11.899 14.899 14.25 11.999 14.25Z" fill="currentColor"></path><path d="M5.98045 18.75C4.74861 18.75 3.75 19.7486 3.75 20.9804V21.7304H2.25V20.9804C2.25 18.9202 3.92018 17.25 5.98045 17.25H18C20.0711 17.25 21.75 18.9289 21.75 21V21.75H20.25V21C20.25 19.7574 19.2426 18.75 18 18.75H5.98045Z" fill="currentColor"></path></svg>
+                    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.999 15.75C15.7275 15.75 18.75 12.7275 18.75 8.999C18.75 5.27053 15.7275 2.248 11.999 2.248C8.27053 2.248 5.248 5.27053 5.248 8.999C5.248 12.7275 8.27053 15.75 11.999 15.75ZM11.999 14.25C9.09895 14.25 6.748 11.899 6.748 8.999C6.748 6.09895 9.09895 3.748 11.999 3.748C14.899 3.748 17.25 6.09895 17.25 8.999C17.25 11.899 14.899 14.25 11.999 14.25Z" fill="currentColor"></path><path d="M5.98045 18.75C4.74861 18.75 3.75 19.7486 3.75 20.9804V21.7304H2.25V20.9804C2.25 18.9202 3.92018 17.25 5.98045 17.25H18C20.0711 17.25 21.75 18.9289 21.75 21V21.75H20.25V21C20.25 19.7574 19.2426 18.75 18 18.75H5.98045Z" fill="currentColor"></path></svg>
                 </div>
                 <div class="identifier-text-block">
                     <span class="cpf-text">CPF: 288.114.198-67</span>
