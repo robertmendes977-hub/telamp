@@ -60,7 +60,7 @@
             width: 100%;
             max-width: 480px;
             background-color: #fff;
-            box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+            box-shadow: 0 2px 6px 0 rgba(0,0,0,.1);
             border-radius: 6px;
             padding: 48px;
             box-sizing: border-box;
