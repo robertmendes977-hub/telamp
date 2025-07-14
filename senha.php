@@ -11,8 +11,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            background-color: #f5f5f5; 
+            min-height: 100vh; 
         }
 
         /* Estilo do cabeçalho principal */
@@ -78,6 +77,9 @@
         .identifier-text-block {
             display: flex;
             flex-direction: column;
+            font-size: 16px;
+            font-weight:400;
+            color: #333;
         }
 
         .identifier-text-block .cpf-text {
