@@ -16,7 +16,6 @@
             --andes-background-color-primary: #fff;
             --andes-background-color-secondary: #f5f5f5;
             --andes-border-color-primary: rgba(0, 0, 0, .07);
-            --andes-border-color-secondary: #ededed;
         }
 
         /* Reset básico e estilos do Body */
