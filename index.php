@@ -29,7 +29,7 @@
 <body>
 
     <header class="main-header">
-        <img src="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/5.21.22/mercadopago/logo__large.png" alt="Mercado Pago">
+        <img src="https://http2.mlstatic.com/storage/mobile-on-demand-resources/image/web-private-nav-mp-logo_1X?updatedAt=1746639317789" alt="Mercado Pago">
     </header>
 
     </body>
