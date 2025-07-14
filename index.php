@@ -72,6 +72,7 @@
             color: #555;
             margin-bottom: 4px;
             display: block;
+            font-weight: 400;
         }
 
         .input-field {
