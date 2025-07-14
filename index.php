@@ -160,7 +160,7 @@
     <footer class="main-footer">
         <div class="footer-left">
             <a href="#">Como cuidamos da sua privacidade</a>
-            <span>Copyright © 1999-2025 Elocom.com LTDA.</span>
+            <span>Copyright © 1999-2025 Ebazar.com.br LTDA.</span>
         </div>
         <div class="footer-right">
             <span>Protegido por reCAPTCHA -</span>
