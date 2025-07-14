@@ -13,7 +13,6 @@
             flex-direction: column;
             min-height: 100vh;
             /* ADICIONADO: Cor de fundo para a página inteira */
-            background-color: #f5f5f5; 
         }
 
         /* Estilo do cabeçalho principal (INTOCADO) */
