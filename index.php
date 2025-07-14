@@ -98,7 +98,7 @@
         .help-link {
             display: block;
             margin-top: 16px; /* Espaçamento menor */
-            color: #009ee3;
+            color: #3483fa;
             text-decoration: none;
             font-size: 14px;
             font-weight: 400;
