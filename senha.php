@@ -80,7 +80,7 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background-color: #e3edff; /* Fundo azul claro */
+            background-color: #009ee3; /* Fundo azul claro */
             display: flex;
             align-items: center;
             justify-content: center;
