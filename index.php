@@ -9,7 +9,6 @@
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            /* ALTERAÇÃO: Fundo da página volta a ser cinza claro */
             background-color: #f5f5f5; 
             display: flex;
             flex-direction: column;
@@ -32,19 +31,18 @@
             vertical-align: middle;
         }
         
-        /* --- ESTILOS ATUALIZADOS PARA O LAYOUT DE DUAS COLUNAS --- */
+        /* --- ESTILOS ATUALIZADOS --- */
 
         .main-content {
             flex-grow: 1;
             display: flex;
-            /* ALTERAÇÃO: Volta a organizar os itens lado a lado */
             flex-direction: row; 
-            /* ALTERAÇÃO: Centraliza o conjunto (título + card) na página */
             justify-content: center; 
-            /* ALTERAÇÃO: Alinha o título e o card verticalmente um com o outro */
-            align-items: center; 
-            padding-top: 0; /* O alinhamento ao centro já cuida da altura */
-            gap: 64px; /* Adiciona um espaço entre o título e o card */
+            /* ALTERAÇÃO: Alinha os itens no topo do container */
+            align-items: flex-start; 
+            /* ALTERAÇÃO: Adiciona um espaço do topo */
+            padding-top: 80px; 
+            gap: 64px;
         }
 
         /* Título principal (coluna da esquerda) */
@@ -53,18 +51,17 @@
             font-weight: 400;
             color: #333;
             line-height: 1.25;
-            text-align: left; /* Alinha o texto à esquerda dentro de sua coluna */
+            text-align: left;
             margin-bottom: 0; 
-            flex-basis: 300px; /* Define uma largura base para o título */
-            flex-shrink: 0; /* Impede que o título encolha */
+            flex-basis: 300px;
+            flex-shrink: 0;
         }
         
         /* O "card" que contém apenas o formulário (coluna da direita) */
         .form-card {
             width: 100%;
             max-width: 480px;
-            background-color: #fff; /* Fundo branco para o card */
-            /* ALTERAÇÃO: Trocando a borda por uma sombra mais suave */
+            background-color: #fff;
             box-shadow: 0 1px 4px 0 rgba(0,0,0,.1);
             border-radius: 6px;
             padding: 48px;
