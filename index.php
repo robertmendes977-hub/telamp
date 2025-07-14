@@ -14,12 +14,15 @@
 
         /* Estilo do cabeçalho principal */
         .main-header {
-            /* ALTERAÇÃO AQUI: Definindo a cor de fundo sólida principal */
             background-color: #ffe600;
-            
-            padding: 12px 0;
-            text-align: center;
+            padding: 0 24px; /* Adiciona espaçamento apenas nas laterais */
             box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
+            height: 60px; /* Define uma altura fixa para o header */
+
+            /* Comandos Flexbox */
+            display: flex;
+            align-items: center; /* Alinha o logo verticalmente ao centro */
+            justify-content: flex-start; /* Alinha o logo horizontalmente à esquerda */
         }
 
         .main-header img {
