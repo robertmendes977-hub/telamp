@@ -14,7 +14,7 @@
 
         /* Estilo do cabeçalho principal */
         .main-header {
-            background-color: #ffe600; /* Cor amarela oficial do Mercado Livre/Pago */
+            background-color: #ffd400; /* Cor amarela oficial do Mercado Livre/Pago */
             padding: 12px 0;
             text-align: center;
             box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); /* Adiciona uma sombra sutil para dar profundidade */
