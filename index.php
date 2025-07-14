@@ -9,21 +9,21 @@
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f5f5f5; /* Cor de fundo cinza claro, como no original */
+            background-color: #f5f5f5;
         }
 
         /* Estilo do cabeçalho principal */
         .main-header {
-            /* ALTERAÇÃO AQUI: trocamos a cor sólida por um gradiente */
-            background: linear-gradient(to right, #ffd400, #ffe600); 
+            /* ALTERAÇÃO AQUI: Definindo a cor de fundo sólida principal */
+            background-color: #ffe600;
             
             padding: 12px 0;
             text-align: center;
-            box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); /* Adiciona uma sombra sutil para dar profundidade */
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
         }
 
         .main-header img {
-            height: 32px; /* Altura do logo */
+            height: 32px;
             vertical-align: middle;
         }
     </style>
