@@ -12,7 +12,6 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background-color: #f5f5f5; 
         }
 
         /* Estilo do cabeçalho principal */
