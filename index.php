@@ -57,8 +57,8 @@
         }
         
         .form-card {
-            width: 90%;
-            max-width: 480px;
+            width: 80%;
+            max-width: 500px;
             background-color: #fff;
             box-shadow: 0 2px 6px 0 rgba(0,0,0,.1);
             border-radius: 6px;
