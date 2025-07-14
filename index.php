@@ -9,6 +9,7 @@
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+            background-color: #f5f5f5; 
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -46,11 +47,12 @@
             flex-shrink: 0;
         }
 
+        /* --- AJUSTES FINOS NO TÍTULO --- */
         .main-title {
-            font-size: 26px;
-            font-weight: 600;
+            font-size: 28px;   /* Um pouco maior */
+            font-weight: 400;  /* Mais leve, sem ser negrito */
             color: #333;
-            line-height: 1.35;
+            line-height: 1.25; /* Mais compacto */
             text-align: left;
             margin: 0; 
         }
@@ -65,10 +67,7 @@
             box-sizing: border-box;
         }
 
-        /* --- Estilos dos links de suporte (ajustados) --- */
-        
-        /* A classe .support-section foi removida */
-        
+        /* --- Estilos dos links de suporte --- */
         .security-link {
             display: flex;
             align-items: center;
@@ -83,7 +82,6 @@
             font-weight: 500;
             transition: box-shadow 0.2s;
             box-sizing: border-box;
-            /* ADICIONADO: Margem para separar do título */
             margin-top: 40px; 
         }
 
@@ -97,9 +95,10 @@
             gap: 12px;
         }
         
+        /* --- AJUSTE FINO NO LINK DE AJUDA --- */
         .help-link {
             display: block;
-            margin-top: 24px;
+            margin-top: 16px; /* Espaçamento menor */
             color: #3483fa;
             text-decoration: none;
             font-size: 14px;
@@ -156,5 +155,5 @@
 
     </main>
 
-    </body>
+</body>
 </html>
