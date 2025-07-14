@@ -82,7 +82,7 @@
             font-weight: 500;
             transition: box-shadow 0.2s;
             box-sizing: border-box;
-            margin-top: 40px; 
+            margin-top: 100px; 
         }
 
         .security-link:hover {
