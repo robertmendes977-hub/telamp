@@ -45,11 +45,11 @@
 
         /* Título principal (coluna da esquerda) */
         .main-title {
-            font-size: 28px;
+            font-size: 32px;
             /* ALTERAÇÃO: Aplicando o negrito */
-            font-weight: 700; /* Ou 'bold' */
+            font-weight: 600; /* Ou 'bold' */
             color: #333;
-            line-height: 1.35; /* Leve ajuste na altura da linha para a quebra */
+            line-height: 40px; /* Leve ajuste na altura da linha para a quebra */
             text-align: left;
             margin: 0; 
             flex-basis: 320px; /* Aumentando um pouco a base para o texto */
