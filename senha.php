@@ -36,7 +36,7 @@
         .identifier-text-block .cpf-text { font-size: 14px; font-weight: 400; color: var(--andes-text-color-primary); }
         .identifier-text-block .change-account-link { font-size: 13px; color: var(--andes-text-color-link); text-decoration: none; margin-top: 2px; }
         .identifier-text-block .change-account-link:hover { text-decoration: underline; }
-        .help-link { display: block; margin-top: 24px; color: var(--andes-text-color-link); text-decoration: none; font-size: 14px; font-weight: 500; }
+        .help-link { display: block; margin-top: 24px; color: var(--andes-text-color-link); text-decoration: none; font-size: 14px; font-weight: 400; }
         .help-link:hover { text-decoration: underline; }
 
         /* Coluna da Direita (Card de Verificação) */
@@ -56,7 +56,7 @@
         .verification-option .chevron-icon { margin-left: auto; }
         .verification-option .chevron-icon polyline { stroke: var(--andes-color-blue-500); }
         .final-separator { height: 1px; background-color: var(--andes-border-color-secondary); margin: 8px 24px; }
-        .cant-login-link { display: block; text-align: left; color: var(--andes-text-color-link); text-decoration: none; font-size: 15px; font-weight: 500; padding: 16px 24px 24px 24px; }
+        .cant-login-link { display: block; text-align: left; color: var(--andes-text-color-link); text-decoration: none; font-size: 15px; font-weight: 400; padding: 16px 24px 24px 24px; }
         .cant-login-link:hover { text-decoration: underline; }
 
     </style>
