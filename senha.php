@@ -47,7 +47,7 @@
         }
         
         .content-wrapper {
-            max-width: 880px;
+            max-width: 960px;
             margin: 0 auto;
             display: flex;
             justify-content: center;
@@ -107,17 +107,10 @@
             flex-shrink: 0;
         }
         
-        /* Regras para colorir os diferentes tipos de SVGs */
         .verification-option .icon-container svg {
             color: var(--andes-color-blue-500);
         }
-        .verification-option .icon-container svg path[fill] {
-            fill: currentColor;
-        }
-        .verification-option .icon-container svg path[stroke] {
-            stroke: currentColor;
-        }
-
+        
         .verification-option .text-content { flex-grow: 1; }
         .verification-option .text-content h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 500; color: var(--andes-text-color-primary); }
         .verification-option .text-content p { margin: 0; font-size: 14px; color: var(--andes-text-color-secondary); }
@@ -169,38 +162,12 @@
             <div class="verification-card">
                 
                 <a href="#" class="verification-option">
-                    <div class="icon-container"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 11H11V3H3V11ZM5 5H9V9H5V5Z" fill="currentColor"/><path d="M3 21H11V13H3V21ZM5 15H9V19H5V15Z" fill="currentColor"/><path d="M13 3V11H21V3H13ZM19 9H15V5H19V9Z" fill="currentColor"/><path d="M13 13H15V15H13V13Z" fill="currentColor"/><path d="M15 15H17V17H15V15Z" fill="currentColor"/><path d="M13 17H15V19H13V17Z" fill="currentColor"/><path d="M15 17H17V19H15V17Z" fill="currentColor"/><path d="M17 17H19V19H17V17Z" fill="currentColor"/><path d="M19 17H21V19H19V17Z" fill="currentColor"/><path d="M17 15H19V17H17V15Z" fill="currentColor"/><path d="M19 15H21V17H19V15Z" fill="currentColor"/><path d="M17 13H19V15H17V13Z" fill="currentColor"/><path d="M19 13H21V15H19V13Z" fill="currentColor"/></svg></div>
+                    <div class="icon-container"><svg class="channel-icon__shape--filled" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="false"><path d="M11.6871 0H8.32307V6.66142H9.98973V4.97848H11.6667V3.31313H9.98973V1.66536H11.6871V0Z"></path><path d="M11.6564 13.2617V14.9271H9.98973V16.6673H8.32307V11.6712H9.98973V13.2617H11.6564Z"></path><path d="M18.3333 18.3238H20V19.9892H18.3333V18.3238Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M10.0204 10.0097V11.6495H11.6769V13.3384H13.3026V18.3258H18.3026V16.6322H20V14.9668H18.3026V13.3298H13.3435V10.0077H11.6871V6.67894H10.0204V8.34431H6.64621V9.98419H4.95381V8.32483H1.62048V9.93896H0V11.6043H1.66667V9.99018H3.32836V11.6495H6.66169V10.0097H10.0204ZM14.9693 14.9951H16.6359V16.6605H14.9693V14.9951Z"></path><path d="M18.3795 9.99018H16.6769V11.6645H15.0102V9.99018H13.3795V8.32483H18.3795V9.99018Z"></path><path d="M18.3333 10.0077H20V13.3384H18.3333V10.0077Z"></path><path d="M10.0204 16.6693H11.6871V18.3346H13.3538V20H8.35384V18.3346H10.0204V16.6693Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M0 0V6.67897H6.62046V0H0ZM4.9538 1.66536H1.66667V5.01361H4.9538V1.66536Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M0 13.321H6.62046V20H0V13.321ZM1.66667 14.9864H4.9538V18.3346H1.66667V14.9864Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M13.3591 0.00321877V6.68219H19.9795V0.00321877H13.3591ZM18.3129 1.66857H15.0257V5.01683H18.3129V1.66857Z"></path></svg></div>
                     <div class="text-content"><h3>Código QR</h3><p>Você vai escanear o código com a câmera do seu celular ou pelo app do Mercado Pago.</p></div>
                     <div class="chevron-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
                 </a>
 
-                <a href="#" class="verification-option">
-                    <div class="icon-container"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 9C2 6.79086 3.79086 5 6 5H8M2 15V15C2 17.2091 3.79086 19 6 19H8M16 5H18C20.2091 5 22 6.79086 22 9V9M16 19H18C20.2091 19 22 17.2091 22 15V15M12 14C13.6569 14 15 12.6569 15 11C15 9.34315 13.6569 8 12 8C10.3431 8 9 9.34315 9 11C9 12.6569 10.3431 14 12 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 11C8 13.2091 9.79086 15 12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7C9.79086 7 8 8.79086 8 11Z" stroke="currentColor" stroke-width="2"/></svg></div>
-                    <div class="text-content"><h3>Reconhecimento facial</h3><p>Vamos usar a câmera do seu computador para reconhecer seu rosto.</p></div>
-                    <div class="chevron-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
-                </a>
-
-                <a href="#" class="verification-option">
-                    <div class="icon-container"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                    <div class="text-content"><h3>SMS</h3><p>Vamos enviar um código para o telefone terminado em 3819.</p></div>
-                    <div class="chevron-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
-                </a>
-
-                <a href="#" class="verification-option">
-                    <div class="icon-container"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21.5 17.4C21.5 17.9 21.0523 18.3 20.5 18.3H17.4524C17.0048 18.3 16.5571 18.15 16.1571 17.9L13.7143 16.5C13.3143 16.25 12.8667 16.15 12.4667 16.2C11.519 16.35 10.5238 16.15 9.71429 15.65C7.92857 14.5 6.5 12.9286 5.4 11.1429C4.85 10.2857 4.65 9.28571 4.8 8.33333C4.85 7.93333 4.75 7.48571 4.5 7.08571L3.1 4.64286C2.85 4.24286 2.7 3.79524 2.7 3.34762V2.5C2.7 1.94772 3.1 1.5 3.65 1.5H6.6C6.9 1.5 7.2 1.65 7.4 1.9L8.85 4.3C9.05 4.6 9.1 4.95 9.05 5.25C8.95 5.95 8.95 6.7 9.2 7.35C9.55 8.25 10.15 9.1 10.9 9.85C11.65 10.6 12.55 11.2 13.45 11.55C14.1 11.8 14.85 11.8 15.55 11.7C15.85 11.65 16.2 11.7 16.5 11.9L18.9 13.35C19.15 13.55 19.3 13.85 19.3 14.15V17.1C19.3 17.1 19.3 17.25 19.3 17.25" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                    <div class="text-content"><h3>WhatsApp</h3><p>Vamos enviar um código para o telefone terminado em 3819.</p></div>
-                    <div class="chevron-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
-                </a>
-                
-                <a href="#" class="verification-option">
-                    <div class="icon-container"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 6L12 13L2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                    <div class="text-content"><h3>E-mail</h3><p>Vamos enviar um código para nivaldaalmeida22@gmail.com.</p></div>
-                    <div class="chevron-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
-                </a>
-
-                <div class="final-separator"></div>
-                
-                <a href="#" class="cant-login-link">Não consigo iniciar sessão</a>
+                <a href="#" class="final-separator"></a> <a href="#" class="cant-login-link">Não consigo iniciar sessão</a>
             </div>
         </div>
     </main>
