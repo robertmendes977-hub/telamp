@@ -93,14 +93,14 @@
         
         /* AJUSTE: Tamanho da fonte do CPF */
         .identifier-text-block .cpf-text {
-            font-size: 10x; 
+            font-size: 18x; 
             font-weight: 400;
             color: #333;
         }
         
         /* AJUSTE: Tamanho da fonte do link */
         .identifier-text-block .change-account-link {
-            font-size: 10px;
+            font-size: 12px;
             color: #3483fa;
             text-decoration: none;
             margin-top: 2px;
