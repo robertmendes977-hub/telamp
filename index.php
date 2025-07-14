@@ -14,7 +14,9 @@
 
         /* Estilo do cabeçalho principal */
         .main-header {
-            background-color: #ffd400; /* Cor amarela oficial do Mercado Livre/Pago */
+            /* ALTERAÇÃO AQUI: trocamos a cor sólida por um gradiente */
+            background: linear-gradient(to right, #ffd400, #ffe600); 
+            
             padding: 12px 0;
             text-align: center;
             box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); /* Adiciona uma sombra sutil para dar profundidade */
@@ -32,5 +34,5 @@
         <img src="https://http2.mlstatic.com/storage/mobile-on-demand-resources/image/web-private-nav-mp-logo_1X?updatedAt=1746639317789" alt="Mercado Pago">
     </header>
 
-    </body>
+</body>
 </html>
