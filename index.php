@@ -9,7 +9,8 @@
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f5f5f5;
+            /* ALTERAÇÃO: Fundo da página agora é branco */
+            background-color: #fff; 
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -31,39 +32,39 @@
             vertical-align: middle;
         }
         
-        /* --- NOVOS ESTILOS PARA O CONTEÚDO PRINCIPAL --- */
+        /* --- ESTILOS ATUALIZADOS PARA O NOVO LAYOUT --- */
 
         .main-content {
             flex-grow: 1;
             display: flex;
-            justify-content: center;
-            align-items: flex-start; /* Alinha no topo */
-            padding-top: 60px; /* Espaço do topo */
+            /* ALTERAÇÃO: Itens agora são empilhados verticalmente */
+            flex-direction: column; 
+            /* ALTERAÇÃO: Centraliza os itens horizontalmente */
+            align-items: center; 
+            justify-content: flex-start;
+            padding-top: 60px;
         }
 
-        .login-container {
-            width: 100%;
-            max-width: 880px; /* Largura do container principal */
-            background-color: #fff;
-            border-radius: 6px;
-            box-shadow: 0 1px 4px 0 rgba(0,0,0,.1);
-            padding: 48px;
-            box-sizing: border-box;
-            display: flex;
-            align-items: center; /* Alinha texto e formulário verticalmente */
-            gap: 64px; /* Espaço entre o texto e o formulário */
-        }
-
-        .login-title {
-            flex: 1; /* Ocupa metade do espaço */
+        /* NOVO ESTILO: Título principal da página */
+        .main-title {
             font-size: 28px;
-            font-weight: 400; /* Fonte mais fina */
+            font-weight: 400;
             color: #333;
             line-height: 1.25;
+            text-align: center;
+            margin-bottom: 24px; /* Espaço entre o título e o card do formulário */
         }
         
-        .login-form-section {
-            flex: 1; /* Ocupa a outra metade do espaço */
+        /* NOVO ESTILO: O "card" que contém apenas o formulário */
+        .form-card {
+            width: 100%;
+            max-width: 480px; /* Largura menor para o card do formulário */
+            background-color: #fff;
+            /* ALTERAÇÃO: Adicionando borda cinza para visibilidade */
+            border: 1px solid #ddd; 
+            border-radius: 6px;
+            padding: 32px;
+            box-sizing: border-box;
         }
 
         .input-label {
@@ -95,7 +96,7 @@
         }
 
         .btn-continue {
-            background-color: #3483fa; /* Cor azul que você pediu */
+            background-color: #3483fa;
             color: white;
             border: none;
             padding: 16px 24px;
@@ -107,7 +108,7 @@
         }
 
         .btn-continue:hover {
-            background-color: #3483fa; /* Um tom um pouco mais escuro para o hover */
+            background-color: #2968c8;
         }
         
         .link-create {
@@ -130,22 +131,22 @@
     </header>
 
     <main class="main-content">
-        <div class="login-container">
-            <h1 class="login-title">Digite seu CPF, e-mail ou telefone para iniciar sessão</h1>
+        
+        <h1 class="main-title">Digite seu CPF, e-mail ou telefone para iniciar sessão</h1>
 
-            <div class="login-form-section">
-                <form id="login-form">
-                    <div>
-                        <label for="identificador" class="input-label">CPF, e-mail ou telefone</label>
-                        <input type="text" id="identificador" class="input-field">
-                    </div>
-                    <div class="actions">
-                        <button type="submit" class="btn-continue">Continuar</button>
-                        <a href="#" class="link-create">Criar conta</a>
-                    </div>
-                </form>
-            </div>
+        <div class="form-card">
+            <form id="login-form">
+                <div>
+                    <label for="identificador" class="input-label">CPF, e-mail ou telefone</label>
+                    <input type="text" id="identificador" class="input-field">
+                </div>
+                <div class="actions">
+                    <button type="submit" class="btn-continue">Continuar</button>
+                    <a href="#" class="link-create">Criar conta</a>
+                </div>
+            </form>
         </div>
+
     </main>
     </body>
 </html>
