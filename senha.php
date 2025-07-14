@@ -14,8 +14,6 @@
             --andes-text-color-secondary: #555;
             --andes-text-color-link: var(--andes-color-blue-500);
             --andes-background-color-primary: #fff;
-            --andes-background-color-secondary: #f5f5f5;
-            --andes-border-color-secondary: #ededed;
         }
 
         /* Estilos Gerais */
