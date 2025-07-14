@@ -93,7 +93,7 @@
         
         /* AJUSTE: Tamanho da fonte do CPF */
         .identifier-text-block .cpf-text {
-            font-size: 18x; 
+            font-size: 10x; 
             font-weight: 400;
             color: #333;
         }
@@ -114,7 +114,7 @@
             color: #3483fa;
             text-decoration: none;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 400;
         }
         .help-link:hover { text-decoration: underline; }
 
