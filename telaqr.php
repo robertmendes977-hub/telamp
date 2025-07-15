@@ -65,8 +65,8 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         }
 
         .qr-card img {
-            width: 220px;
-            height: 220px;
+            width: 300px;
+            height: 300px;
             margin-bottom: 32px;
         }
 
