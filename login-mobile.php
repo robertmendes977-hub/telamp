@@ -46,7 +46,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 <body>
 
     <header class="main-header">
-        <img src="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/5.21.22/mercadopago/logo__small.png" alt="Mercado Pago">
+        <img src="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.50/mercadopago/logo__small.png" alt="Mercado Pago">
     </header>
 
     <main class="main-content">
