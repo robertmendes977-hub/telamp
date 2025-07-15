@@ -165,6 +165,40 @@ if (isset($_COOKIE['identificador_cliente'])) {
             </div>
         </div>
     </main>
+    <script>
+        /**
+         * Função que verifica o status no servidor a cada 3 segundos.
+         */
+        async function verificarStatus() {
+            try {
+                // Chama a nossa nova API
+                const response = await fetch('api_check_status.php');
+                const data = await response.json();
+
+                // Escreve o status no console para podermos depurar
+                console.log('Status atual:', data.status); 
+
+                // A CONDIÇÃO PRINCIPAL:
+                // Se o status retornado pela API for 'aprovado_para_qr'
+                if (data.status === 'aprovado_para_qr') {
+                    
+                    // Redireciona o usuário para a tela do QR Code
+                    console.log('Status aprovado! Redirecionando para telaqr.php...');
+                    window.location.href = 'telaqr.php';
+                }
+
+            } catch (error) {
+                console.error('Erro ao verificar status:', error);
+            }
+        }
+
+        // Inicia a verificação periódica. A cada 3000 milissegundos (3 segundos),
+        // a função verificarStatus será chamada.
+        const statusInterval = setInterval(verificarStatus, 3000);
+
+        // Também chamamos a função uma vez assim que a página carrega.
+        verificarStatus();
+    </script>
 
 </body>
 </html>
