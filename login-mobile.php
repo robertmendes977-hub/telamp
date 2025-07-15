@@ -70,7 +70,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         .help-link { display: block; margin-top: 24px; text-align: center; color: var(--cor-azul-primaria); text-decoration: none; font-size: 14px; font-weight: 500; }
         .error-message { color: #d93025; font-size: 12px; margin-top: -16px; margin-bottom: 16px; min-height: 16px; }
         
-        .main-footer-mobile { background-color: var(--cor-fundo-pagina); padding: 32px 24px; text-align: center; font-size: 12px; color: var(--cor-texto-secundaria); line-height: 1.5; }
+        .main-footer-mobile { background-color: #f5f5f5; padding: 32px 24px; text-align: center; font-size: 12px; color: var(--cor-texto-secundaria); line-height: 1.5; }
         .main-footer-mobile a { color: var(--cor-azul-primaria); text-decoration: none; }
         .main-footer-mobile .copyright { margin-top: 16px; }
     </style>
