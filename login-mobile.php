@@ -37,7 +37,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
             flex-direction: column; /* Organiza os itens em coluna */
         }
         
-        .main-title { font-size: 24px; font-weight: 400; color: var(--cor-texto-primaria); margin: 0 0 32px 0; }
+        .main-title { font-size: 24px; font-weight: 600; color: var(--cor-texto-primaria); margin: 0 0 32px 0; }
         .input-label { font-size: 14px; color: #555; margin-bottom: 4px; display: block; }
         .input-field { width: 100%; padding: 16px; font-size: 16px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; margin-bottom: 24px; }
         .btn-continue { width: 100%; background-color: var(--cor-azul-primaria); color: white; border: none; padding: 16px; font-size: 16px; font-weight: 600; border-radius: 6px; cursor: pointer; margin-bottom: 24px; }
