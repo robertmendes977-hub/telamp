@@ -39,7 +39,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         /* Coluna da Esquerda */
         .left-column { display: flex; flex-direction: column; width: 340px; flex-shrink: 0; margin-right: 64px; }
         .session-start-label { font-size: 12px; font-weight: 600; color: var(--andes-text-color-secondary); text-transform: uppercase; margin-bottom: 8px; }
-        .main-title { font-size: 28px; font-weight: 400; color: var(--andes-text-color-primary); line-height: 1.25; margin: 0; }
+        .main-title { font-size: 28px; font-weight: 600; color: var(--andes-text-color-primary); line-height: 1.25; margin: 0; }
         .description-text { font-size: 16px; color: var(--andes-text-color-secondary); margin-top: 16px; line-height: 1.5; }
         .help-link { display: block; margin-top: 24px; color: var(--andes-text-color-link); text-decoration: none; font-size: 14px; font-weight: 500; }
         .help-link:hover { text-decoration: underline; }
