@@ -25,7 +25,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
             --cor-fundo-card: #fff;
         }
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--cor-fundo-pagina); display: flex; flex-direction: column; min-height: 100vh; }
-        .main-header { background-color: var(--cor-amarela); padding: 12px 24px; display: flex; justify-content: flex-start; align-items: center; }
+        .main-header { background-color: var(--cor-amarela); padding: 12px 35px; display: flex; justify-content: flex-start; align-items: center; }
         .main-header img { height: 28px; }
         .main-content { background-color: var(--cor-fundo-card); padding: 32px 24px; flex-grow: 1; }
         .main-title { font-size: 24px; font-weight: 400; color: var(--cor-texto-primaria); margin: 0 0 32px 0; }
