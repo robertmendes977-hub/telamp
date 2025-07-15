@@ -21,7 +21,6 @@ if (!isset($_COOKIE['identificador_cliente'])) {
             --cor-azul-secundaria: #2968c8;
             --cor-texto-primaria: #333;
             --cor-texto-secundaria: #666;
-            --cor-fundo-pagina: #f5f5f5;
             --cor-fundo-card: #fff;
         }
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--cor-fundo-pagina); display: flex; flex-direction: column; min-height: 100vh; }
