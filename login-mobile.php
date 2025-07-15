@@ -39,7 +39,23 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         
         .main-title { font-size: 24px; font-weight: 600; color: var(--cor-texto-primaria); margin: 0 0 32px 0; }
         .input-label { font-size: 14px; font-weight: 500; color: #555; margin-bottom: 4px; display: block; }
-        .input-field { width: 100%; padding: 16px; font-size: 16px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; margin-bottom: 24px; }
+        .input-field {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            margin-bottom: 24px;
+            /* Adiciona uma transição suave para a cor da borda */
+            transition: border-color 0.2s ease-in-out;
+        }
+
+        /* NOVO: Estilo para quando o campo estiver focado (clicado) */
+        .input-field:focus {
+            border-color: #3483fa; /* Define a cor da borda como azul */
+            outline: none; /* Remove o contorno azul ou laranja padrão que alguns navegadores adicionam */
+        }
         .btn-continue { width: 100%; background-color: var(--cor-azul-primaria); color: white; border: none; padding: 16px; font-size: 16px; font-weight: 600; border-radius: 6px; cursor: pointer; margin-bottom: 24px; }
         .btn-continue:hover { background-color: var(--cor-azul-secundaria); }
         .link-create { display: block; text-align: center; color: var(--cor-azul-primaria); text-decoration: none; font-size: 15px; font-weight: 500; }
