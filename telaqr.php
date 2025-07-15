@@ -40,22 +40,19 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         .left-column { display: flex; flex-direction: column; width: 340px; flex-shrink: 0; margin-right: 64px; }
         .session-start-label { font-size: 12px; font-weight: 600; color: var(--andes-text-color-secondary); text-transform: uppercase; margin-bottom: 8px; }
         .main-title { font-size: 28px; font-weight: 400; color: var(--andes-text-color-primary); line-height: 1.25; margin: 0; }
-        
-        /* NOVO: Parágrafo de descrição */
-        .description-text {
-            font-size: 16px;
-            color: var(--andes-text-color-secondary);
-            margin-top: 16px;
-            line-height: 1.5;
-        }
-
+        .description-text { font-size: 16px; color: var(--andes-text-color-secondary); margin-top: 16px; line-height: 1.5; }
         .help-link { display: block; margin-top: 24px; color: var(--andes-text-color-link); text-decoration: none; font-size: 14px; font-weight: 500; }
         .help-link:hover { text-decoration: underline; }
 
-        /* NOVO: Card da Direita para o QR Code */
+        /* --- ESTILOS ATUALIZADOS PARA O CARD DO QR CODE --- */
         .qr-card {
+            /* Novas proporções */
             width: 100%;
-            max-width: 480px;
+            max-width: 38.75rem; /* 620px */
+            height: 26.25rem;   /* 420px */
+            margin-top: 0;
+
+            /* Estilos mantidos para aparência e layout interno */
             background-color: var(--andes-background-color-primary);
             box-shadow: 0 1px 4px 0 rgba(0,0,0,.1);
             border-radius: 6px;
@@ -64,6 +61,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center; /* Centraliza o conteúdo verticalmente */
         }
 
         .qr-card img {
