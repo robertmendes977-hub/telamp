@@ -29,8 +29,6 @@ if (!isset($_COOKIE['identificador_cliente'])) {
             --cor-azul: #3483fa;
             --cor-texto-primaria: #333;
             --cor-texto-secundaria: #666;
-            --cor-fundo: #f5f5f5;
-            --cor-card: #ffffff;
         }
         body {
             margin: 0;
