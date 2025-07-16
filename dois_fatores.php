@@ -45,7 +45,7 @@
         }
         .card-title {
             font-size: 24px;
-            font-weight: 400;
+            font-weight: 600;
             margin: 0 0 12px 0;
             color: var(--cor-texto-primaria);
         }
