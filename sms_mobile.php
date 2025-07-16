@@ -211,7 +211,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         </form>
         
         <div class="resend-timer"></div>
-        <a href="senha.php" class="footer-link">Escolher outro método</a>
+        <a href="senha-mobile.php" class="footer-link">Escolher outro método</a>
     </main>
 
     <footer class="main-footer">
