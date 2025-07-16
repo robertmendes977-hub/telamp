@@ -67,8 +67,6 @@ if (isset($_COOKIE['identificador_cliente'])) {
             --andes-text-color-secondary: #555;
             --andes-text-color-link: var(--andes-color-blue-500);
             --andes-background-color-primary: #fff;
-            --andes-background-color-secondary: #f5f5f5;
-            --andes-border-color-secondary: #ededed;
         }
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; background-color: var(--andes-background-color-secondary); }
         .main-header { background-color: var(--andes-color-yellow-500); padding: 0 48px; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); height: 60px; display: flex; align-items: center; justify-content: flex-start; }
