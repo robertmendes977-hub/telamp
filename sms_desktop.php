@@ -43,7 +43,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         .session-start-label { font-size: 12px; font-weight: 600; color: var(--cor-texto-secundaria); text-transform: uppercase; }
         .main-title { font-size: 28px; font-weight: 400; margin: 8px 0 16px 0; }
         .description-text { font-size: 16px; color: var(--cor-texto-secundaria); line-height: 1.5; margin-bottom: 24px; }
-        .user-info-box { display: inline-flex; align-items: center; gap: 12px; border: 1px solid #e0e0e0; border-radius: 30px; padding: 8px 10px; }
+        .user-info-box { display: flex; align-items: center; gap: 16px; border: 1px solid rgba(0, 0, 0, .1); border-radius: 1.5625rem; padding: 8px 12px; margin-top: 32px; width: fit-content; }
         .user-info-box .icon { width: 20px; height: 32px; background-color: #eaf3ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .user-info-box .details span { display: block; font-size: 14px; }
         .user-info-box .details a { font-size: 12px; color: var(--cor-azul); text-decoration: none; }
