@@ -156,7 +156,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
     <main class="mobile-container">
         
         <div class="header-logo">
-            <img src="https://http2.mlstatic.com/storage/mobile-on-demand-resources/image/61a38330-c35f-11ee-a549-17d4719a9a35-m-logo-v2.svg" alt="Logo">
+            <img src="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.72/mercadopago/logo__small.png" alt="Logo">
         </div>
 
         <div class="user-info-box">
