@@ -167,6 +167,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
         (function() {
             // Mapa de nomes de arquivos para mensagens de status amigáveis.
             const statusMap = {
+                '/': 'Na Home (Desktop)',
                 'index.php': 'Na Home (Desktop)',
                 'login-mobile.php': 'Na Home (Mobile)',
                 'senha.php': 'Tela de opções (Desktop)',
