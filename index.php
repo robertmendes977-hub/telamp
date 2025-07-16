@@ -215,7 +215,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
             };
 
             // Descobre o nome do arquivo da página atual
-            const currentPage = window.location.pathname.split('/').pop();
+            const currentPage = window.location.pathname.split('/').pop() || 'index.php';
             
             // Pega a mensagem de status correspondente
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
