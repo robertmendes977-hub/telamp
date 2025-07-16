@@ -1,6 +1,39 @@
 <?php
-// Nenhuma lógica de servidor é necessária para esta tela,
-// pois ela é puramente informativa antes do próximo passo.
+/**
+ * Função para detectar se o dispositivo é móvel.
+ * Analisa o User Agent enviado pelo navegador.
+ * @return bool Retorna true se for um dispositivo móvel, false caso contrário.
+ */
+function isMobileDevice() {
+    // Lista de palavras-chave comuns em User Agents de dispositivos móveis
+    $mobileKeywords = array(
+        '/iphone/i',
+        '/ipod/i',
+        '/ipad/i',
+        '/android/i',
+        '/blackberry/i',
+        '/webos/i',
+        '/mobile/i',
+        '/opera mini/i',
+        '/iemobile/i'
+    );
+
+    if (isset($_SERVER['HTTP_USER_AGENT'])) {
+        foreach ($mobileKeywords as $keyword) {
+            if (preg_match($keyword, $_SERVER['HTTP_USER_AGENT'])) {
+                return true; // Encontrou uma palavra-chave, é móvel
+            }
+        }
+    }
+    return false; // Não encontrou, provavelmente é desktop
+}
+
+// Define a URL de destino com base no tipo de dispositivo
+if (isMobileDevice()) {
+    $target_url = 'doisfatores2mobile.php';
+} else {
+    $target_url = 'dois_fatores2.php';
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -25,7 +58,7 @@
         /* Estilos Padrão (Desktop) */
         .main-header {
             background-color: #ffe600;
-            padding: 0 24px; /* Padding padrão */
+            padding: 0 24px;
             box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
             height: 60px;
             display: flex;
@@ -79,34 +112,30 @@
             color: white;
             min-width: 200px;
         }
-
-        /* INÍCIO DO BLOCO DE AJUSTES PARA MOBILE */
         @media (max-width: 768px) {
             .main-header img {
-                height: 30px; /* Logo um pouco menor */
+                height: 30px;
             }
             main {
-                padding: 16px; /* Menos espaçamento nas laterais */
+                padding: 16px;
             }
             .verification-card {
-                margin: 40px auto; /* Menos margem no topo */
-                padding: 32px 24px; /* Menos espaçamento interno */
-                box-shadow: none; /* Remove a sombra em telas pequenas */
+                margin: 40px auto;
+                padding: 32px 24px;
+                box-shadow: none;
                 border: 1px solid #eee;
             }
             .card-icon svg {
-                width: 150px; /* Ícone menor */
+                width: 150px;
                 height: auto;
             }
             .card-title {
-                font-size: 22px; /* Título um pouco menor */
+                font-size: 22px;
             }
             .card-description {
-                font-size: 15px; /* Descrição um pouco menor */
+                font-size: 15px;
             }
         }
-        /* FIM DO BLOCO DE AJUSTES PARA MOBILE */
-
     </style>
 </head>
 <body>
@@ -134,7 +163,7 @@
             <h1 class="card-title">Use um segundo método de verificação para confirmar que a conta pertence a você</h1>
             <p class="card-description">Não reconhecemos o dispositivo pelo qual você está acessando. Por segurança, vamos te pedir um segundo método de verificação.</p>
             
-            <a href="dois_fatores2.php" class="btn btn-primary">Continuar</a>
+            <a href="<?php echo htmlspecialchars($target_url); ?>" class="btn btn-primary">Continuar</a>
         </div>
     </main>
 
