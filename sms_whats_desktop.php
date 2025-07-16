@@ -30,7 +30,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             --cor-borda: #ddd;
         }
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--cor-fundo); color: #333; }
-        .main-header { background-color: var(--andes-color-yellow-500); padding: 0 680px; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); height: 60px; display: flex; align-items: center; justify-content: flex-start;  }
+        .main-header { background-color: #ffe600; padding: 0 680px; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); height: 60px; display: flex; align-items: center; justify-content: flex-start;  }
         .main-header img { height: 37px; }
         .main-content { padding-top: 80px; flex-grow: 1; }
         .content-wrapper { max-width: 960px; margin: 0 auto; display: flex; justify-content: center; align-items: flex-start; gap: 64px; }
