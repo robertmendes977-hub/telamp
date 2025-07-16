@@ -8,7 +8,7 @@ $isMobile = preg_match('/(Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone
 
 // Se for um dispositivo móvel, redireciona para a página de login mobile e para a execução do script
 if ($isMobile) {
-    header('Location: login_mobile.php'); // Você pode alterar "login_mobile.php" para o nome do seu arquivo de login mobile
+    header('Location: login-mobile.php'); // Você pode alterar "login_mobile.php" para o nome do seu arquivo de login mobile
     exit;
 }
 
