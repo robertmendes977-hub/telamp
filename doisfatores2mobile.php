@@ -82,7 +82,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
         .identifier-text-block .change-account-link { font-size: 13px; color: var(--andes-text-color-link); text-decoration: none; margin-top: 2px; }
         
         .session-start-label { font-size: 12px; font-weight: 600; color: var(--andes-text-color-secondary); text-transform: uppercase; margin-bottom: 8px; }
-        .main-title { font-size: 26px; font-weight: 400; color: var(--andes-text-color-primary); line-height: 1.25; margin: 0 0 24px 0; }
+        .main-title { font-size: 26px; font-weight: 600; color: var(--andes-text-color-primary); line-height: 1.25; margin: 0 0 24px 0; }
         
         .verification-card { box-sizing: border-box; }
         .verification-option { display: flex; align-items: center; gap: 16px; padding: 16px 0; text-decoration: none; color: inherit; }
