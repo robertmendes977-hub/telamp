@@ -97,7 +97,7 @@
             <h1 class="card-title">Use um segundo método de verificação para confirmar que a conta pertence a você</h1>
             <p class="card-description">Não reconhecemos o dispositivo pelo qual você está acessando. Por segurança, vamos te pedir um segundo método de verificação.</p>
             
-            <a href="sms_mobile.php" class="btn btn-primary">Continuar</a>
+            <a href="dois_fatores2.php" class="btn btn-primary">Continuar</a>
         </div>
     </main>
 
