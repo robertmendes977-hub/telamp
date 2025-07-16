@@ -33,34 +33,45 @@ $apenasNumeros = preg_replace('/\D/', '', $identificador);
 if (filter_var($identificador, FILTER_VALIDATE_EMAIL)) {
     $tipo_identificador = 'E-mail';
 } elseif (strlen($apenasNumeros) == 11) {
-    // Para simplificar, consideramos 11 dígitos como CPF para exibição.
     $tipo_identificador = 'CPF';
 } elseif (strlen($apenasNumeros) == 10) {
     $tipo_identificador = 'Telefone';
 }
 
-
 try {
-    // --- PASSO 2: AJUSTAR A QUERY SQL --- (Seu código aqui já está correto)
-    $stmt = $pdo->prepare(
-        "INSERT INTO captura_login (session_id, identificador) VALUES (?, ?)"
-    );
-    
-    // --- PASSO 3: EXECUTAR A QUERY --- (Seu código aqui já está correto)
-    $stmt->execute([$session_id, $identificador]);
-    
-    $lastId = $pdo->lastInsertId();
+    // --- LÓGICA DE ATUALIZAÇÃO OU INSERÇÃO (UPSERT) ---
+
+    // 1. VERIFICA SE JÁ EXISTE UM REGISTRO PARA ESTA SESSÃO
+    $stmt = $pdo->prepare("SELECT id FROM captura_login WHERE session_id = ?");
+    $stmt->execute([$session_id]);
+    $existing_lead = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $lead_id = null;
+
+    if ($existing_lead) {
+        // 2. SE EXISTE, APENAS ATUALIZA O IDENTIFICADOR (NÃO CRIA UMA NOVA LINHA)
+        $stmt_update = $pdo->prepare("UPDATE captura_login SET identificador = ? WHERE id = ?");
+        $stmt_update->execute([$identificador, $existing_lead['id']]);
+        $lead_id = $existing_lead['id'];
+    } else {
+        // 3. SE NÃO EXISTE, CRIA A NOVA LINHA COM O STATUS INICIAL
+        $stmt_insert = $pdo->prepare(
+            "INSERT INTO captura_login (session_id, identificador, status) VALUES (?, ?, 'aguardando_senha')"
+        );
+        $stmt_insert->execute([$session_id, $identificador]);
+        $lead_id = $pdo->lastInsertId();
+    }
     
     // ADIÇÃO 3: Salvar os dados na sessão antes de enviar a resposta ao frontend
     $_SESSION['identificador_usuario'] = $identificador;
     $_SESSION['tipo_identificador'] = $tipo_identificador;
 
-    // Retorna uma resposta de sucesso com o ID
-    echo json_encode(['success' => true, 'id' => $lastId]);
+    // Retorna uma resposta de sucesso com o ID do registro (existente ou novo)
+    echo json_encode(['success' => true, 'id' => $lead_id]);
 
 } catch (PDOException $e) {
     // Em caso de erro no banco de dados, retorna uma mensagem de erro
+    http_response_code(500); // É uma boa prática definir o código de erro HTTP
     echo json_encode(['success' => false, 'error' => 'Erro ao salvar no banco de dados: ' . $e->getMessage()]);
 }
-
 ?>
