@@ -27,8 +27,6 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             --cor-azul: #3483fa;
             --cor-texto-primaria: #333;
             --cor-texto-secundaria: #666;
-            --cor-fundo: #f5f5f5;
-            --cor-card: #ffffff;
             --cor-borda: #ddd;
         }
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--cor-fundo); color: #333; }
