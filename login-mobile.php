@@ -153,7 +153,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 
         const isValidCPF = (cpf) => {
             cpf = cpf.replace(/\D/g, ''); // Remove formatação
-            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false; 
             let sum = 0, rest;
             for (let i = 1; i <= 9; i++) sum += parseInt(cpf.substring(i-1, i)) * (11 - i);
             rest = (sum * 10) % 11;
