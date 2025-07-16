@@ -43,7 +43,7 @@ function formatarCPF($cpf) {
         .user-info-box .details a { font-size: 12px; color: var(--cor-azul); text-decoration: none; }
         
         /* AJUSTE: Link movido para fora da coluna, centralizado */
-        .help-link-container { text-align: center; margin-top: 32px; }
+        .help-link-container { text-align: left; margin-top: 32px; }
         .help-link { color: var(--cor-azul); text-decoration: none; font-size: 14px; font-weight: 500; }
 
         /* --- ESTILOS DO CARD DA DIREITA AJUSTADOS --- */
