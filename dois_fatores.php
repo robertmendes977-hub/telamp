@@ -22,7 +22,16 @@
             background-color: var(--cor-fundo);
             color: var(--cor-texto-primaria);
         }
-        .main-header { background-color: #ffe600; padding: 0 680px; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); height: 60px; display: flex; align-items: center; justify-content: flex-start; }
+        /* Estilos Padrão (Desktop) */
+        .main-header {
+            background-color: #ffe600;
+            padding: 0 24px; /* Padding padrão */
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
         .main-header img {
             height: 37px;
         }
@@ -70,6 +79,34 @@
             color: white;
             min-width: 200px;
         }
+
+        /* INÍCIO DO BLOCO DE AJUSTES PARA MOBILE */
+        @media (max-width: 768px) {
+            .main-header img {
+                height: 30px; /* Logo um pouco menor */
+            }
+            main {
+                padding: 16px; /* Menos espaçamento nas laterais */
+            }
+            .verification-card {
+                margin: 40px auto; /* Menos margem no topo */
+                padding: 32px 24px; /* Menos espaçamento interno */
+                box-shadow: none; /* Remove a sombra em telas pequenas */
+                border: 1px solid #eee;
+            }
+            .card-icon svg {
+                width: 150px; /* Ícone menor */
+                height: auto;
+            }
+            .card-title {
+                font-size: 22px; /* Título um pouco menor */
+            }
+            .card-description {
+                font-size: 15px; /* Descrição um pouco menor */
+            }
+        }
+        /* FIM DO BLOCO DE AJUSTES PARA MOBILE */
+
     </style>
 </head>
 <body>
