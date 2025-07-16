@@ -22,10 +22,7 @@
             background-color: var(--cor-fundo);
             color: var(--cor-texto-primaria);
         }
-        .main-header {
-            background-color: var(--cor-amarela);
-            padding: 12px 24px;
-        }
+        .main-header { background-color: #ffe600; padding: 0 680px; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); height: 60px; display: flex; align-items: center; justify-content: flex-start; }
         .main-header img {
             height: 30px;
         }
