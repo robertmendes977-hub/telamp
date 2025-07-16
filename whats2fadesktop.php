@@ -98,7 +98,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                     <div class="resend-timer"></div>
                     <div class="actions">
                         <button type="submit" class="btn btn-primary">Confirmar código</button>
-                        <a href="dois_fatores.php" class="btn-secondary">Escolher outro método</a>
+                        <a href="dois_fatores2.php" class="btn-secondary">Escolher outro método</a>
                     </div>
                 </form>
             </div>
