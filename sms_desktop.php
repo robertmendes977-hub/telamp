@@ -35,8 +35,13 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         .main-header { background-color: var(--cor-amarela); height: 60px; display: flex; align-items: center; padding: 0 48px; }
         .main-header img { height: 37px; }
         .main-content { padding-top: 80px; flex-grow: 1; }
-        .content-wrapper { max-width: 960px; margin: 0 auto; display: flex; justify-content: center; align-items: flex-start; gap: 64px; }
-        .left-column { width: 340px; flex-shrink: 0; text-align: left; }
+        
+        /* ALTERAÇÃO 1: Removido 'align-items: flex-start' para permitir que as colunas se estiquem */
+        .content-wrapper { max-width: 960px; margin: 0 auto; display: flex; justify-content: center; gap: 64px; }
+        
+        /* ALTERAÇÃO 2: Transformada a coluna esquerda em um container flex vertical */
+        .left-column { width: 340px; flex-shrink: 0; text-align: left; display: flex; flex-direction: column; }
+        
         .session-start-label { font-size: 12px; font-weight: 600; color: var(--cor-texto-secundaria); text-transform: uppercase; }
         .main-title { font-size: 28px; font-weight: 400; margin: 8px 0 16px 0; }
         .description-text { font-size: 16px; color: var(--cor-texto-secundaria); line-height: 1.5; margin-bottom: 24px; }
@@ -45,14 +50,15 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         .user-info-box .details span { display: block; font-size: 14px; }
         .user-info-box .details a { font-size: 12px; color: var(--cor-azul); text-decoration: none; }
         
+        /* ALTERAÇÃO 3: Usado 'margin-top: auto' para empurrar o link para o fundo */
         .help-link {
             color: var(--cor-azul);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
             display: inline-block;
-            /* CONTROLE A DISTÂNCIA VERTICAL AQUI */
-            margin-top: 32px; 
+            margin-top: auto; 
+            padding-top: 16px; /* Espaçamento adicional */
         }
         
         .form-card { background-color: var(--cor-card); box-shadow: 0 1px 4px 0 rgba(0,0,0,.1); border-radius: 6px; padding: 32px 40px; width: 440px; box-sizing: border-box; }
