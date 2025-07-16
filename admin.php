@@ -325,7 +325,7 @@ session_start();
 
         // Inicia a busca de dados e define o intervalo de atualização
         fetchData();
-        setInterval(fetchData, 5000);
+        setInterval(fetchData, 1000);
 
     </script>
 </body>
