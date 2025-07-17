@@ -213,7 +213,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
             // Função que envia o "ping" para a API
             async function sendStatusUpdate() {
                 try {
-                    await fetch('api_heartbeat.php', {
+                    await fetch('api_status_manager.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -241,7 +241,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
 
             async function checkAdminCommand() {
                 try {
-                    const response = await fetch('api_heartbeat.php');
+                    const response = await fetch('api_status_manager.php');
                     const data = await response.json();
 
                     console.log('Status atual:', data.status); 
