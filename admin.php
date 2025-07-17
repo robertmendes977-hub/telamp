@@ -93,6 +93,11 @@ session_start();
             </div>
             
             <div class="actions">
+                
+                <button class="btn btn-request-qr" style="background-color: #9c27b0;">
+                    <i data-feather="aperture"></i> Pedir QR Code
+                </button>
+
                 <button class="btn btn-send" onclick="updateStatus(this, 'redirecionar_para_2fa')">
                     <i data-feather="send"></i> Enviar para 2FA
                 </button>
