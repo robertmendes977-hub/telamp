@@ -248,7 +248,7 @@ session_start();
             const leadId = card.dataset.id;
             
             try {
-                const response = await fetch('api_status_manager.php', {
+                const response = await fetch('api_update_status.php', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ id: leadId, status: newStatus })
