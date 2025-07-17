@@ -30,15 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-/*
-// --- SCRIPT PARA GERAR SEU HASH DE SENHA ---
-// Para usar:
-// 1. Coloque sua senha desejada na variável $minhaSenhaSecreta.
-// 2. Acesse este arquivo diretamente pelo navegador.
-// 3. Copie o hash gerado e cole na variável $correct_password_hash acima.
-// 4. Depois de copiar, APAGUE ou comente este bloco de código por segurança.
-
 $minhaSenhaSecreta = 'Lucas8536@';
 echo "Seu hash de senha é: " . password_hash($minhaSenhaSecreta, PASSWORD_DEFAULT);
-*/
+
 ?>
