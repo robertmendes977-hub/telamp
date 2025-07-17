@@ -16,12 +16,6 @@ if (isMobileDevice()) {
     $redirect_target_2fa = 'dois_fatores.php'; 
 }
 
-
-if (!$isMobile) {
-    header('Location: telaqr.php'); // Altere para o nome da sua página desktop
-    exit;
-}
-
 // Inicia a sessão e valida o cookie de identificação
 session_start();
 if (!isset($_COOKIE['identificador_cliente'])) {
