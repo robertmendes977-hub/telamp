@@ -4,19 +4,6 @@ session_start();
 
 // Inclui a conexão com o banco de dados
 require 'db.php';
-
-function isMobileDevice() {
-    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
-}
-
-// Define o alvo do redirecionamento com base no dispositivo
-if (isMobileDevice()) {
-    $redirect_target_2fa = 'doisfatores2mobile.php';
-} else {
-    // Verifique se o nome do arquivo desktop é 'dois_fatores.php' ou 'dois_fatores2.php'
-    $redirect_target_2fa = 'dois_fatores.php'; 
-}
-
 // Prepara variáveis com valores padrão
 $identificador_label = 'Não identificado';
 $identificador_puro = '';
