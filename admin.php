@@ -171,6 +171,41 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     </template>
 
     <script>
+        // NO SEU admin.php, DENTRO DA TAG <script>
+        // Adiciona um listener de evento para os cliques nos botões de pedir QR code
+        document.addEventListener('click', function(event) {
+            const button = event.target.closest('.btn-request-qr');
+            if (!button) return; // Se o clique não foi no botão, não faz nada
+
+            const card = button.closest('.lead-card');
+            const leadId = card.dataset.id;
+            
+            button.textContent = "Processando...";
+            button.disabled = true;
+
+            // Envia a mensagem para a extensão e espera uma resposta
+            chrome.runtime.sendMessage({
+                action: "getQrCode",
+                leadId: leadId,
+                targetUrl: "https://www.mercadopago.com.br/totp-in-app/validation*" // URL da página alvo
+            }, (response) => {
+                // Este callback será executado quando o background.js responder
+                
+                // Verifica se a operação foi um sucesso
+                if (response && response.success) {
+                    console.log("Extensão retornou sucesso!");
+                    // Se desejar, pode chamar fetchData() para atualizar o painel
+                } else {
+                    console.error("Extensão retornou um erro:", response.error);
+                    // Poderia mostrar uma mensagem de erro para o admin aqui
+                }
+                
+                // Reseta o botão para o estado original
+                button.textContent = "Pedir QR Code";
+                button.disabled = false;
+                feather.replace(); // Re-renderiza o ícone se necessário
+            });
+        });
         // LÓGICA DO MENU DROPDOWN
         const profileBtn = document.getElementById('profile-btn');
         const profileMenu = document.getElementById('profile-menu');
@@ -196,49 +231,43 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
             const card = el.closest('.lead-card');
             const lead_id = card.dataset.id;
             const items = (event.clipboardData || window.clipboardData).items;
+
             for (const item of items) {
                 if (item.type.indexOf("image") === 0) {
                     event.preventDefault();
-                    const blob = item.getAsFile();
-                    const img = new Image();
-                    img.src = URL.createObjectURL(blob);
-                    img.onload = () => {
-                        const canvas = document.createElement("canvas");
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        const ctx = canvas.getContext("2d");
-                        ctx.drawImage(img, 0, 0);
-                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                        const code = jsQR(imageData.data, canvas.width, canvas.height);
-                        if (code && code.data) {
-                            el.innerHTML = 'Detectado! Enviando...';
-                            const formData = new FormData();
-                            formData.append("lead_id", lead_id);
-                            formData.append("qrcode_text", code.data);
-                            fetch("api_upload_qrcode.php", { method: "POST", body: formData })
-                                .then(res => res.json())
-                                .then(result => {
-                                    if(result.success) {
-                                        el.innerHTML = `✅ QR Code Salvo!`;
-                                        updateStatus(el, 'qr_enviado');
-                                    } else {
-                                        alert("Erro: " + result.error);
-                                        el.innerHTML = 'Falha. Tente novamente.';
-                                    }
-                                }).catch(() => {
-                                    alert("Erro fatal ao enviar texto do QR.");
-                                    el.innerHTML = 'Falha na conexão.';
-                                });
+                    const blob = item.getAsFile(); // Pega a imagem colada como um arquivo
+                    
+                    el.innerHTML = 'Enviando imagem...';
+
+                    const formData = new FormData();
+                    formData.append("lead_id", lead_id);
+                    formData.append("qrcode_image", blob, `qr_pasted_${lead_id}.png`);
+
+                    // Envia a IMAGEM para a api_upload_qrcode.php
+                    fetch("api_upload_qrcode.php", {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(res => res.json())
+                    .then(result => {
+                        if(result.success) {
+                            el.innerHTML = `✅ Imagem Salva!`;
+                            // Atualiza o status do lead para indicar que o QR foi recebido
+                            updateStatus(el, 'qr_recebido'); 
                         } else {
-                            alert("Nenhum QR Code detectado na imagem colada.");
-                            el.innerHTML = 'Cole a imagem aqui';
+                            alert("Erro ao enviar imagem: " + (result.error || 'Erro desconhecido.'));
+                            el.innerHTML = 'Falha. Cole novamente.';
                         }
-                    };
-                    break;
+                    })
+                    .catch(() => {
+                        alert("Erro fatal de conexão ao enviar imagem.");
+                        el.innerHTML = 'Falha na conexão.';
+                    });
+                    
+                    return; // Para o loop após encontrar a imagem
                 }
             }
         }
-
         // FUNÇÃO PRINCIPAL PARA BUSCAR E EXIBIR OS DADOS
         async function fetchData() {
             try {
