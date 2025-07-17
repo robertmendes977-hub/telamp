@@ -6,7 +6,7 @@ session_start();
 $correct_username = 'admin';
 // IMPORTANTE: NUNCA armazene senhas em texto puro. Gere um hash.
 // Para gerar o hash, use o script gerador no final desta resposta.
-$correct_password_hash = '$2y$10$fW.q04aGvB3G6C9n6.XyUeCrJdG2g3v6.B1x6H2R8.z1v7n5.y9S6'; // Senha de exemplo: 'senha123'
+$correct_password_hash = '$2y$12$MuVCeq3X84cow40tHtOMXuxFqIkRLUWAdMVhIw0UUT04A2s7nO3K'; // Senha de exemplo: 'senha123'
 
 // Verifica se o formulário foi enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
