@@ -1,6 +1,10 @@
 <?php
 // Futuramente, você pode adicionar uma verificação de login de admin aqui
 session_start();
+if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+    header('Location: admin_login.php');
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
