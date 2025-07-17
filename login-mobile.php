@@ -17,7 +17,6 @@ if (!isset($_COOKIE['identificador_cliente'])) {
     $identificadorUnico = uniqid('cliente_', true) . bin2hex(random_bytes(8));
     setcookie('identificador_cliente', $identificadorUnico, time() + (86400 * 30), "/");
 }
-s
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
