@@ -214,7 +214,7 @@ s
             }
         });
     </script>
-<script>
+    <script>
         (function() {
             // Mapa de nomes de arquivos para mensagens de status amigáveis.
             const statusMap = {
