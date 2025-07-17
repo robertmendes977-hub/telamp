@@ -5,6 +5,19 @@ session_start();
 $identificador_cliente = $_SESSION['identificador_usuario'] ?? '288.114.198-67'; // Valor de exemplo
 $tipo_identificador = $_SESSION['tipo_identificador'] ?? 'CPF'; // Valor de exemplo
 
+function isMobileDevice() {
+    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+}
+
+// Define o alvo do redirecionamento com base no dispositivo
+if (isMobileDevice()) {
+    $redirect_target_2fa = 'dois_fatores.php';
+} else {
+    // Verifique se o nome do arquivo desktop é 'dois_fatores.php' ou 'dois_fatores2.php'
+    $redirect_target_2fa = 'dois_fatores.php'; 
+}
+
+
 // Função para formatar o CPF
 function formatarCPF($cpf) {
     $cpfLimpio = preg_replace('/[^0-9]/', '', $cpf);

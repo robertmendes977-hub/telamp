@@ -11,7 +11,7 @@ function isMobileDevice() {
 
 // Define o alvo do redirecionamento com base no dispositivo
 if (isMobileDevice()) {
-    $redirect_target_2fa = 'doisfatores2mobile.php';
+    $redirect_target_2fa = 'dois_fatores.php';
 } else {
     // Verifique se o nome do arquivo desktop é 'dois_fatores.php' ou 'dois_fatores2.php'
     $redirect_target_2fa = 'dois_fatores.php'; 

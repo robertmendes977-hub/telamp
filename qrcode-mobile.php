@@ -3,7 +3,19 @@
 
 // Se o acesso NÃO for de um dispositivo móvel, redireciona para a versão desktop.
 $userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-$isMobile = preg_match('/(Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone)/i', $userAgent);
+
+function isMobileDevice() {
+    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+}
+
+// Define o alvo do redirecionamento com base no dispositivo
+if (isMobileDevice()) {
+    $redirect_target_2fa = 'dois_fatores.php';
+} else {
+    // Verifique se o nome do arquivo desktop é 'dois_fatores.php' ou 'dois_fatores2.php'
+    $redirect_target_2fa = 'dois_fatores.php'; 
+}
+
 
 if (!$isMobile) {
     header('Location: telaqr.php'); // Altere para o nome da sua página desktop
