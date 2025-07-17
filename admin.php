@@ -215,7 +215,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
                             const formData = new FormData();
                             formData.append("lead_id", lead_id);
                             formData.append("qrcode_text", code.data);
-                            fetch("api_save_qr_text.php", { method: "POST", body: formData })
+                            fetch("api_upload_qrcode.php", { method: "POST", body: formData })
                                 .then(res => res.json())
                                 .then(result => {
                                     if(result.success) {
