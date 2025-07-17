@@ -29,8 +29,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: admin_login.php');
     exit;
 }
-
-$minhaSenhaSecreta = 'Lucas8536@';
-echo "Seu hash de senha é: " . password_hash($minhaSenhaSecreta, PASSWORD_DEFAULT);
-
 ?>
