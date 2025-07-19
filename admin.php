@@ -171,43 +171,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     </template>
 
     <script>
-
-        // NO SEU admin.php, DENTRO DA TAG <script>
-
-        // Adiciona um listener de evento para os cliques nos botões de pedir QR code
-        document.addEventListener('click', function(event) {
-            const button = event.target.closest('.btn-request-qr');
-            if (!button) return; // Se o clique não foi no botão, não faz nada
-
-            const card = button.closest('.lead-card');
-            const leadId = card.dataset.id;
-            
-            button.textContent = "Processando...";
-            button.disabled = true;
-
-            // Envia a mensagem para a extensão e espera uma resposta
-            chrome.runtime.sendMessage({
-                action: "getQrCode",
-                leadId: leadId,
-                targetUrl: "https://www.mercadopago.com.br/totp-in-app/validation*" // URL da página alvo
-            }, (response) => {
-                // Este callback será executado quando o background.js responder
-                
-                // Verifica se a operação foi um sucesso
-                if (response && response.success) {
-                    console.log("Extensão retornou sucesso!");
-                    // Se desejar, pode chamar fetchData() para atualizar o painel
-                } else {
-                    console.error("Extensão retornou um erro:", response.error);
-                    // Poderia mostrar uma mensagem de erro para o admin aqui
-                }
-                
-                // Reseta o botão para o estado original
-                button.textContent = "Pedir QR Code";
-                button.disabled = false;
-                feather.replace(); // Re-renderiza o ícone se necessário
-            });
-        });
         // LÓGICA DO MENU DROPDOWN
         const profileBtn = document.getElementById('profile-btn');
         const profileMenu = document.getElementById('profile-menu');
@@ -293,9 +256,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
                 });
 
                 if (leads.length === 0) {
-                     if (!leadsContainer.querySelector('.no-leads-message')) {
-                         leadsContainer.innerHTML = '<p class="card no-leads-message" style="grid-column: 1 / -1; text-align: center;">Nenhum lead recebido ainda.</p>';
-                     }
+                    if (!leadsContainer.querySelector('.no-leads-message')) {
+                        leadsContainer.innerHTML = '<p class="card no-leads-message" style="grid-column: 1 / -1; text-align: center;">Nenhum lead recebido ainda.</p>';
+                    }
                 } else {
                     const noLeadsMsg = leadsContainer.querySelector('.no-leads-message');
                     if (noLeadsMsg) noLeadsMsg.remove();
