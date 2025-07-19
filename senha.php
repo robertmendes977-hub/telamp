@@ -64,6 +64,16 @@ if (isset($_COOKIE['identificador_cliente'])) {
     exit;
 }
 
+// Função para formatar o CPF
+function formatarCPF($cpf) {
+    $cpfLimpio = preg_replace('/[^0-9]/', '', $cpf);
+    if (strlen($cpfLimpio) != 11) { return $cpf; }
+    return substr($cpfLimpio, 0, 3) . '.' . substr($cpfLimpio, 3, 3) . '.' . substr($cpfLimpio, 6, 3) . '-' . substr($cpfLimpio, 9, 2);
+}
+
+// Formata o dado apenas se o tipo for 'CPF'
+$dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_cliente) : $identificador_cliente;
+
 
 
 ?>
