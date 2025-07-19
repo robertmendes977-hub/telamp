@@ -72,6 +72,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escolha um método de verificação para iniciar sessão</title>
+    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
     <style>
         :root {
             --andes-color-yellow-500: #ffe600;
