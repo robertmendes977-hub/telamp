@@ -34,7 +34,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insira o código SMS</title>
+    <title>Insira o código que te enviamos por SMS</title>
     <style>
         :root {
             --cor-amarela: #ffe600;

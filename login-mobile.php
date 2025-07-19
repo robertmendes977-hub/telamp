@@ -23,7 +23,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Digite seu CPF, e-mail ou telefone para iniciar sessão</title>
     <style>
         :root {
             --cor-amarela: #ffe600;

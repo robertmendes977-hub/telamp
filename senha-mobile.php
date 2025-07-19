@@ -71,7 +71,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escolha um método de verificação</title>
+    <title>Escolha um método de verificação para iniciar sessão</title>
     <style>
         :root {
             --andes-color-yellow-500: #ffe600;

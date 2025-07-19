@@ -40,7 +40,7 @@ if (isMobileDevice()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificação de duas etapas</title>
+    <title>Use um segundo método de verificação para confirmar que a conta pertence a você</title>
     <style>
         :root {
             --cor-amarela: #ffe600;

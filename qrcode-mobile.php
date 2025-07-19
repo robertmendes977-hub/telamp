@@ -29,7 +29,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escaneie o QR para iniciar sessão</title>
+    <title>Escaneie o QR para iniciar sessão de forma segura</title>
     <style>
         :root {
             --cor-amarela: #ffe600;
