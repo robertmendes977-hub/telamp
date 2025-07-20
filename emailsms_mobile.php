@@ -2,7 +2,7 @@
 session_start();
 
 // Recupera os dados da sessão para exibição dinâmica.
-$identificador_cliente = $_SESSION['identificador_usuario'] ?? '288.114.198-67'; // Valor de exemplo
+$identificador_cliente = $_SESSION['identificador_usuario'] ?? '123.123.123-12'; // Valor de exemplo
 $tipo_identificador = $_SESSION['tipo_identificador'] ?? 'CPF'; // Valor de exemplo
 
 function isMobileDevice() {
