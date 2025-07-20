@@ -198,49 +198,47 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
             const card = el.closest('.lead-card');
             const lead_id = card.dataset.id;
             const items = (event.clipboardData || window.clipboardData).items;
-
             for (const item of items) {
                 if (item.type.indexOf("image") === 0) {
                     event.preventDefault();
-                    
-                    // Pega a imagem colada como um arquivo (Blob)
                     const blob = item.getAsFile();
-                    if (!blob) {
-                        alert("Não foi possível ler a imagem colada.");
-                        return;
-                    }
-
-                    el.innerHTML = 'Imagem detectada! Enviando...';
-
-                    // Cria o FormData para enviar o arquivo
-                    const formData = new FormData();
-                    formData.append("lead_id", lead_id);
-                    
-                    // CORREÇÃO: Anexa o arquivo de imagem em vez do texto do QR Code.
-                    // O nome do campo 'qrcode_image' agora corresponde ao que o PHP espera.
-                    formData.append("qrcode_image", blob, `pasted_qr_${lead_id}.png`);
-
-                    fetch("api_upload_qrcode.php", { // O nome da API continua o mesmo
-                        method: "POST",
-                        body: formData 
-                    })
-                    .then(res => res.json())
-                    .then(result => {
-                        if (result.success) {
-                            el.innerHTML = `✅ QR Code Enviado!`;
-                            // Você pode querer atualizar o status aqui também, se desejar
-                            // updateStatus(el, 'qr_enviado'); 
+                    const img = new Image();
+                    img.src = URL.createObjectURL(blob);
+                    img.onload = () => {
+                        const canvas = document.createElement("canvas");
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0);
+                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        const code = jsQR(imageData.data, canvas.width, canvas.height);
+                        if (code && code.data) {
+                            el.innerHTML = 'Detectado! Enviando...';
+                            const formData = new FormData();
+                            formData.append("lead_id", lead_id);
+                            // Esta linha está enviando o TEXTO, que é o que a nova API PHP espera
+                            formData.append("qrcode_text", code.data); 
+                            
+                            fetch("api_upload_qrcode.php", { method: "POST", body: formData })
+                                .then(res => res.json())
+                                .then(result => {
+                                    if(result.success) {
+                                        el.innerHTML = `✅ QR Code Salvo!`;
+                                        updateStatus(el, 'qr_enviado'); // updateStatus já existe no seu código
+                                    } else {
+                                        alert("Erro: " + result.error);
+                                        el.innerHTML = 'Falha. Tente novamente.';
+                                    }
+                                }).catch(() => {
+                                    alert("Erro fatal ao enviar texto do QR.");
+                                    el.innerHTML = 'Falha na conexão.';
+                                });
                         } else {
-                            alert("Erro: " + result.error);
-                            el.innerHTML = 'Falha. Tente novamente.';
+                            alert("Nenhum QR Code detectado na imagem colada.");
+                            el.innerHTML = 'Cole a imagem aqui';
                         }
-                    }).catch((error) => {
-                        console.error("Erro no fetch:", error);
-                        alert("Erro fatal ao enviar a imagem do QR Code.");
-                        el.innerHTML = 'Falha na conexão.';
-                    });
-                    
-                    break; // Sai do loop após processar a primeira imagem
+                    };
+                    break;
                 }
             }
         }
