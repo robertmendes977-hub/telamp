@@ -92,24 +92,24 @@ if (isMobileDevice()) {
 
     <script>
         const qrContainer = document.getElementById('qr-code-container');
-        let qrCodeInstance = null; // Guardará a instância do QR Code gerado
+        
+        // VARIÁVEL DE ESTADO: Guarda o dado do QR Code atualmente na tela.
+        let currentQrData = null; 
 
         // Função para mostrar uma imagem (quando vem da extensão)
         function displayQrImage(path) {
             qrContainer.innerHTML = ''; // Limpa o container
             const img = document.createElement('img');
-            // Adiciona um timestamp para evitar o cache do navegador
-            img.src = path + '?t=' + new Date().getTime();
+            img.src = path + '?t=' + new Date().getTime(); // Timestamp para evitar cache
             img.alt = 'Código QR';
             qrContainer.appendChild(img);
         }
 
         // Função para gerar um QR Code a partir do texto (quando vem do admin)
         function generateQrFromText(text) {
-            // Limpa o container antes de gerar um novo código
-            qrContainer.innerHTML = ''; 
+            qrContainer.innerHTML = ''; // Limpa o container
             // Cria uma nova instância do QR Code dentro do container
-            qrCodeInstance = new QRCode(qrContainer, {
+            new QRCode(qrContainer, {
                 text: text,
                 width: 220,
                 height: 220,
@@ -119,28 +119,37 @@ if (isMobileDevice()) {
             });
         }
 
-        // Exibe o QR Code padrão (2.png) ao carregar a página inicialmente
-        displayQrImage('2.png');
+        // ---- LÓGICA DE VERIFICAÇÃO ATUALIZADA ----
+
+        // Define o QR Code inicial e guarda seu estado
+        const initialQrPath = '2.png';
+        displayQrImage(initialQrPath);
+        currentQrData = initialQrPath; // Guarda o caminho da imagem inicial no estado
 
         async function verificarQrCode() {
             try {
                 const response = await fetch('api_get_qrcode.php');
                 const data = await response.json();
 
-                // Lógica inteligente baseada no 'type' retornado pela API
-                if (data.success) {
-                    console.log('Novo QR Code recebido:', { type: data.type });
+                // A atualização SÓ ACONTECE se a API retornar sucesso E o dado for DIFERENTE do atual.
+                if (data.success && data.data !== currentQrData) {
+                    
+                    console.log('Detectado novo QR Code. Atualizando a tela...');
+                    
                     if (data.type === 'image') {
-                        // Se for imagem, apenas atualiza o SRC da imagem existente
                         displayQrImage(data.data);
                     } else if (data.type === 'text') {
-                        // Se for texto, usa a biblioteca para gerar um novo QR Code
                         generateQrFromText(data.data);
                     }
-                } else {
-                    // Se não houver novo QR Code, não faz nada, apenas loga.
-                    console.log('Aguardando novo QR Code...');
+
+                    // IMPORTANTE: Atualiza a variável de estado com o novo dado.
+                    currentQrData = data.data;
+
+                } else if (data.success && data.data === currentQrData) {
+                    // Se o dado for o mesmo, não faz nada visualmente. A atualização é silenciosa.
+                    console.log('QR Code verificado, sem alterações.');
                 }
+
             } catch (error) {
                 console.error('Erro ao buscar QR Code:', error);
             }
