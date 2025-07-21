@@ -1,6 +1,6 @@
 <?php
 // Coloque a senha que você quer usar aqui dentro das aspas
-$minhaSenhaSecreta = 'Lucas8536@';
+$minhaSenhaSecreta = '102030';
 
 // Este comando gera o hash seguro
 $hashSeguro = password_hash($minhaSenhaSecreta, PASSWORD_DEFAULT);
