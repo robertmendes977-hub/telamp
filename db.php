@@ -12,7 +12,7 @@ if (empty($dbUrl)) {
 $dbopts = parse_url($dbUrl);
 
 $dbHost = $dbopts["host"];
-$dbPort = $dbopts["port"];
+$dbPort = $dbopts["port"] ?? '5432';
 $dbUser = $dbopts["user"];
 $dbPass = $dbopts["pass"];
 $dbName = ltrim($dbopts["path"], '/');
@@ -38,7 +38,7 @@ try {
         data_criacao TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
     ";
-    
+
     // Executa o comando de criação.
     $pdo->exec($sql_create_table);
 
